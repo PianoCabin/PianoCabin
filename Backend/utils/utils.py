@@ -67,6 +67,22 @@ class APIView(View):
             if k not in self.msg:
                 raise MsgError(msg='API requires field "%s"' % (k,))
 
+    # 解析session获取用户
+    def getUserBySession(self):
+        """
+        :return: :class:`User <User>` object
+        """
+
+        id = session_user.get(self.msg['authorization'])
+        if id is None:
+            raise MsgError(msg='No such person')
+        else:
+            user = get_or_none(User, id=id)
+            if user is None:
+                raise MsgError(msg='User does not exist')
+            else:
+                return user
+
     def http_method_not_allowed(self, *args, **kwargs):
         return super().http_method_not_allowed(self.request, *args, **kwargs)
 

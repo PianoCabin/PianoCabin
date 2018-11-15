@@ -1,5 +1,6 @@
 from django.db import models
-from datetime import datetime
+from Backend.settings import *
+import redis
 
 
 # Create your models here.
@@ -11,7 +12,7 @@ def get_or_none(model, *args, **kwargs):
 
 
 class PianoRoom(models.Model):
-    room_num = models.TextField(default='')
+    room_num = models.CharField(default='', max_length=255, unique=True)
     piano_type = models.TextField(default='')
     brand = models.TextField(default='')
     prices = models.TextField(default='{"student":-1,"teacher":-1,"other":-1}')
@@ -22,8 +23,8 @@ class PianoRoom(models.Model):
 
 
 class User(models.Model):
-    open_id = models.TextField(default="")
-    identity = models.TextField(default="")
+    open_id = models.CharField(default="", max_length=255, unique=True)
+    identity = models.CharField(default="", max_length=255, unique=True, null=True, blank=True)
     permission = models.IntegerField(default=0)
 
     def __str__(self):
@@ -78,3 +79,10 @@ class Feedback(models.Model):
 
     def __str__(self):
         return self.id
+
+
+room_list = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=0)
+
+unpaid_orders = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=1)
+
+session_user = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=2)
