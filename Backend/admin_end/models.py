@@ -15,7 +15,10 @@ class PianoRoom(models.Model):
     room_num = models.CharField(default='', max_length=255, unique=True)
     piano_type = models.TextField(default='')
     brand = models.TextField(default='')
-    prices = models.TextField(default='{"student":-1,"teacher":-1,"other":-1}')
+    price_0 = models.IntegerField(default=0)
+    price_1 = models.IntegerField(default=0)
+    price_2 = models.IntegerField(default=0)
+    art_ensemble = models.IntegerField(default=0)
     usable = models.BooleanField(default=False)
 
     def __str__(self):
@@ -63,8 +66,8 @@ class LongTermOrder(models.Model):
 
 
 class News(models.Model):
-    title = models.TextField(default='')
-    content = models.TextField(default='')
+    news_title = models.TextField(default='')
+    news_content = models.TextField(default='')
     publish_time = models.DateTimeField(default='2018-01-01')
 
     def __str__(self):
@@ -73,8 +76,9 @@ class News(models.Model):
 
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
-    title = models.TextField(default='')
-    content = models.TextField(default='')
+    feedback_title = models.TextField(default='')
+    feedback_content = models.TextField(default='')
+    read_status = models.BooleanField(default=False)
     feedback_time = models.DateTimeField(default='2018-01-01')
 
     def __str__(self):
