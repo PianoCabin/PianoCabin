@@ -98,8 +98,8 @@ class CreateFeedBack(APIView):
         try:
             feedback = Feedback(
                 user=user,
-                title=self.msg.get('feedback_title'),
-                content=self.msg.get('feedback_content'),
+                feedback_title=self.msg.get('feedback_title'),
+                feedback_content=self.msg.get('feedback_content'),
                 feedback_time=datetime.now()
             )
             if feedback is None:
