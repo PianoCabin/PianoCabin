@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'admin_end.apps.AdminEndConfig',
     'user_end.apps.UserEndConfig',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,8 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CRONJOBS = [
+    ('*/1 * * * *', 'admin_end.models.updateUnpaidOrders', '>>'+os.path.join(BASE_DIR, 'log/UnpaidOrders.log')),
+    ('1 0 * * *', 'admin_end.models.updateOrderList', '>>'+os.path.join(BASE_DIR, 'log/OrderList.log'))
+]
