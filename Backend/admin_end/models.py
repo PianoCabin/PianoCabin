@@ -68,8 +68,8 @@ class LongTermOrder(models.Model):
 
 
 class News(models.Model):
-    title = models.TextField(default='')
-    content = models.TextField(default='')
+    news_title = models.TextField(default='')
+    news_content = models.TextField(default='')
     publish_time = models.DateTimeField(default='2018-01-01')
 
     def __str__(self):
@@ -78,8 +78,8 @@ class News(models.Model):
 
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
-    title = models.TextField(default='')
-    content = models.TextField(default='')
+    feedback_title = models.TextField(default='')
+    feedback_content = models.TextField(default='')
     read_status = models.BooleanField(default=False)
     feedback_time = models.DateTimeField(default='2018-01-01')
 
