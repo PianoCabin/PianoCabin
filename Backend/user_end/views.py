@@ -84,7 +84,8 @@ class OrderList(APIView):
                 "start_time": order.start_time.timestamp(),
                 "end_time": order.end_time.timestamp(),
                 "price": order.price,
-                "order_status": order.order_status
+                "order_status": order.order_status,
+                'create_time': order.create_time.timestamp()
             })
         return {"order_list": data}
 
@@ -196,10 +197,14 @@ class OrderNormal(APIView):
                             break
                     orders = json.dumps(orders)
                     redis_manage.order_list.lset(piano_room.room_num, day, orders)
-                    redis_manage.unpaid_orders.set(order.id, datetime.now().timestamp())
+                    redis_manage.unpaid_orders.set(order.id, order.create_time.timestamp())
                     redis_manage.redis_lock.release()
                 id = order.id
         except django.db.IntegrityError:
+            try:
+                redis_manage.redis_lock.release()
+            except:
+                pass
             raise MsgError(msg='Unable to order')
         return {'order_id': id}
 
@@ -249,6 +254,10 @@ class OrderChange(APIView):
                     redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
                     redis_manage.redis_lock.release()
         except:
+            try:
+                redis_manage.redis_lock.release()
+            except:
+                pass
             raise MsgError(msg='Unable to change order')
 
 
@@ -274,4 +283,9 @@ class OrderCancel(APIView):
                     redis_manage.unpaid_orders.delete(order.id)
                     redis_manage.redis_lock.release()
         except:
+            try:
+                redis_manage.redis_lock.release()
+            except:
+                pass
             raise MsgError(msg='Unable to cancel order')
+

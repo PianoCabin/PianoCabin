@@ -1,6 +1,7 @@
 from django.db import models
 from Backend.settings import *
 from datetime import datetime, timedelta
+from django.db import transaction
 import redis
 import threading
 import json
@@ -122,3 +123,47 @@ class RedisManage:
 
 
 redis_manage = RedisManage()
+
+
+def updateOrderList():
+    rooms = PianoRoom.objects.all()
+    for room in rooms:
+        date = datetime.now().date() + timedelta(days=CONFIGS['MAX_ORDER_DAYS'] - 1)
+        orders = Order.objects.filter(date=date, piano_room=room, order_status__range=[1, 2]).order_by(
+            'start_time')
+        orders_data = []
+        for order in orders:
+            orders_data.append([order.start_time, order.end_time, order.id])
+        orders_data = json.dumps(orders_data)
+        redis_manage.order_list.lpop(room.room_num)
+        redis_manage.order_list.lpush(room.room_num, orders_data)
+
+
+def updateUnpaidOrders():
+    ids = redis_manage.unpaid_orders.keys()
+    for id in ids:
+        create_time = float(redis_manage.unpaid_orders.get(id).decode())
+        if (datetime.now().timestamp() - create_time) > CONFIGS['MAX_UNPAID_TIME'] * 60:
+            print('execute')
+            try:
+                with transaction.atomic():
+                    order = Order.objects.get(id=int(id.decode()))
+                    order.order_status = 0
+                    order.save()
+                    if redis_manage.redis_lock.acquire():
+                        redis_manage.unpaid_orders.delete(id)
+                        day = (datetime.now().date() - order.create_time.date()).days
+                        room_orders = redis_manage.order_list.lindex(order.piano_room.room_num, day)
+                        room_orders = json.loads(room_orders)
+                        for room_order in room_orders:
+                            if room_order[2] == order.id:
+                                room_orders.remove(room_order)
+                        room_orders = json.dumps(room_orders)
+                        redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
+                        redis_manage.redis_lock.release()
+            except:
+                try:
+                    redis_manage.redis_lock.release()
+                except:
+                    pass
+                print('Unable to update order list')
