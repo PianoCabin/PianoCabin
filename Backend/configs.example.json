@@ -1,0 +1,13 @@
+{
+  "APP_ID": "appid here",
+  "APP_SECRET": "app_secret here",
+  "SQL_NAME": "piano_cabin",
+  "SQL_USER": "root",
+  "SQL_PASS": "",
+  "SQL_HOST": "127.0.0.1",
+  "SQL_PORT": 3306,
+  "REDIS_HOST": "127.0.0.1",
+  "REDIS_PORT": 6379,
+  "MAX_ORDER_DAYS": 7,
+  "MAX_UNPAID_TIME": 15
+}
