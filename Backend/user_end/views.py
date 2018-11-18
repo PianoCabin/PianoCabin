@@ -241,12 +241,13 @@ class OrderChange(APIView):
     # order/change API
 
     def post(self):
-        self.checkMsg('start_time', 'end_time', 'price', 'order_id', 'authorization')
+        self.checkMsg('date', 'start_time', 'end_time', 'price', 'order_id', 'authorization')
         try:
             with transaction.atomic():
                 order = Order.objects.select_for_update().get(id=self.msg.get('order_id'))
                 order.start_time = datetime.fromtimestamp(self.msg.get('start_time'))
                 order.end_time = datetime.fromtimestamp(self.msg.get('end_time'))
+                order.date = datetime.fromtimestamp(self.msg.get('date')).date()
                 order.price = datetime.fromtimestamp(self.msg.get('price'))
                 order.save()
                 if redis_manage.redis_lock.acquire():
