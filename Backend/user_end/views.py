@@ -75,17 +75,21 @@ class OrderList(APIView):
     def get(self):
         self.checkMsg('authorization')
         user = self.getUserBySession()
-        order_list = user.order_set.all()
+        if self.msg.get('order_id'):
+            order_list = user.order_set.filter(id=self.msg.get('order_id'))
+        else:
+            order_list = user.order_set.all()
         data = []
         for order in order_list:
             data.append({
-                "piano_type": order.piano_room.piano_type,
-                "room_num": order.piano_room.room_num,
-                "start_time": order.start_time.timestamp(),
-                "end_time": order.end_time.timestamp(),
-                "price": order.price,
-                "order_status": order.order_status,
-                'create_time': order.create_time.timestamp()
+                'piano_type': order.piano_room.piano_type,
+                'room_num': order.piano_room.room_num,
+                'start_time': order.start_time.timestamp(),
+                'end_time': order.end_time.timestamp(),
+                'price': order.price,
+                'order_status': order.order_status,
+                'create_time': order.create_time.timestamp(),
+                'order_id': order.id
             })
         return {"order_list": data}
 
@@ -119,6 +123,9 @@ class PianoRoomList(APIView):
             rooms = PianoRoom.objects.filter(brand=self.msg.get('brand'), piano_type=self.msg.get('type'))
         else:
             rooms = PianoRoom.objects.filter(piano_type=self.msg.get('type'))
+
+        if self.msg.get('room_num'):
+            rooms = PianoRoom.objects.filter(room_num=self.msg.get('msg'))
 
         day = (datetime.fromtimestamp(self.msg.get('date')).date() - datetime.now().date()).days
         sum_times = []
@@ -234,11 +241,10 @@ class OrderChange(APIView):
     # order/change API
 
     def post(self):
-        self.checkMsg('room_num', 'start_time', 'end_time', 'price', 'order_id', 'authorization')
+        self.checkMsg('start_time', 'end_time', 'price', 'order_id', 'authorization')
         try:
             with transaction.atomic():
                 order = Order.objects.select_for_update().get(id=self.msg.get('order_id'))
-                order.piano_room = PianoRoom.objects.select_for_update().get(room_num=self.msg.get('room_num'))
                 order.start_time = datetime.fromtimestamp(self.msg.get('start_time'))
                 order.end_time = datetime.fromtimestamp(self.msg.get('end_time'))
                 order.price = datetime.fromtimestamp(self.msg.get('price'))
