@@ -41,6 +41,7 @@ class User(models.Model):
 
 class Order(models.Model):
     piano_room = models.ForeignKey(PianoRoom, on_delete=models.CASCADE, default='')
+    order_id = models.CharField(default='', max_length=128, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
     date = models.DateField(default='2018-01-01')
     start_time = models.DateTimeField(default='2018-01-01')
