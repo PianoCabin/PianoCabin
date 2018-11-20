@@ -8,6 +8,8 @@
           <button class='getUserInfo' open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像 </button>
         </block>
       </view>
+    <!-- <image class="userinfo-avatar" src="/image/icon/LOGO.jpg" mode="cover"></image> -->
+    
   </view>
   <view wx:else>
       <view class="userinfo">

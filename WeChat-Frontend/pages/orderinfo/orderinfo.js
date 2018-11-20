@@ -23,7 +23,9 @@ Page({
     cur_date:"",
     roominfo:{},
     animation_data: null,
-    cancel_view:false
+    cancel_view:false,
+    open_time:[12,0],
+    close_time:[22,30]
   },
 
   /**
@@ -38,24 +40,7 @@ Page({
     })
   },
   getOrderInfo(order_id){
-    wx.request({
-      url: app.globalData.backend+`/u/order/list`,
-      data:{
-        order_id:order_id
-      },
-      success:res =>{
-        console.log(res);
-        if(res.data['code'] == 1)
-        {
-          this.updateOrderInfo(res.data['data']["order_list"][0])
-        }
-        else
-          util.msgPrompt(res.data['msg'])
-      },
-      fail:res =>{
-        util.msgPrompt("get info fail");
-      }
-    })
+    app.getOrderList({ order_id: order_id }, res => { this.updateOrderInfo(res[0])})
   },
   updateOrderInfo(data){
     let info = {};
@@ -85,29 +70,24 @@ Page({
   getRoomInfo(room_num){
     let today = new Date()
     today.setHours(12,0,0,0);
-    wx.request({
-      url: app.globalData.backend + `/u/order/piano-rooms-list/`,
-      data:{
-        Authorization:app.globalData.user_session,
-        room_num:room_num,
-        date:today.getTime()
+    app.getRoomList({
+      room_num: room_num,
+      date: today.getTime()
       },
-      method:"POST",
-      success:res =>{
-        console.log(res.data);
-        this.setStartList(res.data["data"]["room_list"][0]);
-        this.setData({
-          roominfo: res.data['data']["room_list"][0]
-        })
-      }
+      this.setOrderInfo);
+  },
+  setOrderInfo(res){
+    console.log(res.data);
+    this.setStartList(res.data["data"]["room_list"][0]);
+    this.setData({
+      roominfo: res.data['data']["room_list"][0]
     })
-
   },
   setStartList(room_info){
     let transer = new Date()
-    transer.setHours(12,0,0,0)
+    transer.setHours(this.data.open_time[0],this.data.open_time[1],0,0)
     let start = transer.getTime();
-    transer.setHours(22,30,0,0);
+    transer.setHours(this.data.close_time[0],this.data.close_time[1],0,0);
     let end = transer.getTime();
     let start_list=[];
 
@@ -168,7 +148,7 @@ Page({
 
     let list = this.data.starttime_list[index].split(":");
     let transer = new Date()
-    transer.setHours(22, 30, 0, 0)
+    transer.setHours(this.data.close_time[0], this.data.close_time[1], 0, 0)
     let start = new Date(util.timeStringToTimestamp(this.data.cur_date, this.data.starttime_list[index]));
     let max_end = transer.getTime();
 
@@ -181,7 +161,7 @@ Page({
         break;
       }
       if (i == room_info["occupied_time"].length - 1) {
-        transer.setHours(22,30,0,0)
+        transer.setHours(this.data.close_time[0],this.data.close_time[1],0,0)
         max_end = transer.getTime();
       }
     }
@@ -216,38 +196,15 @@ Page({
   },
   changeOrder(){
     let info = this.getInfoObject();
-    info["Authorization"] = app.globalData.user_session,
     console.log(info);
-    wx.request({
-      url: app.globalData.backend +`/u/order/change/`,
-      data:info,
-      method:"POST",
-      success: res =>{
-        console.log(res);
-      },
-      fail:res =>{
-        console.log(res);
-      }
-    })
+    app.changeOrder(info,res=>{console.log(res)});
   },
   cancelOrder(){
-    wx.request({
-      url: app.globalData.backend + `/u/order/cancel/`,
-      data: {
-        Authorization:app.globalData.user_session,
-        order_id:this.data.info["order_id"]
-      },
-      method: "POST",
-      success: res => {
-        console.log(res);
-        wx.redirectTo({
-          url: '/pages/orderpage/orderpage',
-        })
-      },
-      fail: res => {
-        console.log(res);
-      }
-    })
+    app.cancelOrder({order_id: this.data.info["order_id"]}, res => {
+      console.log(res);
+      wx.redirectTo({
+        url: '/pages/orderpage/orderpage',
+      })})
   },
   checkCancelOrder(){
     this.showCancelView();

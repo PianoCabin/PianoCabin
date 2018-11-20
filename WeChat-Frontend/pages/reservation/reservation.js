@@ -39,6 +39,16 @@ Page({
     this.setData({ piano_id: "select_type", room_id: "", keyboard_id: "", cur_date: new Date().toLocaleDateString(), list_type: "piano" });
     this.getRoomList();
     this.initSearchPage();
+    wx.startPullDownRefresh({
+      success:()=>{
+        console.log("pulldownrefresh");
+        this.resetSearch()
+        this.getRoomList();
+      },
+      fail:()=>{
+        util.msgPrompt("fail to refresh");
+      }
+    });
   },
 
   onShow:function(){  
@@ -258,36 +268,25 @@ Page({
   //向服务器请求筛选过的琴房列表
   getRoomList(){
     let data = this.getListFilter();
-    data["Authorization"] = app.globalData.user_session;
-    wx.request({
-      url: app.globalData.backend+'/u/order/piano-rooms-list/',
-      data:data,
-      method: "POST",
-      success : res => {
-        if (res.data["code"] == 0){
-          util.msgPrompt(res.data["msg"]);
-        }
-        else{
-          let list = res.data["data"]["room_list"];
-          console.log(list);
-          this.updateList(list);
-        }
-      },
-      fail : res => {
-        util.msgPrompt("network wrong");
-      }
-    })
+    app.getRoomList(data,this.showRoomList);
+  },
+  showRoomList(res){
+    let list = res.data["data"]["room_list"];
+    console.log(list);
+    this.updateList(list);
   },
 
   //获取琴房筛选条件
   getListFilter(){
     let data={};
     data["type"] = this.data.list_type;
-    data["date"] = (new Date(this.data.cur_date)).getTime();
+    let transer = (new Date(this.data.cur_date));
+    transer.setHours(12,0,0,0);
+    data["date"] = transer.getTime()/1000;
     if (this.data.search_start != null)
-      data["search_start"] = util.timeStringToTimestamp(this.data.cur_date,this.data.search_start);
+      data["search_start"] = util.timeStringToTimestamp(this.data.cur_date,this.data.search_start)/1000;
     if (this.data.search_end != null)
-      data["search_end"] = util.timeStringToTimestamp(this.data.cur_date,this.data.search_end);
+      data["search_end"] = util.timeStringToTimestamp(this.data.cur_date,this.data.search_end)/1000;
     if (this.data.search_room_num != "")
       data["room_num"] = this.data.search_room_num;
     return data;
@@ -498,28 +497,18 @@ Page({
     }
   },
   submitOrder(order_data){
-    order_data["Authorization"] = app.globalData.user_session;
-    wx.request({
-      url: app.globalData.backend +`/u/order/normal/`,
-      method:"POST",
-      data:order_data,
-      success:function(res){
-        if(res.data["code"] == 1){
-          console.log("submit success");
-          // wx.navigateTo({
-          //   url: '/pages/orderpage/orderpage',
-          // });
-          wx.redirectTo({
-            url: '/pages/orderinfo/orderinfo?order_id='+res.data["data"]["order_id"].toString(), 
-          })
-        }
-        else{
-          console.log("submit failed");
-        }
-      },
-      fail:function(res){
-        console.log("net work wrong");
-      }
-      })
+    app.submitOrder(order_data,this.goToOrderInfo);
+  },
+  goToOrderInfo(res){
+    wx.redirectTo({
+      url: '/pages/orderinfo/orderinfo?order_id=' + res.data["data"]["order_id"].toString(),
+    })
+  },
+  resetSearch(){
+    this.setData({
+      search_start:null,
+      search_end:null,
+      search_room_num:""
+    })
   }
 })

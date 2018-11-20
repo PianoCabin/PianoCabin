@@ -18,24 +18,7 @@ Page({
       this.getOrderList();
   },
   getOrderList(){
-    wx.request({
-      url: app.globalData.backend+`/u/order/list`,
-      method:"GET",
-      success:res => {
-        if(res.data["code"] == 1){
-          
-          // this.setData({order_list:res.data["data"]["order_list"]});
-          this.updateOrderList(res.data["data"]["order_list"])
-          console.log(this.data.order_list);
-        }
-        else{
-          console.log(res);
-        }
-      },
-      fail:res=>{
-        util.msgPrompt("network wrong");
-      }
-    })
+    app.getOrderList({},this.updateOrderList);
   },
   updateOrderList(data_list){
     let new_list = [];
