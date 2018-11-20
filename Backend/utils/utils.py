@@ -67,6 +67,16 @@ class APIView(View):
             if k not in self.msg:
                 raise MsgError(msg='API requires field "%s"' % (k,))
 
+    # 检查多个可选输入
+    def checkMsgMultiOption(self, *keys):
+
+        count = 0
+        for k in keys:
+            if k in self.msg:
+                count += 1
+        if count == 0:
+            raise MsgError(msg='API requires field not enough')
+
     # 解析session获取用户
     def getUserBySession(self):
         """
