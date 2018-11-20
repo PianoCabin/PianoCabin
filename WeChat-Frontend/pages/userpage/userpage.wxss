@@ -1,0 +1,77 @@
+/**index.wxss**/
+
+.user_page {
+  height: 100%;
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0rpx 0;
+  box-sizing: border-box;
+} 
+
+.page_head{
+  height: 240rpx;
+  width: 100%;
+  background-color: #8E2782;
+  margin-bottom: 25%;
+}
+
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-left: 40%;
+  margin-right: 40%;
+  height: 100%;
+  position:absolute;
+  top:162rpx;
+  z-index:1;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #606060;
+}
+
+.getUserInfo{
+  font-size: 30rpx;
+  background-color: transparent;
+  outline:none !important;
+}
+
+.list_item{
+  display: flex;
+  vertical-align: middle;
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-right: 5%;
+  width:90%;
+  height: 80rpx;
+  /* background-color: #000; */
+  border-bottom: 2rpx solid #8E2782;
+}
+
+.item_Icon{
+  margin-left: 5%; 
+  margin-right: 4%;
+  object-fit: cover;
+  height: 60%;
+  width: 6%;
+  vertical-align: middle;
+ /* border: 1rpx solid; */
+  
+}
+
+.item_name{
+ /* border: 1rpx solid; */
+ vertical-align: middle;
+ width: 70%;
+ font-size: 30rpx;
+}
