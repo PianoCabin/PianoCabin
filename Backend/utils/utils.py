@@ -83,7 +83,7 @@ class APIView(View):
         :return: :class:`User <User>` object
         """
 
-        id = session_user.get(self.msg['authorization'])
+        id = redis_manage.session_user.get(self.msg['authorization'])
         if id is None:
             raise MsgError(msg='No such person')
         else:
@@ -104,3 +104,5 @@ class MsgError(Exception):
         super().__init__(msg)
         self.code = code
         self.msg = msg
+
+

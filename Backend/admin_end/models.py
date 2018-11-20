@@ -1,6 +1,10 @@
 from django.db import models
 from Backend.settings import *
+from datetime import datetime, timedelta
+from django.db import transaction
 import redis
+import threading
+import json
 
 
 # Create your models here.
@@ -29,6 +33,7 @@ class User(models.Model):
     open_id = models.CharField(default="", max_length=255, unique=True)
     identity = models.CharField(default="", max_length=255, unique=True, null=True, blank=True)
     permission = models.IntegerField(default=0)
+    session = models.TextField(default='')
 
     def __str__(self):
         return self.id
@@ -40,8 +45,8 @@ class Order(models.Model):
     date = models.DateField(default='2018-01-01')
     start_time = models.DateTimeField(default='2018-01-01')
     end_time = models.DateTimeField(default='2018-01-01')
+    create_time = models.DateTimeField(default='2018-01-01')
     price = models.IntegerField(default=0)
-    payment_status = models.IntegerField(default=1)
     order_status = models.IntegerField(default=1)
 
     def __str__(self):
@@ -57,8 +62,6 @@ class LongTermOrder(models.Model):
     start_time = models.DateTimeField(default='2018-01-01')
     end_time = models.DateTimeField(default='2018-01-01')
     price = models.IntegerField(default=0)
-    is_valid = models.BooleanField(default=False)
-    payment_status = models.IntegerField(default=1)
     order_status = models.IntegerField(default=1)
 
     def __str__(self):
@@ -85,8 +88,82 @@ class Feedback(models.Model):
         return self.id
 
 
-room_list = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=0)
+class RedisManage:
+    # redis 数据库管理类
+    def __init__(self):
+        self.order_list = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=0)
+        self.unpaid_orders = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=1)
+        self.session_user = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=2)
+        self.redis_lock = threading.Lock()
+        self.initDatabase()
 
-unpaid_orders = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=1)
+    def initDatabase(self):
+        self.order_list.flushdb()
+        self.unpaid_orders.flushdb()
+        self.initOrderList()
+        self.initUnpaidOrders()
 
-session_user = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=2)
+    def initOrderList(self):
+        rooms = PianoRoom.objects.all()
+        for room in rooms:
+            for i in range(CONFIGS['MAX_ORDER_DAYS']):
+                date = datetime.now().date() + timedelta(days=i)
+                orders = Order.objects.filter(date=date, piano_room=room, order_status__range=[1, 2]).order_by(
+                    'start_time')
+                orders_data = []
+                for order in orders:
+                    orders_data.append([order.start_time, order.end_time, order.id])
+                orders_data = json.dumps(orders_data)
+                self.order_list.lpush(room.room_num, orders_data)
+
+    def initUnpaidOrders(self):
+        orders = Order.objects.filter(order_status=1)
+        for order in orders:
+            self.unpaid_orders.set(order.id, order.create_time.timestamp())
+
+
+redis_manage = RedisManage()
+
+
+def updateOrderList():
+    rooms = PianoRoom.objects.all()
+    for room in rooms:
+        date = datetime.now().date() + timedelta(days=CONFIGS['MAX_ORDER_DAYS'] - 1)
+        orders = Order.objects.filter(date=date, piano_room=room, order_status__range=[1, 2]).order_by(
+            'start_time')
+        orders_data = []
+        for order in orders:
+            orders_data.append([order.start_time, order.end_time, order.id])
+        orders_data = json.dumps(orders_data)
+        redis_manage.order_list.lpop(room.room_num)
+        redis_manage.order_list.lpush(room.room_num, orders_data)
+
+
+def updateUnpaidOrders():
+    ids = redis_manage.unpaid_orders.keys()
+    for id in ids:
+        create_time = float(redis_manage.unpaid_orders.get(id).decode())
+        if (datetime.now().timestamp() - create_time) > CONFIGS['MAX_UNPAID_TIME'] * 60:
+            print('execute')
+            try:
+                with transaction.atomic():
+                    order = Order.objects.get(id=int(id.decode()))
+                    order.order_status = 0
+                    order.save()
+                    if redis_manage.redis_lock.acquire():
+                        redis_manage.unpaid_orders.delete(id)
+                        day = (datetime.now().date() - order.create_time.date()).days
+                        room_orders = redis_manage.order_list.lindex(order.piano_room.room_num, day)
+                        room_orders = json.loads(room_orders)
+                        for room_order in room_orders:
+                            if room_order[2] == order.id:
+                                room_orders.remove(room_order)
+                        room_orders = json.dumps(room_orders)
+                        redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
+                        redis_manage.redis_lock.release()
+            except:
+                try:
+                    redis_manage.redis_lock.release()
+                except:
+                    pass
+                print('Unable to update order list')
