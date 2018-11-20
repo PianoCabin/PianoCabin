@@ -53,7 +53,7 @@ class Bind(APIView):
         self.checkMsg('ticket', 'authorization')
         ticket = self.msg.get('ticket')
         user = self.getUserBySession()
-        url = 'https://id.tsinghua.edu.cn/thuser/authapi/checkticket/{AppID}/{ticket}/{UserIpAddr}'
+        url = 'https://id.tsinghua.edu.cn/thuser/authapi/checkticket'
         url = parse.urljoin(url, CONFIGS['THU_APP_ID'])
         url = parse.urljoin(url, ticket)
         url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_'))
