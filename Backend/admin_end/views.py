@@ -4,8 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from utils.utils import *
+from django.db.models import Q
 from .models import *
 import json
+import datetime
+from collections import defaultdict
 
 
 # Create your views here.
@@ -86,9 +89,14 @@ class PianoRoomList(APIView):
             raise MsgError(0, 'not login')
         self.checkMsg("piano_type")
         try:
-            temp = PianoRoom.objects.filter(piano_type=self.msg['piano_type']).values(
-                    'room_num', 'usable')
-            return json.dumps({'room_list': json.dumps(list(temp))})
+            query_str = ''
+            query_str += 'Q(piano_type=self.msg["piano_type"])&'
+            if "room_num" in self.msg:
+                query_str += 'Q(room_num=self.msg["room_num"])&'
+            temp = PianoRoom.objects.filter(eval(query_str[:-1])).values(
+                'brand', 'room_num', 'piano_type', 'price_0', 'price_1', 'price_2', 'usable', 'art_ensemble')
+            temp = list(temp)
+            return {'room_list': temp}
         except:
             raise MsgError(0, 'fail to list piano room as no such piano type exist')
 
@@ -98,7 +106,29 @@ class OrderList(APIView):
     def post(self):
         if not self.request.user.is_authenticated:
             raise MsgError(0, 'not login')
-        pass
+        self.checkMsgMultiOption("order_status", "identity", "date", "order_id")
+        try:
+            query_str = ''
+            if "order_id" in self.msg:
+                query_str += 'Q(id=self.msg["order_id"])&'
+            if "identity" in self.msg:
+                query_str += 'Q(identity=self.msg["identity"])&'
+            if "order_status" in self.msg:
+                query_str += 'Q(order_status=self.msg["order_status"])&'
+            if "date" in self.msg:
+                query_str += 'Q(date=datetime.date.fromtimestamp(self.msg["date"])&'
+            temp = Order.objects.filter(eval(query_str[:-1])).values(
+                'piano_room__brand', 'piano_room__room_num', 'user_id', 'start_time', 'end_time', 'price', 'order_status')
+            temp = list(temp)
+            for item in temp:
+                item['start_time'] = item['start_time'].timestamp()
+                item['end_time'] = item['end_time'].timestamp()
+            dd = defaultdict(list)
+            for item in temp:
+                dd[item['piano_room__brand']].append(item)
+            return {'order_list': dd}
+        except:
+            raise MsgError(0, 'fail to list order list')
 
 
 class NewsList(APIView):
@@ -108,7 +138,10 @@ class NewsList(APIView):
             raise MsgError(0, 'not login')
         try:
             news_list = News.objects.all().values('news_title', 'id', 'publish_time')
-            return json.dumps({'news_list': json.dumps(list(news_list))})
+            temp = list(news_list)
+            for item in temp:
+                item['publish_time'] = item['publish_time'].timestamp()
+            return {'news_list': temp}
         except:
             raise MsgError(0, 'fail to list news')
 
@@ -139,7 +172,7 @@ class NewsDetail(APIView):
             a = (list(detail))[0]
             # json无法序列化datetime
             a['publish_time'] = a['publish_time'].timestamp()
-            return json.dumps(a)
+            return a
         except:
             raise MsgError(0, 'news does not exist')
             
@@ -168,7 +201,7 @@ class FeedbackList(APIView):
             a = list(temp)
             for i in a:
                 i['feedback_time'] = i['feedback_time'].timestamp()
-            return json.dumps({'feedback_list': json.dumps(a)})
+            return {'feedback_list': a}
         except:
             raise MsgError(0, 'fail to list feedback')
 
@@ -184,7 +217,7 @@ class FeedbackDetail(APIView):
                 'feedback_title', 'feedback_content', 'feedback_time', 'user')
             a = list(temp)[0]
             a['feedback_time'] = a['feedback_time'].timestamp()
-            return json.dumps(a)
+            return a
         except:
             raise MsgError(0, 'cannot get the detail of this feedback')
 

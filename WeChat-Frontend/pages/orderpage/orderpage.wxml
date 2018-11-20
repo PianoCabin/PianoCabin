@@ -1,0 +1,14 @@
+<!--index.wxml-->
+<import src="order_item.wxml"/>
+
+<view class='order_page'>
+    <view class="order_title">
+      <image src='/image/icon/left-arrow.png' class='icon' mode='widthFix' bindtap='toUserPage'></image>
+      <view class="page_name">我的订单</view>
+      <view class='empty_item'></view>
+    </view>
+    
+    <view class='order_list' wx:for="{{order_list}}" wx:key="">
+      <template is="order_item" data="{{...item}}" />
+    </view>
+</view>

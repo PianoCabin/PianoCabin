@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9588a07e-d1c1-4f40-a8cd-4ad75969d962" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Backend.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/evenv/bin/activate" beforeDir="false" afterPath="$PROJECT_DIR$/evenv/bin/activate" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/evenv/bin/activate.csh" beforeDir="false" afterPath="$PROJECT_DIR$/evenv/bin/activate.csh" afterDir="false" />
@@ -378,10 +376,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
+    <frame x="103" y="23" width="1351" height="973" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12119535" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20169361" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -400,8 +398,10 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="SciView" order="3" visible="true" weight="0.046189375" />
       <window_info anchor="right" id="Database" order="4" weight="0.32927504" />
+      <window_info anchor="right" id="R Graphics" order="5" />
+      <window_info anchor="right" id="R Packages" order="6" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
