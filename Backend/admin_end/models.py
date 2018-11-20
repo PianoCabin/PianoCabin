@@ -41,6 +41,7 @@ class User(models.Model):
 
 class Order(models.Model):
     piano_room = models.ForeignKey(PianoRoom, on_delete=models.CASCADE, default='')
+    order_id = models.CharField(default='', max_length=128, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
     date = models.DateField(default='2018-01-01')
     start_time = models.DateTimeField(default='2018-01-01')
@@ -100,6 +101,7 @@ class RedisManage:
     def initDatabase(self):
         self.order_list.flushdb()
         self.unpaid_orders.flushdb()
+        self.session_user.flushdb()
         self.initOrderList()
         self.initUnpaidOrders()
 
@@ -120,6 +122,11 @@ class RedisManage:
         orders = Order.objects.filter(order_status=1)
         for order in orders:
             self.unpaid_orders.set(order.id, order.create_time.timestamp())
+
+    def initSessionUser(self):
+        users = User.objects.all()
+        for user in users:
+            self.session_user.set(user.session, user.id)
 
 
 redis_manage = RedisManage()
