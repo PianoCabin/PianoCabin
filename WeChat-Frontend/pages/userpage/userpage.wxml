@@ -1,0 +1,51 @@
+<!--index.wxml-->
+<view class="user_page">
+  <view class='page_head'></view>
+  <view  wx:if="{{!hasUserInfo && canIUse}}">
+    <view class="userinfo">
+        <block >
+          <image class="userinfo-avatar" src="/image/icon/LOGO.jpg" mode="cover"></image>
+          <button class='getUserInfo' open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像 </button>
+        </block>
+      </view>
+  </view>
+  <view wx:else>
+      <view class="userinfo">
+        <block >
+          <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+          <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+        </block>
+      </view>
+    </view>
+      <view class='list_item' bindtap='goToOrderPage'>
+        <image src='/image/icon/order_Icon.png' class='item_Icon'></image>
+        <text class='item_name'>我的订单</text>
+        <image src='/image/icon/right-arrow.png' class='item_Icon'></image>
+      </view>
+      <view class='list_item'>
+        <image src='/image/icon/identity_Icon.png' class='item_Icon'></image>
+        <text class='item_name'>身份验证</text>
+        <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
+      </view>
+      <view class='list_item'>
+        <image src='/image/icon/term_order_Icon.png' class='item_Icon'></image>
+        <text class='item_name'>学期预约</text>
+        <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
+      </view>
+      <view class='list_item'>
+        <image src='/image/icon/map_Icon.png' class='item_Icon'></image>
+        <text class='item_name'>地图</text>
+        <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
+      </view>
+      <view class='list_item'>
+        <image src='/image/icon/feed_back_Icon.png' class='item_Icon'></image>
+        <text class='item_name'>客服</text>
+        <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
+      </view>
+      <view class='list_item'>
+        <image src='/image/icon/help_Icon.png' class='item_Icon'></image>
+        <text class='item_name'>帮助</text>
+        <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
+      </view>
+    
+</view>
