@@ -1,0 +1,51 @@
+<template name="room_item">
+  <view class="room_item" id='{{index}}'>
+    <image src='/image/icon/room_icon.png' class='room_icon'></image>
+    <view class="info">
+      <view  class="room_info">
+        <view class='room_name'>{{name}}</view>
+        <view class = "room_info1">
+          <view class='room_info2'>{{room_num}}</view> 
+          <view class='price'>￥{{price}}/小时</view> 
+        </view>
+      </view>
+      <view>
+
+      <!-- <view style='display:flex'>
+        <view class="time_scaler">
+            <view class= "scaler_item" wx:for="{{hours}}"  wx:key="">
+              <view class='hour_text' wx:if="{{index%2>0}}"><text>{{item}}</text></view>
+              <image class='time_label' wx:if="{{index%2>0}}" mode='heightFix' src='/image/icon/time_label_up.png'></image>
+            </view>
+        </view>
+      </view> -->
+
+
+      <view class='time_bar'  style='margin-left:{{label_offset}}%;width:{{time_bar_len}}%'>
+        <view wx:for="{{time}}" wx:key="" class="bar_item" style='width:{{item.width}}%; background-color: {{item.color}};'></view>
+      </view>
+      </view>
+      
+      <!-- <view style='display:flex'>
+        <view class="time_scaler">
+            <view class= "scaler_item" wx:for="{{hours}}"  wx:key="">
+              <view class='hour_text' wx:if="{{index%2<1}}"><text>{{item}}</text></view>
+              <image class='time_label' wx:if="{{index%2<1}}" mode='heightFix' src='/image/icon/time_label_down.png'></image>
+            </view>
+        </view>
+      </view> -->
+    
+      <view style='display:flex'>
+        <view class="time_scaler">
+            <view class= "scaler_item" wx:for="{{hours}}"  wx:key="">
+              <view class='hour_text' style='color:black;' ><text>{{item}}</text></view>
+              <image class='time_label'  mode='heightFix' src='/image/icon/line_test.png'></image>
+              
+              <!-- <image class='time_label' wx:if="{{index%2<1}}" mode='heightFix' src='/image/icon/time_label_down.png'></image> -->
+            </view>
+        </view>
+      </view>
+      
+    </view>
+  </view>
+</template>
