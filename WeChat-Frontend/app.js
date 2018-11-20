@@ -138,7 +138,10 @@ App({
       },
       method: "POST",
       success: res => {
-        successFunc(res)
+        if(res.data["code"] == 1)
+          successFunc(res)
+        else
+          console.log(res);
       },
       fail: res => {
         console.log(res);
@@ -155,7 +158,11 @@ App({
       },
       method: "POST",
       success: res => {
-        successFunc(res);
+        if(res.data["code"] == 1)
+          successFunc(res);
+        else{
+          console.log(res);
+        }
       },
       fail: res => {
         console.log(res);
