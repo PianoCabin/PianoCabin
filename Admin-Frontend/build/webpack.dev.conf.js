@@ -37,6 +37,13 @@ Router.post('/a/login', (req, res, next) => {
   }
 });
 
+Router.post('/a/logout', (req, res, next) => {
+  res.json({
+      code: 1,
+      message: 'success',
+    })
+});
+
 Router.post('/a/piano-room/delete', (req, res, next) => {
     res.json({
       code: 1,
@@ -237,7 +244,7 @@ Router.post('/a/piano-room/list', (req, res, next) => {
       message: 'success',
       data: {
         room_list: {
-          '电子琴': [
+          '小琴屋': [
             {
               room_num: '404',
               brand: '大猪蹄子',
@@ -254,11 +261,12 @@ Router.post('/a/piano-room/list', (req, res, next) => {
     })
   }
 })
-// TODO
-Router.post('/a/news/list', (req, res, next) => {
+
+Router.get('/a/news/list', (req, res, next) => {
   res.json({
     code: 1,
-    data: [
+    data: {
+      news_list:[
       {
         news_title: '林老师是大猪蹄子',
         publish_time: '23333',
@@ -275,10 +283,11 @@ Router.post('/a/news/list', (req, res, next) => {
         news_id: '20160132xx'
       }
     ]
+    }
   })
 })
 
-Router.post('/a/news/detail', (req, res, next) =>{
+Router.get('/a/news/detail', (req, res, next) =>{
   res.json({
     code: 1,
     data: {
@@ -377,14 +386,14 @@ Router.post('/a/order/list', (req, res, next) => {
   }
 })
 
-Router.post('/a/feedback/list', (req, res, next) => {
-  let read_status = req.body. read_status;
-  if (read_status === 0) {
+Router.get('/a/feedback/list', (req, res, next) => {
+  let read_status = req.param.read_status;
+  if (read_status == 0) {
     res.json({
       code: 1,
       message: 'success',
       data: {
-        order_list: [
+        feedback_list : [
             {
               feedback_title: '林老师是大猪蹄子',
               feedback_id: '0001',
@@ -406,21 +415,21 @@ Router.post('/a/feedback/list', (req, res, next) => {
       code: 1,
       message: 'success',
       data: {
-        order_list: [
+        feedback_list : [
             {
-              feedback_title: '林老师是大猪蹄子',
+              feedback_title: '大猪蹄子是林老师',
               feedback_id: '0001',
               user_id: '20160132xx',
               time : 0
             },
             {
-              feedback_title: '林老师是大猪蹄子',
+              feedback_title: '大猪蹄子是林老师',
               feedback_id: '0001',
               user_id: '20160132xx',
               time : 0
             },
             {
-              feedback_title: '林老师是大猪蹄子',
+              feedback_title: '大猪蹄子是林老师',
               feedback_id: '0002',
               user_id: '20162333xx',
               time : 0
@@ -431,7 +440,7 @@ Router.post('/a/feedback/list', (req, res, next) => {
   }
 })
 
-Router.post('/a/feedback/detail', (req, res, next) =>{
+Router.get('/a/feedback/detail', (req, res, next) =>{
   res.json({
     code: 1,
     data: {
@@ -460,6 +469,14 @@ Router.post('/a/piano-room/edit', (req, res, next) => {
 });
 
 Router.post('/a/piano-room/create', (req, res, next) => {
+  res.json({
+    code: 1,
+    message: 'success',
+    data: ''
+  })
+});
+
+Router.get('/a/user/update', (req, res, next) => {
   res.json({
     code: 1,
     message: 'success',

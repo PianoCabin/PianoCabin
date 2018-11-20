@@ -17,9 +17,15 @@
       </div>
     </div>
     <div v-else>
-      <el-header style="text-align: right; font-size: 12px"></el-header>
+      <el-header  id="frame_header">
+        <span style="font-size: 26px;font-weight: bold;">琴屋管理员</span>
+        <span id="logout">
+          <el-button size="mini" type="text" @click="logout" style="float: right;padding-top: 30px;font-size: 16px;font-weight: bold">登出</el-button>
+          <!--<i class="el-icon-menu" style="float: right"></i>-->
+        </span>
+      </el-header>
       <el-container style="border: 1px solid #eee">
-        <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)" id="frame_aside">
           <el-menu :default-openeds="['1', '3']">
             <el-submenu index="1">
               <template slot="title">
@@ -66,84 +72,117 @@
           <div v-if="page_type === 'piano_list'" class="main_paint">
             <div v-if="!piano_details_show && (page_type === 'piano_list')">
               <el-main>
-                <el-tabs v-model="active_piano_type">
+                <el-tabs v-model="active_piano_type" style="font-size: 20px;font-weight: bold">
                   <el-tab-pane label="钢琴" name="first" id="piano1">
-                    <el-row v-for="(value, key) in piano_list['钢琴']" :key="key">
+                    <el-row v-for="(value, key) in piano_list['钢琴']" :key="key" :gutter="40" style="margin: 0">
                       <div style="padding: 14px;">
                         <span>{{ key }}</span>
                       </div>
-                      <el-col :span="3" v-for="(item, index) in value" :key="index" :offset="index > 0 ? 1 : 0">
+                      <el-col :span="3" v-for="(item, index) in value" :key="index">
                         <el-card class="piano_card" shadow="hover" :body-style="{ padding: '0px' }">
                           <img src="/static/piano.png" class="image" v-on:click="pianoDetails(item, key, '钢琴')">
-                          <div style="padding: 8px;">
-                            <span style="font-size: 20px">{{ item.room_num }}</span>
-                            <span v-if="item.online === 1">上线</span>
-                            <span v-else>下线</span>
-                            <span>
-                              <el-popover placement="top" width="160" v-model="delete_visible['钢琴'][key][index]">
-                                <p>确定删除该琴房吗？</p>
-                                <div style="text-align: right; margin: 0">
-                                  <!--<el-button size="mini" type="text" @click="delete_visible[key][index] = false">取消</el-button>-->
-                                  <el-button type="primary" size="mini" @click="delete_visible[key][index] = false;deletePianoRoom('钢琴', item.room_num, key, index)">确定</el-button>
-                                </div>
-                                <el-button slot="reference" type="text" class="delete">删除</el-button>
-                                </el-popover>
-                            </span>
-                          </div>
+                          <el-row>
+                            <el-col :span="12">
+                              <div style="padding-top: 0;font-size: 18px;font-weight: bold">
+                                {{ item.room_num }}
+                              </div>
+                              <div>
+                                <span v-if="item.online === 1" style="color: dimgray;font-size: 14px">上线中</span>
+                                <span v-else style="color: dimgray;font-size: 14px">已下线</span>
+                              </div>
+                            </el-col>
+                            <el-col :span="12">
+                              <div style="padding-top: 5px">
+                              <span>
+                                <el-popover placement="top" width="160" v-model="delete_visible['钢琴'][key][index]">
+                                  <p>确定删除该琴房吗？</p>
+                                  <div style="text-align: right;margin: 0;font-size: 14px">
+                                    <!--<el-button size="mini" type="text" @click="delete_visible[key][index] = false">取消</el-button>-->
+                                    <el-button style="font-weight: bold" type="primary" @click="delete_visible[key][index] = false;deletePianoRoom('钢琴', item.room_num, key, index)">确定</el-button>
+                                  </div>
+                                  <el-button slot="reference" type="danger" icon="el-icon-delete" plain circle></el-button>
+                                  <!--<el-button slot="reference" type="in" class="delete">删除</el-button>-->
+                                  </el-popover>
+                              </span>
+                              </div>
+                            </el-col>
+                          </el-row>
                         </el-card>
                       </el-col>
                     </el-row>
                   </el-tab-pane>
                   <el-tab-pane label="电子琴" name="second" id="piano2">
-                    <el-row v-for="(value, key) in piano_list['电子琴']" :key="key">
+                    <el-row v-for="(value, key) in piano_list['电子琴']" :key="key" :gutter="40" style="margin: 0">
                       <div style="padding: 14px;">
                         <span>{{ key }}</span>
                       </div>
-                      <el-col :span="3" v-for="(item, index) in value" :key="index" :offset="index > 0 ? 1 : 0">
+                      <el-col :span="3" v-for="(item, index) in value" :key="index">
                         <el-card class="piano_card" shadow="hover" :body-style="{ padding: '0px' }">
                           <img src="/static/piano.png" class="image" v-on:click="pianoDetails(item, key, '电子琴')">
-                          <div style="padding: 8px;">
-                            <span style="font-size: 20px">{{ item.room_num }}</span>
-                            <span v-if="item.online === 1">上线</span>
-                            <span v-else>下线</span>
-                            <span>
-                              <el-popover placement="top" width="160" v-model="delete_visible['电子琴'][key][index]">
-                                <p>确定删除该琴房吗？</p>
-                                <div style="text-align: right; margin: 0">
-                                  <!--<el-button size="mini" type="text" @click="delete_visible[key][index] = false">取消</el-button>-->
-                                  <el-button type="primary" size="mini" @click="delete_visible[key][index] = false;deletePianoRoom('电子琴', item.room_num, key, index)">确定</el-button>
-                                </div>
-                                <el-button slot="reference" type="text" class="delete">删除</el-button>
-                                </el-popover>
-                            </span>
-                          </div>
+                          <el-row>
+                            <el-col :span="12">
+                              <div style="padding-top: 0;font-size: 18px;font-weight: bold">
+                                {{ item.room_num }}
+                              </div>
+                              <div>
+                                <span v-if="item.online === 1" style="color: dimgray;font-size: 14px">上线中</span>
+                                <span v-else style="color: dimgray;font-size: 14px">已下线</span>
+                              </div>
+                            </el-col>
+                            <el-col :span="12">
+                              <div style="padding-top: 5px">
+                              <span>
+                                <el-popover placement="top" width="160" v-model="delete_visible['电子琴'][key][index]">
+                                  <p>确定删除该琴房吗？</p>
+                                  <div style="text-align: right;margin: 0;font-size: 14px">
+                                    <!--<el-button size="mini" type="text" @click="delete_visible[key][index] = false">取消</el-button>-->
+                                    <el-button style="font-weight: bold" type="primary" @click="delete_visible[key][index] = false;deletePianoRoom('电子琴', item.room_num, key, index)">确定</el-button>
+                                  </div>
+                                  <el-button slot="reference" type="danger" icon="el-icon-delete" plain circle></el-button>
+                                  <!--<el-button slot="reference" type="in" class="delete">删除</el-button>-->
+                                  </el-popover>
+                              </span>
+                              </div>
+                            </el-col>
+                          </el-row>
                         </el-card>
                       </el-col>
                     </el-row>
                   </el-tab-pane>
                   <el-tab-pane label="小琴屋" name="third" id="piano3">
-                    <el-row v-for="(value, key) in piano_list['小琴屋']" :key="key">
+                    <el-row v-for="(value, key) in piano_list['小琴屋']" :key="key" :gutter="40" style="margin: 0">
                       <div style="padding: 14px;">
                         <span>{{ key }}</span>
                       </div>
-                      <el-col :span="3" v-for="(item, index) in value" :key="index" :offset="index > 0 ? 1 : 0">
+                      <el-col :span="3" v-for="(item, index) in value" :key="index">
                         <el-card class="piano_card" shadow="hover" :body-style="{ padding: '0px' }">
                           <img src="/static/piano.png" class="image" v-on:click="pianoDetails(item, key, '小琴屋')">
-                          <div style="padding: 8px;">
-                            <span style="font-size: 20px">{{ item.room_num }}</span>
-                            <span v-if="item.online === 1">上线</span>
-                            <span v-else>下线</span>
-                            <span>
-                              <el-popover placement="top" width="160" v-model="delete_visible['小琴屋'][key][index]">
-                                <p>确定删除该琴房吗？</p>
-                                <div style="text-align: right; margin: 0">
-                                  <!--<el-button size="mini" type="text" @click="delete_visible[key][index] = false">取消</el-button>-->
-                                  <el-button type="primary" size="mini" @click="delete_visible[key][index] = false;deletePianoRoom('小琴屋', item.room_num, key, index)">确定</el-button>
-                                </div>
-                                <el-button slot="reference" type="text" class="delete">删除</el-button>
-                                </el-popover>
-                            </span>
-                          </div>
+                          <el-row>
+                            <el-col :span="12">
+                              <div style="padding-top: 0;font-size: 18px;font-weight: bold">
+                                {{ item.room_num }}
+                              </div>
+                              <div>
+                                <span v-if="item.online === 1" style="color: dimgray;font-size: 14px">上线中</span>
+                                <span v-else style="color: dimgray;font-size: 14px">已下线</span>
+                              </div>
+                            </el-col>
+                            <el-col :span="12">
+                              <div style="padding-top: 5px;padding-right: -20px">
+                              <span>
+                                <el-popover placement="top" width="160" v-model="delete_visible['小琴屋'][key][index]">
+                                  <p>确定删除该琴房吗？</p>
+                                  <div>
+                                    <!--<el-button size="mini" type="text" @click="delete_visible[key][index] = false">取消</el-button>-->
+                                    <el-button style="font-weight: bold" type="primary" @click="delete_visible[key][index] = false;deletePianoRoom('小琴屋', item.room_num, key, index)">确定</el-button>
+                                  </div>
+                                  <el-button slot="reference" type="danger" icon="el-icon-delete" plain circle></el-button>
+                                  <!--<el-button slot="reference" type="in" class="delete">删除</el-button>-->
+                                  </el-popover>
+                              </span>
+                              </div>
+                            </el-col>
+                          </el-row>
                         </el-card>
                       </el-col>
                     </el-row>
@@ -154,8 +193,9 @@
             <div v-if="piano_details_show && (page_type === 'piano_list')"  id="piano_details">
               <el-main>
                 <el-col :span="10" :offset="1">
-                  <el-card shadow="always" style="padding: 0 30px 0 30px; margin-top: 10px">
+                  <el-card shadow="always" style="padding: 0 20px 0 20px; margin-top: 8px">
                     <el-form :model="piano_details_form" :rules="rules" ref="piano_details_form" label-width="100px" class="create_notice_form">
+                      <div style="font-weight: bold;">基本信息</div>
                       <el-form-item label="房间号">{{ piano_details_form.room_num }}</el-form-item>
                       <el-form-item label="琴品牌" prop="brand">
                         <el-select v-model="piano_details_form.brand" placeholder="请选择琴类型">
@@ -172,6 +212,18 @@
                           <el-option label="小琴屋" value="ordinary_house"></el-option>
                         </el-select>
                       </el-form-item>
+                      <el-form-item label="状态" prop="is_online">
+                        <el-radio-group v-model="piano_details_form.is_online">
+                          <el-radio label="上线"></el-radio>
+                          <el-radio label="下线"></el-radio>
+                        </el-radio-group>
+                      </el-form-item>
+                      <el-form-item label="艺术团专用" prop="art_ensemble">
+                        <el-radio-group v-model="piano_details_form.art_ensemble">
+                          <el-radio label="是"></el-radio>
+                          <el-radio label="否"></el-radio>
+                        </el-radio-group>
+                      </el-form-item>
                       <div style="font-weight: bold;">价格</div>
                       <el-form-item label="未绑定用户" prop="price_0">
                         <el-input v-model.number="piano_details_form.price_0" autocomplete="off" class="price_input"></el-input>
@@ -185,24 +237,12 @@
                         <el-input v-model.number="piano_details_form.price_2" autocomplete="off" class="price_input"></el-input>
                         <span>元 / 小时</span>
                       </el-form-item>
-                      <el-form-item label="状态" prop="is_online">
-                        <el-radio-group v-model="piano_details_form.is_online">
-                          <el-radio label="上线"></el-radio>
-                          <el-radio label="下线"></el-radio>
-                        </el-radio-group>
-                      </el-form-item>
-                      <el-form-item label="艺术团专用" prop="art_ensemble">
-                        <el-radio-group v-model="piano_details_form.art_ensemble">
-                          <el-radio label="是"></el-radio>
-                          <el-radio label="否"></el-radio>
-                        </el-radio-group>
-                      </el-form-item>
                       <el-form-item>
                         <el-button type="primary" @click="editPianoDetails('piano_details_form')">保存</el-button>
                         <el-button @click="resetForm('piano_details_form')">重置</el-button>
                       </el-form-item>
                     </el-form>
-                    <el-button type="primary" icon="el-icon-back" circle v-on:click="goBackPianoList"></el-button>
+                    <el-button type="primary" icon="el-icon-back" circle v-on:click="goBackPianoList" class="button_center"></el-button>
                   </el-card>
                 </el-col>
               </el-main>
@@ -213,6 +253,7 @@
               <el-col :span="10" :offset="1">
                 <el-card shadow="always" style="padding: 0 30px 0 30px; margin-top: 10px">
                   <el-form :model="piano_details_form" :rules="rules" ref="piano_details_form" label-width="100px" class="piano_details_form">
+                    <div style="font-weight: bold;">基本信息</div>
                     <el-form-item label="房间号" prop="room_num">
                       <el-input>
                         <el-input v-model="piano_details_form.room_num"></el-input>
@@ -233,6 +274,18 @@
                         <el-option label="小琴房" value="ordinary_house"></el-option>
                       </el-select>
                     </el-form-item>
+                    <el-form-item label="状态" prop="is_online">
+                      <el-radio-group v-model="piano_details_form.is_online">
+                        <el-radio label="上线"></el-radio>
+                        <el-radio label="下线"></el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="艺术团专用" prop="art_ensemble">
+                      <el-radio-group v-model="piano_details_form.art_ensemble">
+                        <el-radio label="是"></el-radio>
+                        <el-radio label="否"></el-radio>
+                      </el-radio-group>
+                    </el-form-item>
                     <div style="font-weight: bold;">价格</div>
                     <el-form-item label="未绑定用户" prop="price_0">
                       <el-input v-model.number="piano_details_form.price_0" autocomplete="off" class="price_input"></el-input>
@@ -246,24 +299,12 @@
                       <el-input v-model.number="piano_details_form.price_2" autocomplete="off" class="price_input"></el-input>
                       <span>元 / 小时</span>
                     </el-form-item>
-                    <el-form-item label="状态" prop="is_online">
-                      <el-radio-group v-model="piano_details_form.is_online">
-                        <el-radio label="上线"></el-radio>
-                        <el-radio label="下线"></el-radio>
-                      </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="艺术团专用" prop="art_ensemble">
-                      <el-radio-group v-model="piano_details_form.art_ensemble">
-                        <el-radio label="是"></el-radio>
-                        <el-radio label="否"></el-radio>
-                      </el-radio-group>
-                    </el-form-item>
                     <el-form-item>
                       <el-button type="primary" @click="createPianoRoom('piano_details_form')">立即创建</el-button>
                       <el-button @click="resetForm('piano_details_form')">重置</el-button>
                     </el-form-item>
                   </el-form>
-                  <el-button type="primary" icon="el-icon-back" circle v-on:click="goBackPianoList"></el-button>
+                  <el-button type="primary" icon="el-icon-back" circle v-on:click="goBackPianoList" class="button_center"></el-button>
                 </el-card>
               </el-col>
             </el-main>
@@ -272,35 +313,58 @@
             <el-main>
               <el-tabs v-model="active_order_type">
                 <el-tab-pane v-for="(value, key) in order_list" :key="key" :label="key" :name="order_list_name[key]">
-                  <el-row>
-                    <el-col :span="3" v-for="(item, index) in value" :key="index" :offset="index > 0 ? 1 : 0">
-                      <el-card class="order_card" shadow="always" :body-style="{ padding: '0px' }">
-                        <div style="padding: 8px;">
-                          <span style="font-size: 20px">{{ item.brand }}</span>
-                          <span>{{ item.room_num }}</span>
-                        </div>
-                        <div>
-                          <span>预约人：</span>
-                          <span>{{ item.user_id }}</span>
-                        </div>
-                        <div>
-                          <span>预约日期：</span>
-                        </div>
-                        <div>
-                          <span>预约时间：</span>
-                          <span>{{ item.start_time }}</span>
-                          <span>-</span>
-                          <span>{{ item.end_time }}</span>
-                        </div>
-                        <div>
-                          <span>状态：</span>
-                          <span>{{ item.order_status }}</span>
-                        </div>
-                        <div>
-                          <span>金额：</span>
-                          <span>{{ item.price }}</span>
-                        </div>
-                      </el-card>
+                  <el-row v-for="(item, index) in value" :key="index" style="margin-bottom: 20px">
+                    <el-col :span="15">
+                    <el-card class="order_card" shadow="always" :body-style="{ padding: '0px' }">
+                      <el-container>
+                        <el-aside width="80px">
+                          <img src="/static/piano.png" class="image" style="text-align: center">
+                        </el-aside>
+                        <el-main style="padding: 5px">
+                          <el-row>
+                            <el-col :offset="1" :span="10" style="padding: 8px;">
+                              <div>
+                                <span style="font-size: 24px;font-weight: bolder">{{ item.brand }}</span>
+                              </div>
+                              <br/>
+                              <div>
+                                <span style="font-size: 18px;font-weight: bold;color: gray;">{{ item.room_num }}</span>
+                              </div>
+                            </el-col>
+                            <el-col :span="9">
+                              <div>
+                                <br/>
+                              </div>
+                              <div>
+                                <span>预约人：</span>
+                                <span>{{ item.user_id }}</span>
+                              </div>
+                              <div>
+                                <span>预约日期：</span>
+                                <span>2018/12/30</span>
+                              </div>
+                              <div>
+                                <span>预约时间：</span>
+                                <span>{{ item.start_time }}</span>
+                                <span>{{ item.end_time }}</span>
+                              </div>
+                            </el-col>
+                            <el-col :span="4">
+                              <div>
+                                <br/><br/>
+                              </div>
+                              <div>
+                                <span style="color: gray;font-weight: bold;">{{ item.order_status }}</span>
+                              </div>
+                              <div>
+                                <span>金额：</span>
+                                <span>{{ item.price }}</span>
+                              </div>
+                            </el-col>
+                          </el-row>
+                        </el-main>
+                      </el-container>
+                    </el-card>
                     </el-col>
                   </el-row>
                 </el-tab-pane>
@@ -311,31 +375,67 @@
           </div>
           <div v-else-if="!notice_details_show && page_type === 'notice_list'" class="main_paint">
             <el-main>
-              <div>
-              <el-row v-for="(item, index) in notice_list" :key="index">
-                <el-card class="notice_card" shadow="always" :body-style="{ padding: '0px' }">
-                  <div style="padding: 8px;">
-                    <div slot="header">
-                      <span>{{ item.news_title }}</span>
+              <el-row v-for="(item, index) in notice_list" :key="index" style="margin-bottom: 20px">
+                <el-col :span="15" :offset="1">
+                  <el-card class="notice_card" shadow="always" :body-style="{ padding: '10px' }">
+                    <div @click="noticeDetails">
+                      <el-container>
+                      <el-aside width="80px">
+                        <img src="/static/piano.png" class="image" style="text-align: center">
+                      </el-aside>
+                      <el-container>
+                        <el-header>
+                          <div style="font-size: 24px;font-weight: bolder;text-align: center;padding-top: 15px">
+                            <span>{{ item.news_title }}</span>
+                          </div>
+                        </el-header>
+                        <el-main>
+                          <el-row>
+                            <el-col :span="8">
+                              <div>
+                                <span>发布人：</span>
+                                <span>管理员</span>
+                              </div>
+                            </el-col>
+                            <el-col :span="8">
+                              <div>
+                                <span>发布时间：</span>
+                                <span>{{ item.publish_time }}</span>
+                              </div>
+                            </el-col>
+                            <el-col :span="8">
+                              <div>
+                                <span>阅读量：</span>
+                                <span>100</span>
+                              </div>
+                            </el-col>
+                            </el-row>
+                        </el-main>
+                      </el-container>
+                    </el-container>
                     </div>
-                    <div>
-                      <span>发布时间：</span>
-                      <span>{{ item.publish_time }}</span>
-                    </div>
-                  </div>
-                </el-card>
+                  </el-card>
+                </el-col>
               </el-row>
-              </div>
             </el-main>
           </div>
           <div v-else-if="notice_details_show && page_type === 'notice_list'" class="main_paint">
             <el-container>
-              <el-header>{{ this.message_details.title }}</el-header>
-              <div style="float: right">{{ this.message_details.publish_time }}</div>
-              <el-main>{{ this.message_details.content }}</el-main>
-              <el-footer>
-                <el-button type="primary" icon="el-icon-back" circle v-on:click="goBackNoticeList"></el-button>
-              </el-footer>
+              <el-col :span="18" :offset="1">
+                <el-card class="notice_card" shadow="always" style="margin-top: 20px">
+                  <el-header class="article_title">
+                    {{ message_details['news_title'] }}
+                  </el-header>
+                  <div class="article_time">{{ message_details['publish_time'] }}</div>
+                  <el-main class="article_content">
+                    {{ message_details['news_content'] }}
+                  </el-main>
+                  <el-footer style="text-align:center">
+                    <br/>
+                    <el-button type="primary" icon="el-icon-back" circle v-on:click="goBackNoticeList"></el-button>
+                  </el-footer>
+                </el-card>
+              </el-col>
             </el-container>
           </div>
           <div v-else-if="page_type === 'new_notice'" class="main_paint">
@@ -358,54 +458,103 @@
             <el-main>
               <el-tabs v-model="active_message_type">
                 <el-tab-pane label="未读" name="first">
-                  <el-row v-for="(item, index) in feedback_message_list" :key="index">
-                    <el-card class="message_card" shadow="always" :body-style="{ padding: '0px' }" @click="feedbackMessageDetails">
-                      <div style="padding: 8px;">
-                        <div slot="header">
-                          {{ item.title }}
+                  <el-row v-for="(item, index) in feedback_message_list['未读']" :key="index" style="margin-bottom: 20px">
+                    <el-col :span="15">
+                      <el-card class="message_card" shadow="always" :body-style="{ padding: '10px' }">
+                        <div @click="feedbackMessageDetails">
+                          <el-container>
+                            <el-aside width="80px">
+                              <img src="/static/piano.png" class="image" style="text-align: center">
+                            </el-aside>
+                            <el-container>
+                              <el-header>
+                                <div style="font-size: 24px;font-weight: bolder;text-align: center;padding-top: 15px">
+                                  <span>{{ item.feedback_title }}</span>
+                                </div>
+                              </el-header>
+                              <el-main>
+                                <el-row>
+                                  <el-col :span="8" :offset="4">
+                                    <div>
+                                      <span>反馈用户: </span>
+                                      <span>{{ item.user_id }}</span>
+                                    </div>
+                                  </el-col>
+                                  <el-col :span="12">
+                                    <div>
+                                      <span>反馈时间：</span>
+                                      <span>{{ item.time }}</span>
+                                    </div>
+                                  </el-col>
+                                </el-row>
+                              </el-main>
+                            </el-container>
+                          </el-container>
                         </div>
-                        <div>
-                          <span>反馈用户</span>
-                          <span>{{ item.user_id }}</span>
-                          <span>反馈时间</span>
-                          <span>{{ item.time }}</span>
-                        </div>
-                      </div>
-                    </el-card>
+                      </el-card>
+                    </el-col>
                   </el-row>
                 </el-tab-pane>
                 <el-tab-pane label="已读" name="second">
-                  <el-row v-for="(item, index) in feedback_message_list" :key="index">
-                    <el-card class="message_card" shadow="always" :body-style="{ padding: '0px' }">
-                      <div style="padding: 8px;">
-                        <div slot="header">
-                          {{ item.title }}
+                  <el-row v-for="(item, index) in feedback_message_list['已读']" :key="index" style="margin-bottom: 20px">
+                    <el-col :span="15">
+                      <el-card class="message_card" shadow="always" :body-style="{ padding: '10px' }">
+                        <div @click="feedbackMessageDetails">
+                          <el-container>
+                            <el-aside width="80px">
+                              <img src="/static/piano.png" class="image" style="text-align: center">
+                            </el-aside>
+                            <el-container>
+                              <el-header>
+                                <div style="font-size: 24px;font-weight: bolder;text-align: center;padding-top: 15px">
+                                  <span>{{ item.feedback_title }}</span>
+                                </div>
+                              </el-header>
+                              <el-main>
+                                <el-row>
+                                  <el-col :span="8" :offset="4">
+                                    <div>
+                                      <span>反馈用户: </span>
+                                      <span>{{ item.user_id }}</span>
+                                    </div>
+                                  </el-col>
+                                  <el-col :span="12">
+                                    <div>
+                                      <span>反馈时间：</span>
+                                      <span>{{ item.time }}</span>
+                                    </div>
+                                  </el-col>
+                                </el-row>
+                              </el-main>
+                            </el-container>
+                          </el-container>
                         </div>
-                        <div>
-                          <span>反馈用户</span>
-                          <span>{{ item.user_id }}</span>
-                          <span>反馈时间</span>
-                          <span>{{ item.time }}</span>
-                        </div>
-                      </div>
-                    </el-card>
+                      </el-card>
+                    </el-col>
                   </el-row>
                 </el-tab-pane>
               </el-tabs>
             </el-main>
           </div>
           <div v-else-if="feedback_message_details_show && page_type === 'receive_message'" class="main_paint">
-            <el-container>
-              <el-header>{{ this.message_details.title }}</el-header>
-              <div style="float: right">{{ this.message_details.publish_time }}</div>
-              <el-main>{{ this.message_details.content }}</el-main>
-              <el-footer>
-                <span style="float: left">{{ this.message_details.user_id }}</span>
-                <span style="float: right">
+            <el-col :span="18" :offset="1">
+            <el-card class="box-card" style="margin-top: 20px">
+              <el-container>
+                <el-header class="article_title">
+                  {{ message_details['feedback_title'] }}
+                </el-header>
+                <div class="article_time">{{ message_details['publish_time'] }}</div>
+                <el-main class="article_content">{{ message_details['feedback_content'] }}</el-main>
+                <el-footer>
+                  <br/>
+                  <span style="float: left;font-size: 18px">{{ message_details['user_id'] }}</span>
+                  <span style="float: right">
                   <el-button type="primary" icon="el-icon-back" circle v-on:click="goBackFeedbackMessageList"></el-button>
-                </span>
-              </el-footer>
-            </el-container>
+                  </span>
+                </el-footer>
+              </el-container>
+            </el-card>
+            </el-col>
           </div>
         </el-container>
       </el-container>
@@ -538,6 +687,35 @@ export default {
           this.$message.success('登录成功')
           this.is_login = true
           this.requestPianoDetails('钢琴')
+          this.requestPianoDetails('电子琴')
+          this.requestPianoDetails('小琴屋')
+        }
+      }, response => {
+        this.$message.error('服务器出错。')
+      })
+    },
+    logout: function () {
+      this.$http.post('/a/logout').then(response => {
+        if (response.body.code === 1) {
+          this.is_login = false
+          this.username = ''
+          this.password = ''
+          this.page_type = 'piano_list'
+          this.active_message_type = 'first'
+          this.active_piano_type = 'first'
+          this.active_order_type = 'first'
+          this.piano_details_show = false
+          this.notice_details_show = false
+          this.update_user_confirm = false
+          this.feedback_message_details_show = false
+          this.delete_visible = {}
+          this.notice_list = {}
+          this.feedback_message_list = {}
+          this.message_details = {}
+          this.order_list = {}
+          this.piano_list = {}
+        } else {
+          this.$message.error('登出失败')
         }
       }, response => {
         this.$message.error('服务器出错。')
@@ -579,6 +757,8 @@ export default {
       this.piano_details_show = false
       this.notice_details_show = false
       this.update_user_confirm = false
+      this.active_message_type = 'first'
+      this.active_order_type = 'first'
     },
     newPiano: function () {
       this.piano_details_form.room_num = ''
@@ -594,6 +774,9 @@ export default {
       this.piano_details_show = false
       this.notice_details_show = false
       this.update_user_confirm = false
+      this.active_message_type = 'first'
+      this.active_piano_type = 'first'
+      this.active_order_type = 'first'
     },
     orderList: function () {
       this.page_type = 'order_list'
@@ -604,7 +787,8 @@ export default {
       this.piano_details_show = false
       this.notice_details_show = false
       this.update_user_confirm = false
-      console.log(this.page_type)
+      this.active_message_type = 'first'
+      this.active_piano_type = 'first'
     },
     newNotice: function () {
       this.notice_details_form.title = ''
@@ -614,14 +798,20 @@ export default {
       this.piano_details_show = false
       this.notice_details_show = false
       this.update_user_confirm = false
+      this.active_piano_type = 'first'
+      this.active_order_type = 'first'
+      this.active_message_type = 'first'
     },
     noticeList: function () {
       this.page_type = 'notice_list'
-      this.requestNoticeList()
       this.feedback_message_details_show = false
       this.piano_details_show = false
       this.notice_details_show = false
       this.update_user_confirm = false
+      this.requestNoticeList()
+      this.active_piano_type = 'first'
+      this.active_order_type = 'first'
+      this.active_message_type = 'first'
     },
     receiveMessage: function () {
       this.page_type = 'receive_message'
@@ -631,6 +821,8 @@ export default {
       this.update_user_confirm = false
       this.requestFeedBackMessageList('已读')
       this.requestFeedBackMessageList('未读')
+      this.active_piano_type = 'first'
+      this.active_order_type = 'first'
     },
     pianoDetails: function (item) {
       this.piano_details_form = {
@@ -646,7 +838,7 @@ export default {
       }
       this.piano_details_show = true
     },
-    feedbackMessageDetails: function (item) {
+    noticeDetails: function (item) {
       this.$http.get('/a/news/detail', {
         params: {
           news_id: item.news_id
@@ -655,9 +847,7 @@ export default {
       }).then(response => {
         let res = response.body
         if (res.code === 1) {
-          this.message_details.title = res.data.title
-          this.message_details.content = res.data.content
-          this.message_details.publish_time = res.data.publish_time
+          this.message_details = res.data
         } else {
           this.$message.error(res.message)
         }
@@ -665,6 +855,24 @@ export default {
         this.$message.error('服务器出错。')
       })
       this.notice_details_show = true
+    },
+    feedbackMessageDetails: function (item) {
+      this.$http.get('/a/feedback/detail', {
+        params: {
+          news_id: item.news_id
+        },
+        headers: {'X-Custom': '...'}
+      }).then(response => {
+        let res = response.body
+        if (res.code === 1) {
+          this.message_details = res.data
+        } else {
+          this.$message.error(res.message)
+        }
+      }, response => {
+        this.$message.error('服务器出错。')
+      })
+      this.feedback_message_details_show = true
     },
     goBackFeedbackMessageList: function () {
       this.page_type = 'receive_message'
@@ -714,13 +922,13 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '开始更新!'
-        })
         this.$http.get('/a/user/update').then(response => {
           let res = response.body
           if (res.code === 1) {
+            this.$message({
+              type: 'success',
+              message: '更新成功!'
+            })
           } else {
             this.$message.error(res.message)
           }
@@ -839,13 +1047,12 @@ export default {
     },
     requestNoticeList: function () {
       this.$http.get('/a/news/list').then(response => {
-        console.log(response.body)
         let res = response.body
         if (res.code === 1) {
-          let temp = this.news_list
-          this.news_list = {}
-          this.news_list = temp
-          this.news_list = res.data.news_list
+          let temp = this.notice_list
+          this.notice_list = {}
+          this.notice_list = temp
+          this.notice_list = res.data.news_list
         } else {
           this.$message.error(res.message)
         }
@@ -873,8 +1080,11 @@ export default {
       })
     },
     requestFeedBackMessageList: function (status) {
-      this.$http.post('/a/feedback/list', {
-        read_status: status === '未读' ? 0 : 1
+      this.$http.get('/a/feedback/list', {
+        params: {
+          read_status: status === '未读' ? 0 : 1
+        },
+        headers: {'X-Custom': '...'}
       }, {
         emulateJSON: true
       }).then(response => {
@@ -883,7 +1093,7 @@ export default {
           let temp = this.feedback_message_list
           this.feedback_message_list = {}
           this.feedback_message_list = temp
-          this.feedback_message_list[status] = res.data.feedback_message_list
+          this.feedback_message_list[status] = res.data.feedback_list
         } else {
           this.$message.error(res.message)
         }
@@ -924,16 +1134,20 @@ export default {
     text-align: center;
     transform: translate(-50%, -50%);
   }
-  .el-header {
+  #frame_header {
     background-color: #B3C0D1;
     color: #333;
     line-height: 60px;
   }
-  .el-aside {
+  #frame_aside {
     color: #333;
     height: 100vh;
     overflow: hidden;
     width: 100%;
+  }
+  .button_center {
+    display: block;
+    margin: 0 auto;
   }
   .piano_card {
     display: block;
@@ -956,5 +1170,21 @@ export default {
   }
   .price_input {
     width: 200px;
+  }
+  .article_title {
+    padding-top: 20px;
+    padding-bottom: 40px;
+    font-weight: bolder;
+    font-size: 28px;
+    text-align: center;
+  }
+  .article_content {
+    font-size: 26px;
+    padding: 5px;
+  }
+  .article_time {
+    color: blueviolet;
+    font-size: 22px;
+    padding: 20px;
   }
 </style>
