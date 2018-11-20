@@ -2,11 +2,15 @@ from utils.utils import *
 from admin_end.models import *
 from datetime import datetime
 from django.db import transaction
+from urllib import parse
+from io import BytesIO
 import json
 import jwt
 import requests
+import uuid
 import django
-from urllib import parse
+import qrcode
+import base64
 
 
 # Create your views here.
@@ -49,7 +53,7 @@ class Bind(APIView):
         self.checkMsg('ticket', 'authorization')
         ticket = self.msg.get('ticket')
         user = self.getUserBySession()
-        url = 'https://id.tsinghua.edu.cn/thuser/authapi/checkticket/{AppID}/{ticket}/{UserIpAddr}'
+        url = 'https://id.tsinghua.edu.cn/thuser/authapi/checkticket'
         url = parse.urljoin(url, CONFIGS['THU_APP_ID'])
         url = parse.urljoin(url, ticket)
         url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_'))
@@ -76,11 +80,21 @@ class OrderList(APIView):
         self.checkMsg('authorization')
         user = self.getUserBySession()
         if self.msg.get('order_id'):
-            order_list = user.order_set.filter(id=self.msg.get('order_id'))
+            order_list = user.order_set.filter(order_id=self.msg.get('order_id'))
         else:
             order_list = user.order_set.all()
         data = []
         for order in order_list:
+            code = qrcode.QRCode(version=5)
+            code.add_data(order.order_id)
+            code.make()
+            buffer = BytesIO()
+            code.make_image().save(buffer, format='PNG')
+            code_base = 'data:image/png;base64,' + base64.b64encode(buffer.getvalue()).decode()
+            if order.user.identity != '':
+                user_id = order.user.identity
+            else:
+                user_id = order.user.open_id
             data.append({
                 'piano_type': order.piano_room.piano_type,
                 'room_num': order.piano_room.room_num,
@@ -89,7 +103,9 @@ class OrderList(APIView):
                 'price': order.price,
                 'order_status': order.order_status,
                 'create_time': order.create_time.timestamp(),
-                'order_id': order.id
+                'order_id': order.order_id,
+                'qrcode': code_base,
+                'user_id': user_id
             })
         return {"order_list": data}
 
@@ -186,6 +202,8 @@ class OrderNormal(APIView):
                     create_time=datetime.now(),
                     price=self.msg.get('price'),
                 )
+                order.order_id = str(uuid.uuid1()) + '-' + str(order.id)
+                order.save()
                 day = (order.date - datetime.now().date()).days
                 if day >= CONFIGS['MAX_ORDER_DAYS'] or day < 0:
                     raise django.db.IntegrityError
