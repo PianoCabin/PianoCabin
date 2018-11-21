@@ -5,6 +5,8 @@ from django.db import transaction
 import redis
 import threading
 import json
+import schedule
+import time
 
 
 # Create your models here.
@@ -31,7 +33,7 @@ class PianoRoom(models.Model):
 
 class User(models.Model):
     open_id = models.CharField(default="", max_length=255, unique=True)
-    identity = models.CharField(default="", max_length=255, unique=True, null=True, blank=True)
+    identity = models.CharField(default=None, max_length=255, unique=True, null=True, blank=True)
     permission = models.IntegerField(default=0)
     session = models.TextField(default='')
 
@@ -175,6 +177,19 @@ def updateUnpaidOrders():
                 except:
                     pass
                 print('Unable to update order list')
+
+
+def scheduledUpdate():
+    schedule.every().minute.do(updateUnpaidOrders)
+    schedule.every().day.at("00:01").do(updateOrderList)
+    threading.Thread(target=runSchedule).start()
+
+
+def runSchedule():
+    while True:
+        schedule.run_pending()
+        time.sleep(60)
+
 
 def setUpTestData():
     PianoRoom.objects.create(

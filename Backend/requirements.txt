@@ -1,3 +1,4 @@
+schedule
 qrcode
 requests
 Django==2.1.3
