@@ -3,16 +3,16 @@ var util = require("utils/util.js")
 //app.js
 App({
   onLaunch: function () {
-    try {
+    try{
       this.globalData.user_session = wx.getStorageSync("user_session");
     }
-    catch (e) {
+    catch(e){
       console.log("wrong when get local storage");
     }
-    if (!this.globalData.user_session) {
+    if(!this.globalData.user_session){
       this.getUserSession();
     }
-    else {
+    else{
       console.log("in storage");
       console.log(this.globalData.user_session);
     }
@@ -38,7 +38,7 @@ App({
       }
     })
   },
-  getUserSession: function () {
+  getUserSession: function(){
     wx.login({
       success: res => {
         console.log(res);
@@ -50,10 +50,10 @@ App({
           },
           success: res => {
             if (res.data["code"] == 1) {
-              this.globalData.user_session = res.data["data"]["session"];
+              this.globalData.user_session =  res.data["data"]["session"];
               wx.setStorageSync("user_session", this.globalData.user_session);
               console.log("get from net");
-              console.log(this.globalData.user_session);
+              console .log(this.globalData.user_session);
             }
           },
           fail: res => {
@@ -66,11 +66,114 @@ App({
       }
     })
   },
+  getRoomList(data,successFunc){
+    wx.request({
+      url: this.globalData.backend + '/u/order/piano-rooms-list/',
+      data: data,
+      header: {
+        "Authorization": this.globalData.user_session
+      },
+      method: "POST",
+      success: res => {
+        if (res.data["code"] == 0) {
+          util.msgPrompt(res.data["msg"]);
+        }
+        else {
+          successFunc(res);
+        }
+      },
+      fail: res => {
+        util.msgPrompt("network wrong");
+      }
+    })
+  },
+  submitOrder(data,successFunc){
+    wx.request({
+      url: this.globalData.backend + `/u/order/normal/`,
+      method: "POST",
+      data: data,
+      header: {
+        "Authorization": this.globalData.user_session
+      },
+      success: function (res) {
+        if (res.data["code"] == 0) {
+          util.msgPrompt(res.data["msg"]);
+        }
+        else {
+          successFunc(res);
+        }
+      },
+      fail: function (res) {
+        console.log("net work wrong");
+      }
+    })
+  },
+  getOrderList(data,successFunc) {
+    wx.request({
+      url: this.globalData.backend + `/u/order/list`,
+      method: "GET",
+      header: {
+        "Authorization": this.globalData.user_session
+      },
+      data:data,
+      success: res => {
+        if (res.data["code"] == 1) {
+          successFunc(res.data["data"]["order_list"])
+        }
+        else {
+          console.log(res);
+        }
+      },
+      fail: res => {
+        util.msgPrompt("network wrong");
+      }
+    })
+  },
+  changeOrder(data,successFunc){
+    wx.request({
+      url: this.globalData.backend + `/u/order/change/`,
+      data: data,
+      header: {
+        "Authorization": this.globalData.user_session
+      },
+      method: "POST",
+      success: res => {
+        if(res.data["code"] == 1)
+          successFunc(res)
+        else
+          console.log(res);
+      },
+      fail: res => {
+        console.log(res);
+      }
+    })
+  },
+  cancelOrder(data,successFunc){
+    wx.request({
+      url: this.globalData.backend + `/u/order/cancel/`,
+
+      data: data,
+      header: {
+        "Authorization": this.globalData.user_session
+      },
+      method: "POST",
+      success: res => {
+        if(res.data["code"] == 1)
+          successFunc(res);
+        else{
+          console.log(res);
+        }
+      },
+      fail: res => {
+        console.log(res);
+      }
+    })
+  },
   globalData: {
     userInfo: null,
-    user_session: null,
+    user_session:null,
     // backend:`https://711602.iterator-traits.com`,
     backend: `http://127.0.0.1:80`,
-    user_session: null
+    user_session:null
   }
 })
