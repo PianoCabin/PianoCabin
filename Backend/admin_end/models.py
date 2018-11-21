@@ -96,7 +96,7 @@ class RedisManage:
         self.unpaid_orders = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=1)
         self.session_user = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=2)
         self.redis_lock = threading.Lock()
-        self.initDatabase()
+        # self.initDatabase()
 
     def initDatabase(self):
         self.order_list.flushdb()
@@ -104,6 +104,7 @@ class RedisManage:
         self.session_user.flushdb()
         self.initOrderList()
         self.initUnpaidOrders()
+        self.initSessionUser()
 
     def initOrderList(self):
         rooms = PianoRoom.objects.all()
@@ -114,9 +115,9 @@ class RedisManage:
                     'start_time')
                 orders_data = []
                 for order in orders:
-                    orders_data.append([order.start_time, order.end_time, order.id])
+                    orders_data.append([order.start_time.timestamp(), order.end_time.timestamp(), order.id])
                 orders_data = json.dumps(orders_data)
-                self.order_list.lpush(room.room_num, orders_data)
+                self.order_list.rpush(room.room_num, orders_data)
 
     def initUnpaidOrders(self):
         orders = Order.objects.filter(order_status=1)
@@ -174,3 +175,24 @@ def updateUnpaidOrders():
                 except:
                     pass
                 print('Unable to update order list')
+
+def setUpTestData():
+    PianoRoom.objects.create(
+        room_num='F2-203',
+        piano_type='钢琴房',
+        brand='星海立式钢琴',
+        price_0=15,
+        price_1=10,
+        price_2=5,
+        usable=True
+    )
+
+    PianoRoom.objects.create(
+        room_num='F2-205',
+        piano_type='钢琴房',
+        brand='星海立式钢琴',
+        price_0=15,
+        price_1=10,
+        price_2=5,
+        usable=True
+    )

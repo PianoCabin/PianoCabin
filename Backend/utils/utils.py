@@ -5,6 +5,7 @@ from Backend.settings import *
 from admin_end.models import *
 import json
 import jwt
+import traceback
 
 
 class APIView(View):
@@ -44,9 +45,11 @@ class APIView(View):
         except MsgError as e:
             code = e.code
             msg = e.msg
+            print(e.msg)
         except Exception as e:
             code = 0
             msg = str(e)
+            traceback.print_exc()
         try:
             response = json.dumps({
                 'code': code,
@@ -82,12 +85,11 @@ class APIView(View):
         """
         :return: :class:`User <User>` object
         """
-
         id = redis_manage.session_user.get(self.msg['authorization'])
         if id is None:
             raise MsgError(msg='No such person')
         else:
-            user = get_or_none(User, id=id)
+            user = get_or_none(User, id=int(id.decode()))
             if user is None:
                 raise MsgError(msg='User does not exist')
             else:

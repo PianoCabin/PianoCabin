@@ -26,7 +26,7 @@ SECRET_KEY = '#)er^d!tufo=4gao!8zi*c*#w=^ve))5yjz7fmu28nkp1phc6&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 CONFIGS = json.load(open('configs.json'))
 

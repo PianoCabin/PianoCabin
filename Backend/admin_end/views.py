@@ -10,8 +10,9 @@ import json
 import datetime
 from collections import defaultdict
 
-
 # Create your views here.
+
+redis_manage.initDatabase()
 
 
 class Login(APIView):
@@ -61,13 +62,13 @@ class PianoRoomEdit(APIView):
             raise MsgError(0, 'not login')
         self.checkMsg("room_num", "brand", "piano_type", "price_0", "price_1", "price_2", "usable", "art_ensemble")
         if not PianoRoom.objects.filter(room_num=self.msg['room_num']).update(
-            brand=self.msg["brand"],
-            piano_type=self.msg["piano_type"],
-            price_0=self.msg["price_0"],
-            price_1=self.msg["price_1"],
-            price_2=self.msg["price_2"],
-            usable=self.msg["usable"],
-            art_ensemble=self.msg["art_ensemble"]
+                brand=self.msg["brand"],
+                piano_type=self.msg["piano_type"],
+                price_0=self.msg["price_0"],
+                price_1=self.msg["price_1"],
+                price_2=self.msg["price_2"],
+                usable=self.msg["usable"],
+                art_ensemble=self.msg["art_ensemble"]
         ):
             raise MsgError(0, 'fail to edit a piano room')
 
@@ -118,7 +119,8 @@ class OrderList(APIView):
             if "date" in self.msg:
                 query_str += 'Q(date=datetime.date.fromtimestamp(self.msg["date"])&'
             temp = Order.objects.filter(eval(query_str[:-1])).values(
-                'piano_room__brand', 'piano_room__room_num', 'user_id', 'start_time', 'end_time', 'price', 'order_status')
+                'piano_room__brand', 'piano_room__room_num', 'user_id', 'start_time', 'end_time', 'price',
+                'order_status')
             temp = list(temp)
             for item in temp:
                 item['start_time'] = item['start_time'].timestamp()
@@ -175,7 +177,7 @@ class NewsDetail(APIView):
             return a
         except:
             raise MsgError(0, 'news does not exist')
-            
+
 
 class NewsDelete(APIView):
 

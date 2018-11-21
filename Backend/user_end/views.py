@@ -34,16 +34,19 @@ class Login(APIView):
             raise MsgError(msg='Invalid code')
         else:
             open_id = res['openid']
-            payload = {
-                'iat': datetime.utcnow(),
-                'iss': 'PianoCabin',
-                'openid': open_id
-            }
-            session = jwt.encode(payload=payload, key=CONFIGS['APP_SECRET'], algorithm='HS256')
-            user = User.objects.create(open_id=open_id, session=session)
+            user = get_or_none(User, open_id=res['openid'])
             if user is None:
-                raise MsgError(msg='Creating user fails')
-            redis_manage.session_user.set(session, user.id)
+                payload = {
+                    'iat': datetime.utcnow(),
+                    'iss': 'PianoCabin',
+                    'openid': open_id
+                }
+                session = jwt.encode(payload=payload, key=CONFIGS['APP_SECRET'], algorithm='HS256').decode()
+                user = User.objects.create(open_id=open_id, session=session)
+                if user is None:
+                    raise MsgError(msg='Creating user fails')
+                redis_manage.session_user.set(session, user.id)
+            return {'session': user.session}
 
 
 class Bind(APIView):
@@ -80,9 +83,9 @@ class OrderList(APIView):
         self.checkMsg('authorization')
         user = self.getUserBySession()
         if self.msg.get('order_id'):
-            order_list = user.order_set.filter(order_id=self.msg.get('order_id'))
+            order_list = user.order_set.filter(order_id=self.msg.get('order_id'), order_status__range=[1, 2])
         else:
-            order_list = user.order_set.all()
+            order_list = user.order_set.filter(order_status__range=[1, 2])
         data = []
         for order in order_list:
             code = qrcode.QRCode(version=5)
@@ -97,6 +100,7 @@ class OrderList(APIView):
                 user_id = order.user.open_id
             data.append({
                 'piano_type': order.piano_room.piano_type,
+                'brand':order.piano_room.brand,
                 'room_num': order.piano_room.room_num,
                 'start_time': order.start_time.timestamp(),
                 'end_time': order.end_time.timestamp(),
@@ -136,25 +140,30 @@ class PianoRoomList(APIView):
         self.checkMsg('date', 'type', 'authorization')
         user = self.getUserBySession()
         if self.msg.get('brand'):
-            rooms = PianoRoom.objects.filter(brand=self.msg.get('brand'), piano_type=self.msg.get('type'))
+            rooms = PianoRoom.objects.filter(brand=self.msg.get('brand'), piano_type=self.msg.get('type'), usable=True)
         else:
-            rooms = PianoRoom.objects.filter(piano_type=self.msg.get('type'))
+            rooms = PianoRoom.objects.filter(piano_type=self.msg.get('type'), usable=True)
 
         if self.msg.get('room_num'):
-            rooms = PianoRoom.objects.filter(room_num=self.msg.get('msg'))
+            rooms = PianoRoom.objects.filter(room_num=self.msg.get('room_num'), usable=True)
 
-        day = (datetime.fromtimestamp(self.msg.get('date')).date() - datetime.now().date()).days
+        date = datetime.fromtimestamp(self.msg.get('date')).date()
+        close_time = datetime(date.year, date.month, date.day, CONFIGS['CLOSE_TIME'], 0, 0).timestamp()
+        open_time = datetime(date.year, date.month, date.day, CONFIGS['OPEN_TIME'], 0, 0).timestamp()
+        day = (date - datetime.now().date()).days
         sum_times = []
         if day >= CONFIGS['MAX_ORDER_DAYS'] or day < 0:
             raise MsgError(msg='Illegal date')
         orders_rooms = {}
         for room in rooms:
-            orders_rooms[room.room_num] = json.loads(redis_manage.order_list.lindex(room.room_num, day))
+            orders_rooms[room.room_num] = json.loads(redis_manage.order_list.lindex(room.room_num, day).decode())
 
         if self.msg.get('start_time') and self.msg.get('end_time'):
             start_time = self.msg.get('start_time')
             end_time = self.msg.get('end_time')
             for orders in orders_rooms.values():
+                orders.insert(0, [open_time, open_time, -1])
+                orders.append([close_time, close_time, -1])
                 sum_time = 0
                 for i in range(len(orders) - 1):
                     if orders[i + 1][0] < start_time:
@@ -163,9 +172,16 @@ class PianoRoomList(APIView):
                         break
                     sum_time += min(orders[i + 1][0], end_time) - max(orders[i][1], start_time)
                 sum_times.append(sum_time)
+                orders.pop()
+                orders.pop(0)
             room_time = zip(sum_times, rooms)
-            room_time = sorted(room_time, reverse=True)
-            sum_times, rooms = zip(*room_time)
+            room_time = sorted(room_time, key=lambda x: x[0],reverse=True)
+            try:
+                sum_times, rooms = zip(*room_time)
+            except:
+                sum_times = []
+                rooms  = []
+            rooms = list(rooms)
             for i, sum_time in enumerate(sum_times):
                 if sum_time < 3600:
                     rooms[i] = None
@@ -174,7 +190,7 @@ class PianoRoomList(APIView):
         for room in rooms:
             if room:
                 data.append({
-                    'piano_type': room.piano_type,
+                    'brand': room.brand,
                     'room_num': room.room_num,
                     'unit_price': getattr(room, 'price_' + str(user.permission)),
                     'occupied_time': orders_rooms[room.room_num]
@@ -224,7 +240,7 @@ class OrderNormal(APIView):
                     redis_manage.order_list.lset(piano_room.room_num, day, orders)
                     redis_manage.unpaid_orders.set(order.id, order.create_time.timestamp())
                     redis_manage.redis_lock.release()
-                id = order.id
+                id = order.order_id
         except django.db.IntegrityError:
             try:
                 redis_manage.redis_lock.release()
@@ -262,11 +278,11 @@ class OrderChange(APIView):
         self.checkMsg('date', 'start_time', 'end_time', 'price', 'order_id', 'authorization')
         try:
             with transaction.atomic():
-                order = Order.objects.select_for_update().get(id=self.msg.get('order_id'))
+                order = Order.objects.select_for_update().get(order_id=self.msg.get('order_id'))
                 order.start_time = datetime.fromtimestamp(self.msg.get('start_time'))
                 order.end_time = datetime.fromtimestamp(self.msg.get('end_time'))
                 order.date = datetime.fromtimestamp(self.msg.get('date')).date()
-                order.price = datetime.fromtimestamp(self.msg.get('price'))
+                order.price = self.msg.get('price')
                 order.save()
                 if redis_manage.redis_lock.acquire():
                     day = (order.date - datetime.now().date()).days
@@ -293,7 +309,7 @@ class OrderCancel(APIView):
         self.checkMsg('order_id', 'authorization')
         try:
             with transaction.atomic():
-                order = Order.objects.select_for_update().get(id=self.msg.get('order_id'))
+                order = Order.objects.select_for_update().get(order_id=self.msg.get('order_id'))
                 order.order_status = 0
                 order.save()
                 if redis_manage.redis_lock.acquire():
