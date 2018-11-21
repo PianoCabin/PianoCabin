@@ -14,6 +14,8 @@ from collections import defaultdict
 
 redis_manage.initDatabase()
 
+scheduledUpdate()
+
 
 class Login(APIView):
     def get(self):
@@ -97,7 +99,10 @@ class PianoRoomList(APIView):
             temp = PianoRoom.objects.filter(eval(query_str[:-1])).values(
                 'brand', 'room_num', 'piano_type', 'price_0', 'price_1', 'price_2', 'usable', 'art_ensemble')
             temp = list(temp)
-            return {'room_list': temp}
+            dd = defaultdict(list)
+            for item in temp:
+                dd[item['brand']].append(item)
+            return {'room_list': dd}
         except:
             raise MsgError(0, 'fail to list piano room as no such piano type exist')
 
@@ -125,10 +130,9 @@ class OrderList(APIView):
             for item in temp:
                 item['start_time'] = item['start_time'].timestamp()
                 item['end_time'] = item['end_time'].timestamp()
-            dd = defaultdict(list)
-            for item in temp:
-                dd[item['piano_room__brand']].append(item)
-            return {'order_list': dd}
+                item['brand'] = item['piano_room__brand']
+                item['room_num'] = item['piano_room__room_num']
+            return {'order_list': temp}
         except:
             raise MsgError(0, 'fail to list order list')
 

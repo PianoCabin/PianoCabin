@@ -73,14 +73,14 @@
             <div v-if="!piano_details_show && (page_type === 'piano_list')">
               <el-main>
                 <el-tabs v-model="active_piano_type" style="font-size: 20px;font-weight: bold">
-                  <el-tab-pane label="钢琴" name="first" id="piano1">
-                    <el-row v-for="(value, key) in piano_list['钢琴']" :key="key" :gutter="40" style="margin: 0">
+                  <el-tab-pane label="钢琴房" name="first" id="piano1">
+                    <el-row v-for="(value, key) in piano_list['钢琴房']" :key="key" :gutter="40" style="margin: 0">
                       <div style="padding: 14px;">
                         <span>{{ key }}</span>
                       </div>
                       <el-col :span="3" v-for="(item, index) in value" :key="index">
                         <el-card class="piano_card" shadow="hover" :body-style="{ padding: '0px' }">
-                          <img src="/static/piano.png" class="image" v-on:click="pianoDetails(item, key, '钢琴')">
+                          <img src="/static/piano.png" class="image" v-on:click="pianoDetails(item, key, '钢琴房')">
                           <el-row>
                             <el-col :span="12">
                               <div style="padding-top: 0;font-size: 18px;font-weight: bold">
@@ -94,11 +94,11 @@
                             <el-col :span="12">
                               <div style="padding-top: 5px">
                               <span>
-                                <el-popover placement="top" width="160" v-model="delete_visible['钢琴'][key][index]">
+                                <el-popover placement="top" width="160" v-model="delete_visible['钢琴房'][key][index]">
                                   <p>确定删除该琴房吗？</p>
                                   <div style="text-align: right;margin: 0;font-size: 14px">
                                     <!--<el-button size="mini" type="text" @click="delete_visible[key][index] = false">取消</el-button>-->
-                                    <el-button style="font-weight: bold" type="primary" @click="delete_visible[key][index] = false;deletePianoRoom('钢琴', item.room_num, key, index)">确定</el-button>
+                                    <el-button style="font-weight: bold" type="primary" @click="delete_visible[key][index] = false;deletePianoRoom('钢琴房', item.room_num, key, index)">确定</el-button>
                                   </div>
                                   <el-button slot="reference" type="danger" icon="el-icon-delete" plain circle></el-button>
                                   <!--<el-button slot="reference" type="in" class="delete">删除</el-button>-->
@@ -111,14 +111,14 @@
                       </el-col>
                     </el-row>
                   </el-tab-pane>
-                  <el-tab-pane label="电子琴" name="second" id="piano2">
-                    <el-row v-for="(value, key) in piano_list['电子琴']" :key="key" :gutter="40" style="margin: 0">
+                  <el-tab-pane label="电钢琴" name="second" id="piano2">
+                    <el-row v-for="(value, key) in piano_list['电钢琴']" :key="key" :gutter="40" style="margin: 0">
                       <div style="padding: 14px;">
                         <span>{{ key }}</span>
                       </div>
                       <el-col :span="3" v-for="(item, index) in value" :key="index">
                         <el-card class="piano_card" shadow="hover" :body-style="{ padding: '0px' }">
-                          <img src="/static/piano.png" class="image" v-on:click="pianoDetails(item, key, '电子琴')">
+                          <img src="/static/piano.png" class="image" v-on:click="pianoDetails(item, key, '电钢琴')">
                           <el-row>
                             <el-col :span="12">
                               <div style="padding-top: 0;font-size: 18px;font-weight: bold">
@@ -132,11 +132,11 @@
                             <el-col :span="12">
                               <div style="padding-top: 5px">
                               <span>
-                                <el-popover placement="top" width="160" v-model="delete_visible['电子琴'][key][index]">
+                                <el-popover placement="top" width="160" v-model="delete_visible['电钢琴'][key][index]">
                                   <p>确定删除该琴房吗？</p>
                                   <div style="text-align: right;margin: 0;font-size: 14px">
                                     <!--<el-button size="mini" type="text" @click="delete_visible[key][index] = false">取消</el-button>-->
-                                    <el-button style="font-weight: bold" type="primary" @click="delete_visible[key][index] = false;deletePianoRoom('电子琴', item.room_num, key, index)">确定</el-button>
+                                    <el-button style="font-weight: bold" type="primary" @click="delete_visible[key][index] = false;deletePianoRoom('电钢琴', item.room_num, key, index)">确定</el-button>
                                   </div>
                                   <el-button slot="reference" type="danger" icon="el-icon-delete" plain circle></el-button>
                                   <!--<el-button slot="reference" type="in" class="delete">删除</el-button>-->
@@ -149,14 +149,14 @@
                       </el-col>
                     </el-row>
                   </el-tab-pane>
-                  <el-tab-pane label="小琴屋" name="third" id="piano3">
-                    <el-row v-for="(value, key) in piano_list['小琴屋']" :key="key" :gutter="40" style="margin: 0">
+                  <el-tab-pane label="小琴房" name="third" id="piano3">
+                    <el-row v-for="(value, key) in piano_list['小琴房']" :key="key" :gutter="40" style="margin: 0">
                       <div style="padding: 14px;">
                         <span>{{ key }}</span>
                       </div>
                       <el-col :span="3" v-for="(item, index) in value" :key="index">
                         <el-card class="piano_card" shadow="hover" :body-style="{ padding: '0px' }">
-                          <img src="/static/piano.png" class="image" v-on:click="pianoDetails(item, key, '小琴屋')">
+                          <img src="/static/piano.png" class="image" v-on:click="pianoDetails(item, key, '小琴房')">
                           <el-row>
                             <el-col :span="12">
                               <div style="padding-top: 0;font-size: 18px;font-weight: bold">
@@ -170,11 +170,11 @@
                             <el-col :span="12">
                               <div style="padding-top: 5px;padding-right: -20px">
                               <span>
-                                <el-popover placement="top" width="160" v-model="delete_visible['小琴屋'][key][index]">
+                                <el-popover placement="top" width="160" v-model="delete_visible['小琴房'][key][index]">
                                   <p>确定删除该琴房吗？</p>
                                   <div>
                                     <!--<el-button size="mini" type="text" @click="delete_visible[key][index] = false">取消</el-button>-->
-                                    <el-button style="font-weight: bold" type="primary" @click="delete_visible[key][index] = false;deletePianoRoom('小琴屋', item.room_num, key, index)">确定</el-button>
+                                    <el-button style="font-weight: bold" type="primary" @click="delete_visible[key][index] = false;deletePianoRoom('小琴房', item.room_num, key, index)">确定</el-button>
                                   </div>
                                   <el-button slot="reference" type="danger" icon="el-icon-delete" plain circle></el-button>
                                   <!--<el-button slot="reference" type="in" class="delete">删除</el-button>-->
@@ -202,14 +202,14 @@
                           <el-option label="雅马哈立式钢琴" value="yamaha"></el-option>
                           <el-option label="卡瓦伊立式钢琴" value="kawayi"></el-option>
                           <el-option label="星海立式钢琴" value="xinghai"></el-option>
-                          <el-option label="电子琴" value="electronic_organ"></el-option>
+                          <el-option label="电钢琴" value="electronic_organ"></el-option>
                         </el-select>
                       </el-form-item>
                       <el-form-item label="琴房类型" prop="piano_type">
                         <el-select v-model="piano_details_form.piano_type" placeholder="请选择琴房类型">
-                          <el-option label="钢琴" value="piano_house"></el-option>
-                          <el-option label="电子琴" value="electronic_organ_house"></el-option>
-                          <el-option label="小琴屋" value="ordinary_house"></el-option>
+                          <el-option label="钢琴房" value="piano_house"></el-option>
+                          <el-option label="电钢琴" value="electronic_organ_house"></el-option>
+                          <el-option label="小琴房" value="ordinary_house"></el-option>
                         </el-select>
                       </el-form-item>
                       <el-form-item label="状态" prop="is_online">
@@ -264,13 +264,13 @@
                         <el-option label="雅马哈立式钢琴" value="yamaha"></el-option>
                         <el-option label="卡瓦伊立式钢琴" value="kawayi"></el-option>
                         <el-option label="星海立式钢琴" value="xinghai"></el-option>
-                        <el-option label="电子琴" value="electronic_organ"></el-option>
+                        <el-option label="电钢琴" value="electronic_organ"></el-option>
                       </el-select>
                     </el-form-item>
                     <el-form-item label="琴房类型" prop="piano_type">
                       <el-select v-model="piano_details_form.piano_type" placeholder="请选择琴房类型">
                         <el-option label="钢琴房" value="piano_house"></el-option>
-                        <el-option label="电子琴房" value="electronic_organ_house"></el-option>
+                        <el-option label="电钢琴房" value="electronic_organ_house"></el-option>
                         <el-option label="小琴房" value="ordinary_house"></el-option>
                       </el-select>
                     </el-form-item>
@@ -651,19 +651,19 @@ export default {
     }
   },
   created: function () {
-    this.$http.get('/a/login').then(response => {
+    this.$http.get('/a/login/').then(response => {
       let res = response.body
       this.is_login = res.code
-      this.requestPianoDetails('钢琴')
-      this.requestPianoDetails('电子琴')
-      this.requestPianoDetails('小琴屋')
+      this.requestPianoDetails('钢琴房')
+      this.requestPianoDetails('电钢琴')
+      this.requestPianoDetails('小琴房')
     }, response => {
       this.$message.error('服务器出错。')
     })
   },
   methods: {
     login: function () {
-      // this.$http.get('/a/login', {
+      // this.$http.get('/a/login/', {
       //   params: {
       //     username: this.username,
       //     password: this.password
@@ -674,7 +674,7 @@ export default {
       // }, response => {
       //   // error callback
       // })
-      this.$http.post('/a/login', {
+      this.$http.post('/a/login/', {
         username: this.username,
         password: this.password
       }, {
@@ -686,16 +686,16 @@ export default {
         } else {
           this.$message.success('登录成功')
           this.is_login = true
-          this.requestPianoDetails('钢琴')
-          this.requestPianoDetails('电子琴')
-          this.requestPianoDetails('小琴屋')
+          this.requestPianoDetails('钢琴房')
+          this.requestPianoDetails('电钢琴')
+          this.requestPianoDetails('小琴房')
         }
       }, response => {
         this.$message.error('服务器出错。')
       })
     },
     logout: function () {
-      this.$http.post('/a/logout').then(response => {
+      this.$http.post('/a/logout/').then(response => {
         if (response.body.code === 1) {
           this.is_login = false
           this.username = ''
@@ -722,7 +722,7 @@ export default {
       })
     },
     requestPianoDetails: function (pianoType) {
-      this.$http.post('/a/piano-room/list', {piano_type: pianoType}, {
+      this.$http.post('/a/piano-room/list/', {piano_type: pianoType}, {
         emulateJSON: true
       }).then(response => {
         let res = response.body
@@ -895,7 +895,7 @@ export default {
             online: this.piano_details_form.is_online === '上线' ? 1 : 0,
             art_ensemble: this.piano_details_form.art_ensemble === '是' ? 1 : 0
           }
-          this.$http.post('/a/piano-room/edit', data, {
+          this.$http.post('/a/piano-room/edit/', data, {
             emulateJSON: true
           }).then(response => {
             let res = response.body
@@ -949,7 +949,7 @@ export default {
 
     },
     getPianoDetails: function (piano) {
-      this.$http.post('/a/piano-room/list', {
+      this.$http.post('/a/piano-room/list/', {
         piano_type: piano
       }, {
         emulateJSON: true
@@ -965,7 +965,7 @@ export default {
       })
     },
     deletePianoRoom: function (pianoType, num, key, index) {
-      this.$http.post('/a/piano-room/delete', {
+      this.$http.post('/a/piano-room/delete/', {
         room_num: num
       }, {
         emulateJSON: true
@@ -995,7 +995,7 @@ export default {
             online: this.piano_details_form.is_online === '上线' ? 1 : 0,
             art_ensemble: this.piano_details_form.art_ensemble === '是' ? 1 : 0
           }
-          this.$http.post('/a/piano-room/create', data, {
+          this.$http.post('/a/piano-room/create/', data, {
             emulateJSON: true
           }).then(response => {
             let res = response.body
@@ -1022,7 +1022,7 @@ export default {
             news_title: this.notice_details_form.title,
             news_content: this.notice_details_form.content
           }
-          this.$http.post('/a/news/create', data, {
+          this.$http.post('/a/news/create/', data, {
             emulateJSON: true
           }).then(response => {
             let res = response.body
@@ -1061,7 +1061,7 @@ export default {
       })
     },
     requestOrderDetails: function (status) {
-      this.$http.post('/a/order/list', {
+      this.$http.post('/a/order/list/', {
         order_status: status === '未完成' ? 1 : (status === '已完成' ? 2 : 0)
       }, {
         emulateJSON: true
@@ -1080,7 +1080,7 @@ export default {
       })
     },
     requestFeedBackMessageList: function (status) {
-      this.$http.get('/a/feedback/list', {
+      this.$http.get('/a/feedback/list/', {
         params: {
           read_status: status === '未读' ? 0 : 1
         },

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import json
+from django.core.management import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -129,8 +130,6 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
-CRONJOBS = [
-    ('*/1 * * * *', 'admin_end.models.updateUnpaidOrders', '>>'+os.path.join(BASE_DIR, 'log/UnpaidOrders.log')),
-    ('1 0 * * *', 'admin_end.models.updateOrderList', '>>'+os.path.join(BASE_DIR, 'log/OrderList.log'))
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
 ]
