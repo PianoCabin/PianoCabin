@@ -9,7 +9,7 @@ const formatTime = date => {
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 
-const msgPrompt = msg => {
+const msgPrompt = msg =>{
   wx.showToast({
     title: msg,
     icon: 'success',
@@ -24,27 +24,27 @@ const formatNumber = n => {
 }
 
 
-const timeStringToTimestamp = (cur_date_str, time_str) => {
+const timeStringToTimestamp = (cur_date_str,time_str) =>{
   let date = new Date(cur_date_str)
   let list = time_str.split(":");
-  date.setHours(parseInt(list[0]), parseInt(list[1]), 0, 0);
+  date.setHours(parseInt(list[0]),parseInt(list[1]),0,0);
   return date.getTime();
 }
 
-const timestamptoTimeString = stamp => {
+const timestamptoTimeString = stamp =>{
   let date = new Date(stamp);
-  return date.getHours().toString() + ':' + date.getMinutes().toString()
+  return date.getHours().toString()+':'+date.getMinutes().toString()
 }
 
-const timestampToDateString = stamp => {
+const timestampToDateString = stamp =>{
   let date = new Date(stamp);
-  return date.getFullYear().toString() + '/' + (date.getMonth() + 1).toString() + '/' + date.getDate().toString();
+  return date.getFullYear().toString()+'/'+(date.getMonth()+1).toString()+'/'+date.getDate().toString();
 }
 
 
 module.exports = {
   formatTime: formatTime,
-  msgPrompt: msgPrompt,
+  msgPrompt:msgPrompt,
   timeStringToTimestamp: timeStringToTimestamp,
   timestampToTimeString: timestamptoTimeString,
   timestampToDateString: timestampToDateString,
