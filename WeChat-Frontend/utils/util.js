@@ -33,7 +33,7 @@ const timeStringToTimestamp = (cur_date_str,time_str) =>{
 
 const timestamptoTimeString = stamp =>{
   let date = new Date(stamp);
-  return date.getHours().toString()+':'+date.getMinutes().toString()
+  return date.getHours().toString()+':'+formatNumber(date.getMinutes());
 }
 
 const timestampToDateString = stamp =>{
@@ -44,6 +44,7 @@ const timestampToDateString = stamp =>{
 
 module.exports = {
   formatTime: formatTime,
+  formatNumber: formatNumber,
   msgPrompt:msgPrompt,
   timeStringToTimestamp: timeStringToTimestamp,
   timestampToTimeString: timestamptoTimeString,
