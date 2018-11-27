@@ -5,7 +5,7 @@
 <view class='list_page'>
     <view class="room_type">
       <view class="edge_item"></view>    
-      <view class="type_item piano" id='{{piano_id}}' bindtap='pianoList'>钢琴</view>
+      <view class="type_item piano" id='{{piano_id}}' bindtap='pianoList'>钢琴房</view>
       <view class="empty_item"></view>      
       <view class="type_item room" id='{{room_id}}' bindtap='roomList'>小琴房</view>
       <view class="empty_item"></view>

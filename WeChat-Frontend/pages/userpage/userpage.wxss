@@ -44,6 +44,8 @@
   font-size: 30rpx;
   background-color: transparent;
   outline:none !important;
+  width:110%;
+  left: -5%;
 }
 
 .list_item{
@@ -62,8 +64,8 @@
   margin-left: 5%; 
   margin-right: 4%;
   object-fit: cover;
-  height: 60%;
-  width: 6%;
+  height: 40rpx;
+  width: 40rpx;
   vertical-align: middle;
  /* border: 1rpx solid; */
   
