@@ -218,7 +218,7 @@ class OrderNormal(APIView):
                     create_time=datetime.now(),
                     price=self.msg.get('price'),
                 )
-                order.order_id = str(uuid.uuid1()) + '-' + str(order.id)
+                order.order_id = str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id)))
                 order.save()
                 day = (order.date - datetime.now().date()).days
                 if day >= CONFIGS['MAX_ORDER_DAYS'] or day < 0:
