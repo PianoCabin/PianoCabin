@@ -111,3 +111,11 @@
   align-items: center;
   font-size: 48rpx;
 }
+
+
+.list_empty{
+  position:fixed;
+  top:40%;
+  width: 100%;
+  text-align: center;
+}

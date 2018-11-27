@@ -44,7 +44,7 @@
 }
 
 .order_info{
-  height: 1000rpx;
+  height: 1160rpx;
   width: 84%;
   border:1rpx solid #AAAAAA;
   margin-left: 8%;
@@ -123,6 +123,8 @@
   margin-top:8%;
   margin-left: 5%;
   font-size: 31rpx;
+  display: flex;
+  flex-direction: row;
 }
 
 
@@ -140,12 +142,12 @@
   border:1rpx solid #AAAAAA;
   border-radius: 15rpx;
   width: 40%;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .info_date_text{
   width: 40%;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .info_order_user{
@@ -286,4 +288,8 @@
   color: #8E2782;
   font-weight: bold;
   margin-right: 15%;
+}
+
+.info_label{
+  width: 35%;
 }

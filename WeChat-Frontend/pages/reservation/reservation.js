@@ -12,8 +12,8 @@ Page({
     keyboard_id:"",                                         //电钢琴按钮的id
     list_type:null,                                         //当前显示的列表的类型（钢琴、小琴房或电钢琴）
     cur_date:"",                                            //当前选择的日期
-    search_start:"",                                      //按时间查找的开始时间
-    search_end:"",                                        //按时间查找的结束时间
+    search_start:null,                                      //按时间查找的开始时间
+    search_end:null,                                        //按时间查找的结束时间
     selected_room:"",                                     //选中的房间在列表中的id
     search_room_num:"",                                     //查询琴的种类
     show_order_info:false,                                  //是否显示订单弹窗
@@ -36,47 +36,49 @@ Page({
 
   //初始化页面，默认显示钢琴页面
   onReady: function () {
-    this.setData({ piano_id: "select_type", room_id: "", keyboard_id: "", cur_date: new Date().toLocaleDateString(), list_type: "piano" });
-    this.getRoomList();
-    this.initSearchPage();
-    wx.startPullDownRefresh({
-      success:()=>{
-        console.log("pulldownrefresh");
-        this.resetSearch()
-        this.getRoomList();
-      },
-      fail:()=>{
-        util.msgPrompt("fail to refresh");
-      }
-    });
+    this.setData({ piano_id: "select_type", room_id: "", keyboard_id: "", cur_date: new Date().toLocaleDateString(), list_type: "钢琴房" });
+      this.getRoomList();
+      this.initSearchPage();
+      // wx.startPullDownRefresh({
+      //   success:()=>{
+      //     console.log("pulldownrefresh");
+      //     this.resetSearch()
+      //     this.getRoomList();
+      //   },
+      //   fail:()=>{
+      //     util.msgPrompt("fail to refresh");
+      //   }
+      // });
   },
-
-  onShow:function(){  
+  onPullDownRefresh(){
+    this.resetSearch()
     this.getRoomList();
+  },
+  onShow:function(){  
+    // this.getRoomList();
     this.initSearchPage();
   },
 
   
   //显示钢琴列表
   pianoList:function(event){
-    console.log(event);
-    this.setData({ piano_id: "select_type", room_id: "", keyboard_id: "", list_type: "piano", room_list: [] })
+    
+    this.setData({ piano_id: "select_type", room_id: "", keyboard_id: "", list_type: "钢琴房", room_list: [] })
     this.getRoomList();
 
   },
 
   //显示小琴房列表
   roomList: function (event) {
-    console.log(event);
-    this.setData({ piano_id: "", room_id: "select_type", keyboard_id: "", list_type: "piano", room_list: [] })  
+    
+    this.setData({ piano_id: "", room_id: "select_type", keyboard_id: "", list_type: "小琴房", room_list: [] })  
     this.getRoomList();
     
   },
 
   //显示电钢琴列表
   keyboardList: function (event) {
-    console.log(event);
-    this.setData({ piano_id: "", room_id: "", keyboard_id: "select_type", list_type: "piano" });
+    this.setData({ piano_id: "", room_id: "", keyboard_id: "select_type", list_type: "电钢琴" });
     this.getRoomList();
     
   },
@@ -112,7 +114,7 @@ Page({
   selectRoom: function(event){
     
     //设置订单的房间信息为选中的房间，并且记录订单的日期为当前选择的日期
-    console.log(event.currentTarget.id);
+    
     let room_info = this.data.room_list[event.currentTarget.id];
     room_info["date"] = this.data.cur_date;
     this.setData({ order_info: room_info});
@@ -130,13 +132,18 @@ Page({
     let end = util.timeStringToTimestamp(this.data.cur_date,this.data.close_time[0].toString() + ':' + this.data.close_time[1].toString())
     
     let orders = room_info["occupied_time"];
+    let now = new Date();
+    let mim = parseInt(now.getMinutes()/10)+1;
+    now.setMinutes(mim*10,0,0);
+    now = now.getTime();
+
     for (let i = 0; i < orders.length;i++){
       //查找每一段时长大于min_order的空闲时间
-      if (orders[i][0] - start >= this.data.min_order){
+      if (orders[i][0] - start >= this.data.min_order && orders[i][0] > now){
         let ss = orders[i][0];
-
+        start = Math.max(start,now);
         //如果找到满足的空闲时长，按照间隔取开始时间，将满足的时间都加入开始时间列表
-        while (ss - start >= this.data.min_order){
+        while (ss - start >= this.data.min_order ){
           let tt = new Date(start);
           let startable = util.timestampToTimeString(tt);
           start_list.push(startable);
@@ -147,11 +154,11 @@ Page({
     }
 
     //在最后一个预约与开放结束之间的空闲时间在以上的循环中被遗漏了，在此补上
-    let ss = util.timeStringToTimestamp(this.data.cur_date, this.data.open_time[0].toString() + ':' + this.data.open_time[1].toString())
+    let ss = Math.max(util.timeStringToTimestamp(this.data.cur_date, this.data.open_time[0].toString() + ':' + this.data.open_time[1].toString()),now);
     if(orders.length>0)
-      ss = orders[orders.length-1][1];
-    console.log(ss);
-    while (end - ss>= this.data.min_order) {
+      ss = Math.max(orders[orders.length-1][1],now);
+    
+    while (end - ss >= this.data.min_order && ss >= now) {
       let tt = new Date(ss);
       let startable = util.timestampToTimeString(tt);
       start_list.push(startable);
@@ -163,7 +170,7 @@ Page({
 
   },
   search:function(event){
-    console.log("search button");
+    
     this.hideSearchPage();
     this.getRoomList();
   },
@@ -268,11 +275,11 @@ Page({
   //向服务器请求筛选过的琴房列表
   getRoomList(){
     let data = this.getListFilter();
-    app.getRoomList(data,this.showRoomList);
+    if(data["type"] != null)
+      app.getRoomList(data,this.showRoomList);
   },
   showRoomList(res){
     let list = res.data["data"]["room_list"];
-    console.log(list);
     this.updateList(list);
   },
 
@@ -284,11 +291,11 @@ Page({
     transer.setHours(12,0,0,0);
     data["date"] = transer.getTime()/1000;
     if (this.data.search_start != null)
-      data["search_start"] = util.timeStringToTimestamp(this.data.cur_date,this.data.search_start)/1000;
+      data["start_time"] = util.timeStringToTimestamp(this.data.cur_date,this.data.search_start)/1000;
     if (this.data.search_end != null)
-      data["search_end"] = util.timeStringToTimestamp(this.data.cur_date,this.data.search_end)/1000;
+      data["end_time"] = util.timeStringToTimestamp(this.data.cur_date,this.data.search_end)/1000;
     if (this.data.search_room_num != "")
-      data["room_num"] = this.data.search_room_num;
+      data["brand"] = this.data.search_room_num;
     return data;
   },
 
@@ -302,7 +309,7 @@ Page({
     for (let i = 0; i < data_list.length; i++){
       
       let element = {}
-      element["name"] = data_list[i]["piano_type"];
+      element["name"] = data_list[i]["brand"];
       element["room_num"] = data_list[i]["room_num"];
       element["price"] = data_list[i]["unit_price"];
       element["hours"] = [];
@@ -323,7 +330,7 @@ Page({
       } 
       element["label_offset"] = ((95/element["hours"].length)/2);
       element["time_bar_len"] = 95 - 2 * element["label_offset"];
-      console.log(element["label_offset"]);
+      
       //将后端的10位时间戳转为js的13位时间戳
       element["occupied_time"] = data_list[i]["occupied_time"];
       for (let i = 0; i < element["occupied_time"].length; i++) {
@@ -357,6 +364,12 @@ Page({
           }
         }
       }
+      if (element["occupied_time"].length == 0){
+        let order4 = {};
+        order4["width"] = 100;
+        order4["color"] = this.data.free_time_color;
+        hour_list.push(order4);
+      }
          
       element["time"] = hour_list;
       new_list.push(element);
@@ -379,16 +392,21 @@ Page({
     for(let i = 0;i<room_info["occupied_time"].length;i++){
       if (start<=room_info["occupied_time"][i][0]){
         max_end = room_info["occupied_time"][i][0];
-        console.log("here");
+        
         break;
       }
       if (i == room_info["occupied_time"].length -1){
         max_end = util.timeStringToTimestamp(this.data.cur_date,this.data.close_time[0].toString() + ':' + this.data.close_time[1].toString());
       }
     }
+
+    if (room_info["occupied_time"].length == 0){
+      max_end = util.timeStringToTimestamp(this.data.cur_date, this.data.close_time[0].toString() + ':' + this.data.close_time[1].toString());
+    }
+
+
     start = start.getTime()+this.data.min_order;
-    console.log("start:" + start)
-    console.log("end:"+max_end)
+    
     while(start<=max_end){
       end_list.push(util.timestampToTimeString(start));
       start = start + this.data.min_interval;
@@ -440,8 +458,8 @@ Page({
       this.setData({ 
         search_start_list: ss_list,
         search_end_list:ss_list,
-        search_start:this.data.open_time[0].toString()+':'+this.data.open_time[1].toString(),
-        search_end: this.data.close_time[0].toString() + ':' + this.data.close_time[1].toString(),
+        search_start: util.formatNumber(this.data.open_time[0]) + ':' + util.formatNumber(this.data.open_time[1]),
+        search_end: util.formatNumber(this.data.close_time[0]) + ':' + util.formatNumber(this.data.close_time[1]),
         search_room_num:""
         });
   },
@@ -469,7 +487,7 @@ Page({
       });    
   },
   searchInputConfirm(event){
-    console.log(event.detail.value);
+    
     this.setData({search_room_num:event.detail.value});
   },
   checkOrderInfo(){
@@ -489,7 +507,7 @@ Page({
   orderComplete(event){
     if (this.checkOrderInfo()){
       let order=this.createOrder();
-      console.log(order);
+      
       this.submitOrder(order);
     }
     else{

@@ -21,13 +21,16 @@
         <image class='qrcode' src='{{info.qrcode}}' mode='widthFix'></image>
       </view>
       <view class='info_block3'>
-        <view class='info_order_id'> 订单编号：{{info.order_id}}</view>
+        <view class='info_order_id'> 
+          <view class='info_label'>订单编号：</view>
+          <view>{{info.order_id}}</view>
+        </view>
         <view class = 'info_order_time'>日期：　　
         <!-- <picker class='info_date_input' wx:if="{{edit}}" range='date_list' bindchange='set_date'>{{info.date}}</picker> -->
         <text class='info_date_text' wx:if="{{edit}}">{{info.date}}</text>        
         <text class='info_date_text' wx:else>{{info.date}}</text>
         </view> 
-        <view class='info_order_user'>预约人：　{{info.user_id}}</view>
+        <view class='info_order_user'>预约人：　{{nickname}}</view>
           
           <view wx:if="{{edit}}" class='info_order_time'>预约时间：
             <picker class='start_picker' mode="selector" range='{{starttime_list}}' bindchange='setOrderStart'>{{start_time}}</picker>

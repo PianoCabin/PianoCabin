@@ -24,7 +24,7 @@ Page({
     let new_list = [];
     for(let i = 0;i<data_list.length;i++){
       let order = {};
-      order["piano_type"] = data_list[i]["piano_type"];
+      order["piano_type"] = data_list[i]["brand"];
       order["room_num"] = data_list[i]["room_num"];
       order["price"] = data_list[i]["price"];
       order["start_time"] = util.timestampToTimeString(data_list[i]["start_time"] * 1000);
