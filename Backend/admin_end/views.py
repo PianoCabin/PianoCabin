@@ -90,10 +90,10 @@ class PianoRoomList(APIView):
     def post(self):
         if not self.request.user.is_authenticated:
             raise MsgError(0, 'not login')
-        self.checkMsg("piano_type")
         try:
             query_str = ''
-            query_str += 'Q(piano_type=self.msg["piano_type"])&'
+            if "piano_type" in self.msg:
+                query_str += 'Q(piano_type=self.msg["piano_type"])&'
             if "room_num" in self.msg:
                 query_str += 'Q(room_num=self.msg["room_num"])&'
             temp = PianoRoom.objects.filter(eval(query_str[:-1])).values(
@@ -112,24 +112,35 @@ class OrderList(APIView):
     def post(self):
         if not self.request.user.is_authenticated:
             raise MsgError(0, 'not login')
-        self.checkMsgMultiOption("order_status", "identity", "date", "order_id")
+        count = self.checkMsgMultiOption("order_status", "identity", "date", "order_id")
         try:
-            query_str = ''
-            if "order_id" in self.msg:
-                query_str += 'Q(id=self.msg["order_id"])&'
-            if "identity" in self.msg:
-                query_str += 'Q(identity=self.msg["identity"])&'
-            if "order_status" in self.msg:
-                query_str += 'Q(order_status=self.msg["order_status"])&'
-            if "date" in self.msg:
-                query_str += 'Q(date=datetime.date.fromtimestamp(self.msg["date"])&'
-            temp = Order.objects.filter(eval(query_str[:-1])).values(
-                'piano_room__brand', 'piano_room__room_num', 'user_id', 'start_time', 'end_time', 'price',
-                'order_status')
+            if count:
+                query_str = ''
+                if "order_id" in self.msg:
+                    query_str += 'Q(id=self.msg["order_id"])&'
+                if "identity" in self.msg:
+                    query_str += 'Q(identity=self.msg["identity"])&'
+                if "order_status" in self.msg:
+                    query_str += 'Q(order_status=self.msg["order_status"])&'
+                if "date" in self.msg:
+                    query_str += 'Q(date=datetime.date.fromtimestamp(self.msg["date"])&'
+                temp = Order.objects.filter(eval(query_str[:-1])).values(
+                    'piano_room__brand', 'piano_room__room_num', 'user_id', 'start_time', 'end_time', 'price', 'order_id',
+                    'create_time', 'order_status')
+            else:
+                temp = Order.objects.all().values(
+                    'piano_room__brand', 'piano_room__room_num', 'user_id', 'start_time', 'end_time', 'price', 'order_id',
+                    'create_time', 'order_status')
             temp = list(temp)
             for item in temp:
+                user = User.objects.get(id=item['user_id'])
+                if user.identity:
+                    item['user_id'] = user.identity
+                else:
+                    item['user_id'] = user.open_id
                 item['start_time'] = item['start_time'].timestamp()
                 item['end_time'] = item['end_time'].timestamp()
+                item['create_time'] = item['create_time'].timestamp()
                 item['brand'] = item['piano_room__brand']
                 item['room_num'] = item['piano_room__room_num']
             return {'order_list': temp}
