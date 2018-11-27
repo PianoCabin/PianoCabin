@@ -62,7 +62,11 @@ class APIView(View):
                 'msg': 'JSON Error',
                 'data': None,
             })
-        return HttpResponse(response, content_type='application/json')
+
+        res = HttpResponse(response, content_type='application/json')
+        # 测试用
+        res.setdefault('Access-Control-Allow-Origin', '*')
+        return res
 
     # 检查输入
     def checkMsg(self, *keys):
@@ -77,8 +81,7 @@ class APIView(View):
         for k in keys:
             if k in self.msg:
                 count += 1
-        if count == 0:
-            raise MsgError(msg='API requires field not enough')
+        return count
 
     # 解析session获取用户
     def getUserBySession(self):

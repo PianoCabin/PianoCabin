@@ -163,13 +163,14 @@ def updateUnpaidOrders():
                     if redis_manage.redis_lock.acquire():
                         redis_manage.unpaid_orders.delete(id)
                         day = (datetime.now().date() - order.create_time.date()).days
-                        room_orders = redis_manage.order_list.lindex(order.piano_room.room_num, day)
-                        room_orders = json.loads(room_orders)
-                        for room_order in room_orders:
-                            if room_order[2] == order.id:
-                                room_orders.remove(room_order)
-                        room_orders = json.dumps(room_orders)
-                        redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
+                        if day == 0:
+                            room_orders = redis_manage.order_list.lindex(order.piano_room.room_num, day).decode()
+                            room_orders = json.loads(room_orders)
+                            for room_order in room_orders:
+                                if room_order[2] == order.id:
+                                    room_orders.remove(room_order)
+                            room_orders = json.dumps(room_orders)
+                            redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
                         redis_manage.redis_lock.release()
             except:
                 try:
