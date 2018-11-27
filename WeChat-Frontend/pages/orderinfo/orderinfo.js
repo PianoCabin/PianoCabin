@@ -25,7 +25,8 @@ Page({
     animation_data: null,
     cancel_view:false,
     open_time:[12,0],
-    close_time:[22,30]
+    close_time:[22,30],
+    nickname:"默认用户"
   },
 
   /**
@@ -34,9 +35,15 @@ Page({
   onLoad: function (options) {
     let order_id = options.order_id;
     this.getOrderInfo(order_id);
-    console.log((new Date()).getMonth());
+    
     this.setData({
-      cur_date:new Date().toLocaleDateString()
+      cur_date:new Date().toLocaleDateString(),
+      nickname: app.globalData.user_nickname
+    })
+  },
+  onShow(){
+    this.setData({
+      nickname: app.globalData.user_nickname
     })
   },
   getOrderInfo(order_id){
@@ -44,7 +51,8 @@ Page({
   },
   updateOrderInfo(data){
     let info = {};
-    info["piano_type"] = data["piano_type"];
+    info["piano_type"] = data["brand"];
+    info["type"] = data["piano_type"]
     info["room_num"] = data["room_num"];
     info["price"] = data["price"];
     info["order_status"] = OrderStatus[data["order_status"]];
@@ -72,12 +80,12 @@ Page({
     today.setHours(12,0,0,0);
     app.getRoomList({
       room_num: room_num,
-      date: today.getTime()
+      date: today.getTime()/1000,
+      type:this.data.info["type"]
       },
       this.setOrderInfo);
   },
   setOrderInfo(res){
-    console.log(res.data);
     this.setStartList(res.data["data"]["room_list"][0]);
     this.setData({
       roominfo: res.data['data']["room_list"][0]
@@ -93,8 +101,6 @@ Page({
 
     let orders = room_info["occupied_time"];
 
-    console.log("ordersold:");
-    console.log(orders);
     for (let i = 0; i < orders.length; i++) {
       orders[i][0] *= 1000;
       orders[i][1] *= 1000;
@@ -102,15 +108,19 @@ Page({
         orders.splice(i,1);
       }
     }
-    console.log("orders");
-    console.log(orders);
+
+
+    let now = new Date();
+    let mim = parseInt(now.getMinutes() / 10) + 1;
+    now.setMinutes(mim * 10, 0, 0);
+    now = now.getTime();
+
 
     for (let i = 0; i < orders.length; i++) {
       //查找每一段时长大于min_order的空闲时间
-      console.log(orders[i][0]);
-      console.log(start);
-      if (orders[i][0] - start >= this.data.min_order) {
+      if (orders[i][0] - start >= this.data.min_order && orders[i][0]>now) {
         let ss = orders[i][0];
+        start = Math.max(start, now);
         //如果找到满足的空闲时长，按照间隔取开始时间，将满足的时间都加入开始时间列表
         while (ss - start >= this.data.min_order) {
           let tt = new Date(start);
@@ -124,19 +134,17 @@ Page({
     }
 
     //在最后一个预约与开放结束之间的空闲时间在以上的循环中被遗漏了，在此补上
-    transer.setHours(12,0,0,0)
-    let ss = transer.getTime();
+    transer.setHours(this.data.open_time[0],this.data.open_time[1],0,0)
+    let ss = Math.max(transer.getTime(),now);
     if(orders.length>0)
-      ss = orders[orders.length - 1][1];
+      ss = Math.max(orders[orders.length - 1][1],now);
 
-    console.log(ss);
-    while (end - ss >= this.data.min_order) {
+    while (end - ss >= this.data.min_order && ss >= now) {
       let tt = new Date(ss);
       let startable = util.timestampToTimeString(tt);
       start_list.push(startable);
       ss = ss + this.data.min_interval;
     }
-    console.log(start_list);
     this.setData({ starttime_list: start_list,edit:true });
   },
   
@@ -152,12 +160,9 @@ Page({
     let start = new Date(util.timeStringToTimestamp(this.data.cur_date, this.data.starttime_list[index]));
     let max_end = transer.getTime();
 
-    console.log("setOrderStart");
-    console.log(room_info["occupied_time"]);
     for (let i = 0; i < room_info["occupied_time"].length; i++) {
       if (start <= room_info["occupied_time"][i][0]) {
         max_end = room_info["occupied_time"][i][0];
-        console.log("here");
         break;
       }
       if (i == room_info["occupied_time"].length - 1) {
@@ -196,12 +201,13 @@ Page({
   },
   changeOrder(){
     let info = this.getInfoObject();
-    console.log(info);
-    app.changeOrder(info,res=>{console.log(res)});
+    
+    app.changeOrder(info, res => { this.onLoad({ order_id: info["order_id"] });});
+    
   },
   cancelOrder(){
     app.cancelOrder({order_id: this.data.info["order_id"]}, res => {
-      console.log(res);
+      
       wx.redirectTo({
         url: '/pages/orderpage/orderpage',
       })})
@@ -210,13 +216,16 @@ Page({
     this.showCancelView();
   },
   getInfoObject(){
-    let info = {}
+    let info = {};
+    let transer = new Date();
+    transer.setHours(12,0,0,0);
     info["room_num"] = this.data.info["room_num"];
     info["start_time"] = util.timeStringToTimestamp(this.data.info["date"], this.data.info["order_start"]) / 1000;
     info["end_time"] = util.timeStringToTimestamp(this.data.info["date"], this.data.info["order_end"]) / 1000;
     info["price"] = this.data.info["price"];
     info["order_id"] = this.data.info["order_id"];
-    console.log(info);
+    info["date"] = util.timeStringToTimestamp(this.data.info["date"], "12:00") / 1000;
+    
     return info
   },
   showCancelView() {

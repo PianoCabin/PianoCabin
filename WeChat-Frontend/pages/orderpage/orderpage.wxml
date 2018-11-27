@@ -8,7 +8,11 @@
       <view class='empty_item'></view>
     </view>
     
-    <view class='order_list' wx:for="{{order_list}}" wx:key="">
-      <template is="order_item" data="{{...item}}" />
+    <view wx:if="{{order_list.length>0}}">
+      <view  class='order_list' wx:for="{{order_list}}" wx:key="">
+        <template is="order_item" data="{{...item}}" />
+      </view>
     </view>
+    <view wx:else class='list_empty'>
+    当前无订单</view>
 </view>

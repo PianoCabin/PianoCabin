@@ -181,6 +181,7 @@
 
 .text_input{
   border: 1rpx solid #AAAAAA;
+  width: 58%;
   border-radius: 20rpx;
 }
 
@@ -198,8 +199,6 @@
   border-radius: 20rpx;
   border:2rpx solid #AAAAAA;
   width: 30%;
-  font-size: 40rpx;
-  height: 20%;
   color: #AAAAAA;
 }
 
