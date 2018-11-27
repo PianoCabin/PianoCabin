@@ -1,0 +1,293 @@
+<template>
+  <div id="app">
+    <heading></heading>
+
+    <el-container>
+      <el-aside width="18rem"><side-bar activated="2" class="side-bar"></side-bar></el-aside>
+
+      <el-main>
+        <div class="content select-panel">
+          <el-tabs v-model="activated" @tab-click="handleTabClick">
+            <el-tab-pane label="全部" name="0">
+              <order-card v-for="order in order_list.slice(page_start, page_end)" class="order-card">
+                <nobr slot="brand">{{order.brand}}</nobr>
+                <nobr slot="room-num">{{order.room_num}}</nobr>
+                <nobr slot="user-id">{{order.user_id}}</nobr>
+                <nobr slot="order-id">{{order.order_id}}</nobr>
+                <nobr slot="order-time">{{order.start_time | getDate}}&nbsp{{order.start_time | getTime}} ~
+                  {{order.end_time | getTime}}
+                </nobr>
+                <nobr slot="create-time">{{order.create_time | getFullTime}}</nobr>
+                <nobr slot="order-state">{{order.order_status | getStatus}}</nobr>
+                <nobr slot="price">{{order.price}}</nobr>
+              </order-card>
+            </el-tab-pane>
+            <el-tab-pane label="已完成" name="1">
+              <order-card v-for="order in finished_order_list.slice(page_start, page_end)" class="order-card">
+                <nobr slot="brand">{{order.brand}}</nobr>
+                <nobr slot="room-num">{{order.room_num}}</nobr>
+                <nobr slot="user-id">{{order.user_id}}</nobr>
+                <nobr slot="order-id">{{order.order_id}}</nobr>
+                <nobr slot="order-time">{{order.start_time | getDate}}&nbsp{{order.start_time | getTime}} ~
+                  {{order.end_time | getTime}}
+                </nobr>
+                <nobr slot="create-time">{{order.create_time | getFullTime}}</nobr>
+                <nobr slot="order-state">{{order.order_status | getStatus}}</nobr>
+                <nobr slot="price">{{order.price}}</nobr>
+              </order-card>
+            </el-tab-pane>
+            <el-tab-pane label="已支付" name="2">
+              <order-card v-for="order in paid_order_list.slice(page_start, page_end)" class="order-card">
+                <nobr slot="brand">{{order.brand}}</nobr>
+                <nobr slot="room-num">{{order.room_num}}</nobr>
+                <nobr slot="user-id">{{order.user_id}}</nobr>
+                <nobr slot="order-id">{{order.order_id}}</nobr>
+                <nobr slot="order-time">{{order.start_time | getDate}}&nbsp{{order.start_time | getTime}} ~
+                  {{order.end_time | getTime}}
+                </nobr>
+                <nobr slot="create-time">{{order.create_time | getFullTime}}</nobr>
+                <nobr slot="order-state">{{order.order_status | getStatus}}</nobr>
+                <nobr slot="price">{{order.price}}</nobr>
+              </order-card>
+            </el-tab-pane>
+            <el-tab-pane label="未支付" name="3">
+              <order-card v-for="order in unpaid_order_list.slice(page_start, page_end)" class="order-card">
+                <nobr slot="brand">{{order.brand}}</nobr>
+                <nobr slot="room-num">{{order.room_num}}</nobr>
+                <nobr slot="user-id">{{order.user_id}}</nobr>
+                <nobr slot="order-id">{{order.order_id}}</nobr>
+                <nobr slot="order-time">{{order.start_time | getDate}}&nbsp{{order.start_time | getTime}} ~
+                  {{order.end_time | getTime}}
+                </nobr>
+                <nobr slot="create-time">{{order.create_time | getFullTime}}</nobr>
+                <nobr slot="order-state">{{order.order_status | getStatus}}</nobr>
+                <nobr slot="price">{{order.price}}</nobr>
+              </order-card>
+            </el-tab-pane>
+            <el-tab-pane label="已取消" name="4">
+              <order-card v-for="order in canceled_order_list.slice(page_start, page_end)" class="order-card">
+                <nobr slot="brand">{{order.brand}}</nobr>
+                <nobr slot="room-num">{{order.room_num}}</nobr>
+                <nobr slot="user-id">{{order.user_id}}</nobr>
+                <nobr slot="order-id">{{order.order_id}}</nobr>
+                <nobr slot="order-time">{{order.start_time | getDate}}&nbsp{{order.start_time | getTime}} ~
+                  {{order.end_time | getTime}}
+                </nobr>
+                <nobr slot="create-time">{{order.create_time | getFullTime}}</nobr>
+                <nobr slot="order-state">{{order.order_status | getStatus}}</nobr>
+                <nobr slot="price">{{order.price}}</nobr>
+              </order-card>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+
+        <!--页面切换区-->
+        <div class="pagination-div">
+          <el-pagination
+            @current-change="handlePageChange"
+            :current-page.sync="current_page"
+            :page-size="page_size"
+            layout="prev, pager, next, jumper"
+            :total="total_len"
+            class="pagination">
+          </el-pagination>
+        </div>
+      </el-main>
+    </el-container>
+  </div>
+</template>
+
+<script>
+  import OrderCard from "../../components/OrderCard/OrderCard"
+  import Heading from "../../components/Heading/Heading"
+  import SideBar from "../../components/SideBar/SideBar"
+  import * as Vue from "vue"
+  import Utils from "../../common/js/utils"
+
+  // 根据时间戳获取日期
+  Vue.filter('getDate', function (timestamp) {
+    let time = new Date(parseFloat(timestamp) * 1000)
+    let year = time.getFullYear().toString()
+    let month = (time.getMonth() + 1).toString()
+    let date = time.getDate().toString()
+    return [year, month, date].join('-')
+  })
+
+  // 根据时间戳获取时间
+  Vue.filter('getTime', function (timestamp) {
+    let time = new Date(parseFloat(timestamp) * 1000)
+    let hour = time.getHours().toString()
+    let minute = time.getMinutes().toString()
+    return [hour, minute].join(':')
+  })
+
+  // 获取完整时间
+  Vue.filter('getFullTime', function (timestamp) {
+    return new Date(parseFloat(timestamp) * 1000).toLocaleString()
+  })
+  
+  Vue.filter('getStatus', function (status) {
+    switch (status) {
+      case 0:
+        return "已取消";
+      case 1:
+        return "未支付"
+      case 2:
+        return "已支付"
+      case 3:
+        return "已完成"
+      default:
+        break
+    }
+  })
+
+  export default {
+    name: "App",
+    components: {SideBar, Heading, OrderCard},
+
+    created() {
+      Utils.post(this, '/a/order/list/', null, function (_this, res) {
+        if (res.code === 0)
+          _this.$message.error("获取订单失败")
+        else {
+          _this.order_list = res.data.order_list
+          let len = _this.order_list.length
+
+          _this.total_len = len
+          _this.page_start = 0
+          _this.page_end = len < _this.page_size ? len : _this.page_size
+
+          for (let i = 0; i < len; i++) {
+            switch (_this.order_list[i].order_status) {
+              case 0:
+                _this.canceled_order_list.push(_this.order_list[i]);
+                break;
+              case 1:
+                _this.unpaid_order_list.push(_this.order_list[i]);
+                break;
+              case 2:
+                _this.paid_order_list.push(_this.order_list[i]);
+                break;
+              case 3:
+                _this.finished_order_list.push(_this.order_list[i]);
+                break;
+              default:
+                break;
+            }
+          }
+        }
+      })
+    },
+
+    data() {
+      return {
+        activated: "0",
+
+        order_list: [],
+
+        finished_order_list: [],
+
+        paid_order_list: [],
+
+        unpaid_order_list: [],
+
+        canceled_order_list: [],
+
+        // 当前页
+        current_page: 1,
+
+        // 总的元素个数
+        total_len: 0,
+
+        // 本页起始元素index
+        page_start: 0,
+
+        // 本页结束元素index
+        page_end: 0,
+
+        // 单页元素个数
+        page_size: 10
+      }
+    },
+
+    methods: {
+      // 响应标签栏点击
+      handleTabClick: function (tab, event) {
+        this.current_page = 1
+        this.page_start = 0
+        switch (tab.name) {
+          case "0":
+            this.page_end = this.order_list.length < this.page_size ? this.order_list.length : this.page_size;
+            break;
+          case "1":
+            this.page_end = this.finished_order_list.length < this.page_size ? this.finished_order_list.length : this.page_size;
+            break;
+          case "2":
+            this.page_end = this.paid_order_list.length < this.page_size ? this.paid_order_list.length : this.page_size;
+            break;
+          case "3":
+            this.page_end = this.unpaid_order_list.length < this.page_size ? this.unpaid_order_list.length : this.page_size;
+            break;
+          case "4":
+            this.page_end = this.canceled_order_list.length < this.page_size ? this.canceled_order_list.length : this.page_size;
+            break;
+          default:
+            break;
+        }
+      },
+
+      // 响应页面切换
+      handlePageChange: function (val) {
+        this.page_start = (val - 1) * this.page_size
+        switch (this.activated) {
+          case "0":
+            this.page_end = this.order_list.length < (this.page_start + this.page_size) ? this.order_list.length : (this.page_start + this.page_size);
+            break;
+          case "1":
+            this.page_end = this.finished_order_list.length < (this.page_start + this.page_size) ? this.finished_order_list.length : (this.page_start + this.page_size);
+            break;
+          case "2":
+            this.page_end = this.paid_order_list.length < (this.page_start + this.page_size) ? this.paid_order_list.length : (this.page_start + this.page_size);
+            break;
+          case "3":
+            this.page_end = this.unpaid_order_list.length < (this.page_start + this.page_size) ? this.unpaid_order_list.length : (this.page_start + this.page_size);
+            break;
+          case "4":
+            this.page_end = this.canceled_order_list.length < (this.page_start + this.page_size) ? this.canceled_order_list.length : (this.page_start + this.page_size);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  .side-bar {
+    margin-right: 1rem;
+    min-width: 13rem;
+  }
+
+  .select-panel div {
+    font-size: medium !important;
+  }
+
+  .order-card {
+    width: 50%;
+    min-width: 60rem;
+    margin: 2rem auto 1rem;
+  }
+
+  .pagination-div {
+    position: fixed;
+    bottom: 2rem;
+    left: 18rem;
+    width: calc(100vw - 18rem) !important;
+  }
+
+  .pagination {
+    width: fit-content !important;
+    margin:0 auto !important;
+  }
+</style>
