@@ -82,16 +82,18 @@
         </div>
 
         <!--页面切换区-->
-        <div class="pagination-div">
-          <el-pagination
-            @current-change="handlePageChange"
-            :current-page.sync="current_page"
-            :page-size="page_size"
-            layout="prev, pager, next, jumper"
-            :total="total_len"
-            class="pagination">
-          </el-pagination>
-        </div>
+        <el-footer>
+          <div class="pagination-div">
+            <el-pagination
+              @current-change="handlePageChange"
+              :current-page.sync="current_page"
+              :page-size="page_size"
+              layout="prev, pager, next, jumper"
+              :total="total_len"
+              class="pagination">
+            </el-pagination>
+          </div>
+        </el-footer>
       </el-main>
     </el-container>
   </div>
@@ -280,10 +282,9 @@
   }
 
   .pagination-div {
-    position: fixed;
-    bottom: 2rem;
-    left: 18rem;
-    width: calc(100vw - 18rem) !important;
+    position: relative;
+    top: 2rem;
+    width: 100%;
   }
 
   .pagination {

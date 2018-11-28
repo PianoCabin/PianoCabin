@@ -94,10 +94,9 @@
   }
 
   .pagination-div {
-    position: fixed;
-    bottom: 2rem;
-    left: 18rem;
-    width: calc(100vw - 18rem) !important;
+    position: relative;
+    top: 2rem;
+    width: 100%;
   }
 
   .pagination {
