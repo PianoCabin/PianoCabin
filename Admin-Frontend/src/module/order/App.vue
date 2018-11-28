@@ -219,18 +219,23 @@
         this.page_start = 0
         switch (tab.name) {
           case "0":
+            this.total_len = this.order_list.length
             this.page_end = this.order_list.length < this.page_size ? this.order_list.length : this.page_size;
             break;
           case "1":
+            this.total_len = this.finished_order_list.length
             this.page_end = this.finished_order_list.length < this.page_size ? this.finished_order_list.length : this.page_size;
             break;
           case "2":
+            this.total_len = this.paid_order_list.length
             this.page_end = this.paid_order_list.length < this.page_size ? this.paid_order_list.length : this.page_size;
             break;
           case "3":
+            this.total_len = this.unpaid_order_list.length
             this.page_end = this.unpaid_order_list.length < this.page_size ? this.unpaid_order_list.length : this.page_size;
             break;
           case "4":
+            this.total_len = this.canceled_order_list.length
             this.page_end = this.canceled_order_list.length < this.page_size ? this.canceled_order_list.length : this.page_size;
             break;
           default:
