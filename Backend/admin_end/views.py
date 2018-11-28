@@ -171,6 +171,7 @@ class NewsList(APIView):
             temp = list(news_list)
             for item in temp:
                 item['publish_time'] = item['publish_time'].timestamp()
+                item['news_id'] = item["id"]
             return {'news_list': temp}
         except:
             raise MsgError(0, 'fail to list news')
@@ -224,14 +225,42 @@ class FeedbackList(APIView):
     def get(self):
         if not self.request.user.is_authenticated:
             raise MsgError(0, 'not login')
-        self.checkMsg("read_status")
         try:
-            temp = Feedback.objects.filter(read_status=self.msg['read_status']).values(
-                'feedback_title', 'id', 'user', 'feedback_time')
-            a = list(temp)
-            for i in a:
-                i['feedback_time'] = i['feedback_time'].timestamp()
-            return {'feedback_list': a}
+            if self.msg.get('read_status'):
+                temp = Feedback.objects.filter(read_status=self.msg['read_status']).values(
+                    'feedback_title', 'id', 'user', 'feedback_time','read_status')
+                a = list(temp)
+                for i in a:
+                    i['feedback_time'] = i['feedback_time'].timestamp()
+                    i['feedback_id'] = i['id']
+                    user = User.objects.get(id=i['user'])
+                    if user.identity:
+                        i["user_id"]=user.identity
+                    else:
+                        i["user_id"]=user.open_id
+                    if i["read_status"]:
+                        i["read_status"] = 1
+                    else:
+                        i["read_status"] = 0
+                return {'feedback_list': a}
+            else:
+                temp = Feedback.objects.all().values(
+                    'feedback_title', 'id', 'user', 'feedback_time','read_status')
+                a = list(temp)
+                for i in a:
+                    i['time'] = int(i['feedback_time'].timestamp())
+                    i['feedback_time'] = i['feedback_time'].timestamp()
+                    i['feedback_id'] = i['id']
+                    user = User.objects.get(id=i['user'])
+                    if user.identity:
+                        i["user_id"] = user.identity
+                    else:
+                        i["user_id"] = user.open_id
+                    if i["read_status"]:
+                        i["read_status"] = 1
+                    else:
+                        i["read_status"] = 0
+                return {'feedback_list': a}
         except:
             raise MsgError(0, 'fail to list feedback')
 
@@ -244,9 +273,16 @@ class FeedbackDetail(APIView):
         self.checkMsg("feedback_id")
         try:
             temp = Feedback.objects.filter(id=self.msg['feedback_id']).values(
-                'feedback_title', 'feedback_content', 'feedback_time', 'user')
-            a = list(temp)[0]
-            a['feedback_time'] = a['feedback_time'].timestamp()
+                'feedback_title','feedback_content', 'id', 'user', 'feedback_time', 'read_status')[0]
+            user = User.objects.get(pk=temp['user'])
+            a = {}
+            a['feedback_content'] = temp['feedback_content']
+            a['feedback_title'] = temp['feedback_title']
+            a['publish_time'] = temp['feedback_time'].timestamp()
+            if user.identity:
+                a["user_id"] = user.identity
+            else:
+                a["user_id"] = user.open_id
             return a
         except:
             raise MsgError(0, 'cannot get the detail of this feedback')
