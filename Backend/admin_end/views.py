@@ -9,6 +9,7 @@ from .models import *
 import json
 import datetime
 from collections import defaultdict
+from django.db import transaction
 
 # Create your views here.
 
@@ -43,18 +44,30 @@ class PianoRoomCreate(APIView):
         if not self.request.user.is_authenticated:
             raise MsgError(0, 'not login')
         self.checkMsg("room_num", "piano_type", "brand", "price_0", "price_1", "price_2", "usable", "art_ensemble")
-        new_piano_room = PianoRoom.objects.create(
-            room_num=self.msg["room_num"],
-            piano_type=self.msg["piano_type"],
-            brand=self.msg["brand"],
-            price_0=self.msg["price_0"],
-            price_1=self.msg["price_1"],
-            price_2=self.msg["price_2"],
-            usable=self.msg["usable"],
-            art_ensemble=self.msg["art_ensemble"],
-        )
-        if not new_piano_room:
-            raise MsgError(0, 'piano room create failed')
+        try:
+            with transaction.atomic():
+                new_piano_room = PianoRoom.objects.create(
+                    room_num=self.msg["room_num"],
+                    piano_type=self.msg["piano_type"],
+                    brand=self.msg["brand"],
+                    price_0=self.msg["price_0"],
+                    price_1=self.msg["price_1"],
+                    price_2=self.msg["price_2"],
+                    usable=self.msg["usable"],
+                    art_ensemble=self.msg["art_ensemble"],
+                )
+                if redis_manage.redis_lock.acquire():
+                    for i in range(CONFIGS['MAX_ORDER_DAYS']):
+                        redis_manage.order_list.rpush(new_piano_room.room_num, '[]')
+                    redis_manage.redis_lock.release()
+                if not new_piano_room:
+                    raise MsgError(0, 'piano room create failed')
+        except:
+            try:
+                redis_manage.redis_lock.release()
+            except:
+                pass
+            raise MsgError(msg='piano room create failed')
 
 
 class PianoRoomEdit(APIView):
