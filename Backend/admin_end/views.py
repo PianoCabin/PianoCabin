@@ -9,6 +9,7 @@ from .models import *
 import json
 import datetime
 from collections import defaultdict
+from django.db import transaction
 
 # Create your views here.
 
@@ -43,18 +44,30 @@ class PianoRoomCreate(APIView):
         if not self.request.user.is_authenticated:
             raise MsgError(0, 'not login')
         self.checkMsg("room_num", "piano_type", "brand", "price_0", "price_1", "price_2", "usable", "art_ensemble")
-        new_piano_room = PianoRoom.objects.create(
-            room_num=self.msg["room_num"],
-            piano_type=self.msg["piano_type"],
-            brand=self.msg["brand"],
-            price_0=self.msg["price_0"],
-            price_1=self.msg["price_1"],
-            price_2=self.msg["price_2"],
-            usable=self.msg["usable"],
-            art_ensemble=self.msg["art_ensemble"],
-        )
-        if not new_piano_room:
-            raise MsgError(0, 'piano room create failed')
+        try:
+            with transaction.atomic():
+                new_piano_room = PianoRoom.objects.create(
+                    room_num=self.msg["room_num"],
+                    piano_type=self.msg["piano_type"],
+                    brand=self.msg["brand"],
+                    price_0=self.msg["price_0"],
+                    price_1=self.msg["price_1"],
+                    price_2=self.msg["price_2"],
+                    usable=self.msg["usable"],
+                    art_ensemble=self.msg["art_ensemble"],
+                )
+                if redis_manage.redis_lock.acquire():
+                    for i in range(CONFIGS['MAX_ORDER_DAYS']):
+                        redis_manage.order_list.rpush(new_piano_room.room_num, '[]')
+                    redis_manage.redis_lock.release()
+                if not new_piano_room:
+                    raise MsgError(0, 'piano room create failed')
+        except:
+            try:
+                redis_manage.redis_lock.release()
+            except:
+                pass
+            raise MsgError(msg='piano room create failed')
 
 
 class PianoRoomEdit(APIView):
@@ -158,6 +171,7 @@ class NewsList(APIView):
             temp = list(news_list)
             for item in temp:
                 item['publish_time'] = item['publish_time'].timestamp()
+                item['news_id'] = item["id"]
             return {'news_list': temp}
         except:
             raise MsgError(0, 'fail to list news')
@@ -211,14 +225,33 @@ class FeedbackList(APIView):
     def get(self):
         if not self.request.user.is_authenticated:
             raise MsgError(0, 'not login')
-        self.checkMsg("read_status")
         try:
-            temp = Feedback.objects.filter(read_status=self.msg['read_status']).values(
-                'feedback_title', 'id', 'user', 'feedback_time')
-            a = list(temp)
-            for i in a:
-                i['feedback_time'] = i['feedback_time'].timestamp()
-            return {'feedback_list': a}
+            if self.msg.get('read_status'):
+                temp = Feedback.objects.filter(read_status=self.msg['read_status']).values(
+                    'feedback_title', 'id', 'user', 'feedback_time','read_status')
+                a = list(temp)
+                for i in a:
+                    i['feedback_time'] = i['feedback_time'].timestamp()
+                    i['feedback_id'] = i['id']
+                    user = User.objects.get(id=i['user'])
+                    if user.identity:
+                        i["user_id"]=user.identity
+                    else:
+                        i["user_id"]=user.open_id
+                return {'feedback_list': a}
+            else:
+                temp = Feedback.objects.all().values(
+                    'feedback_title', 'id', 'user', 'feedback_time','read_status')
+                a = list(temp)
+                for i in a:
+                    i['feedback_time'] = i['feedback_time'].timestamp()
+                    i['feedback_id'] = i['id']
+                    user = User.objects.get(id=i['user'])
+                    if user.identity:
+                        i["user_id"] = user.identity
+                    else:
+                        i["user_id"] = user.open_id
+                return {'feedback_list': a}
         except:
             raise MsgError(0, 'fail to list feedback')
 
@@ -231,9 +264,14 @@ class FeedbackDetail(APIView):
         self.checkMsg("feedback_id")
         try:
             temp = Feedback.objects.filter(id=self.msg['feedback_id']).values(
-                'feedback_title', 'feedback_content', 'feedback_time', 'user')
-            a = list(temp)[0]
-            a['feedback_time'] = a['feedback_time'].timestamp()
+                'feedback_title','feedback_content', 'id', 'user', 'feedback_time', 'read_status')[0]
+            user = User.objects.get(pk=temp['user'])
+            a = {'feedback_content': temp['feedback_content'], 'feedback_title': temp['feedback_title'],
+                 'feedback_time': temp['feedback_time'].timestamp()}
+            if user.identity:
+                a["user_id"] = user.identity
+            else:
+                a["user_id"] = user.open_id
             return a
         except:
             raise MsgError(0, 'cannot get the detail of this feedback')
