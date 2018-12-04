@@ -20,7 +20,8 @@ Page({
   getOrderList(){
     app.getOrderList({},this.updateOrderList);
   },
-  updateOrderList(data_list){
+  updateOrderList(res){
+    let data_list = res.data["data"]["order_list"]
     let new_list = [];
     for(let i = 0;i<data_list.length;i++){
       let order = {};
@@ -50,7 +51,6 @@ Page({
   },
   orderDetail(event){
     let order_id = this.data.order_list[event.currentTarget.id]["order_id"]
-    console.log(order_id);
     wx.navigateTo({
       url: '/pages/orderinfo/orderinfo?order_id='+order_id.toString(),
     })

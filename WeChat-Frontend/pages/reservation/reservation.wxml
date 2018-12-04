@@ -4,13 +4,13 @@
 
 <view class='list_page'>
     <view class="room_type">
-      <view class="edge_item"></view>    
-      <view class="type_item piano" id='{{piano_id}}' bindtap='pianoList'>钢琴房</view>
-      <view class="empty_item"></view>      
-      <view class="type_item room" id='{{room_id}}' bindtap='roomList'>小琴房</view>
-      <view class="empty_item"></view>
-      <view class="type_item keyboard" id='{{keyboard_id}}' bindtap='keyboardList'>电钢琴</view>
       <view class="edge_item"></view>
+      <view  wx:for="{{type_list}}" wx:key="" class='type_item piano' bindtap='pianoList' id='{{index}}'>
+        <view class="empty_item"></view>        
+        <view wx:if="{{index == type_id}}" class='select_type'>{{item}}</view>
+        <view wx:else>{{item}}</view>    
+        <view class="empty_item"></view>
+      </view> 
     </view>
 
     <view class='container'>

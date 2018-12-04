@@ -1,7 +1,7 @@
 var util = require("utils/util.js")
 
 //app.js
-App({
+let app = App({
   onLaunch: function () {
     try{
       this.globalData.user_session = wx.getStorageSync("user_session");
@@ -39,9 +39,11 @@ App({
       }
     })
   },
-  getUserSession: function(callback,arg1=null,arg2=null){
+  getUserSession(callback,arg1=null,arg2=null,arg3=null,arg4=null){
     wx.login({
       success: res => {
+        console.log("we.login return ");
+        console.log(res);
         wx.request({
           url: this.globalData.backend + `/u/login/`,
           method: "POST",
@@ -49,12 +51,17 @@ App({
             code: res.code
           },
           success: res => {
+            console.log("paino session return ");
+            console.log(res);
             if (res.data["code"] == 1) {
               this.globalData.user_session =  res.data["data"]["session"];
               wx.setStorageSync("user_session", this.globalData.user_session);
               console.log("get from net");
               console .log(this.globalData.user_session);
-              callback(arg1,arg2);
+              callback(arg1,arg2,arg3,arg4);
+            }
+            else{
+              util.msgPrompt(res.data["msg"]);
             }
           },
           fail: res => {
@@ -67,135 +74,79 @@ App({
       }
     })
   },
-  getRoomList(data,successFunc,...args){
-    console.log("getRoomlist-data:");
-    console.log(data);
-    console.log(successFunc);
+  getRoomList(data,successFunc){
+      this._post('/u/order/piano-rooms-list/', data, successFunc)
+  },
+  submitOrder(data,successFunc){
+    this._post(`/u/order/normal/`,data,successFunc)
+  },
+  getOrderList(data,successFunc) {
+      this._get(`/u/order/list`,data,successFunc)
+  },
+  changeOrder(data,successFunc){
+    this._post(`/u/order/change/`,data,successFunc)
+  },
+  cancelOrder(data,successFunc){
+    this._post(`/u/order/cancel/`,data,successFunc)
+  },
+  _post(url,data,successFunc=res=>{console.log(res)},failFunc=res=>{console.log(res)}){
     if(this.globalData.user_session)
     {
+      console.log(url+"   data:");
+      console.log(data);
+      console.log("session: "+ this.globalData.user_session)
       wx.request({
-        url: this.globalData.backend + '/u/order/piano-rooms-list/',
+        url: this.globalData.backend + url,
         data: data,
         header: {
           "Authorization": this.globalData.user_session
         },
         method: "POST",
         success: res => {
-          if (res.data["code"] == 0) {
+          console.log(url+"   return:");
+          console.log(res);
+          if(res.data["code"] == 0)
             util.msgPrompt(res.data["msg"]);
-          }
-          else {
-            console.log("getRoomList-return:");
-            console.log(res);
+          else
             successFunc(res);
-          }
         },
         fail: res => {
-          util.msgPrompt("network wrong");
+          failFunc(res);
         }
       })
     }
     else{
-      this.getUserSession(this.getRoomList,data,successFunc);
+      this.getUserSession(this._post,url,data,successFunc,failFunc);
     }
   },
-  submitOrder(data,successFunc){
-
-    console.log("submitOrder-data:");
-    console.log(data);
-    wx.request({
-      url: this.globalData.backend + `/u/order/normal/`,
-      method: "POST",
-      data: data,
-      header: {
-        "Authorization": this.globalData.user_session
-      },
-      success: function (res) {
-        if (res.data["code"] == 0) {
-          util.msgPrompt(res.data["msg"]);
-        }
-        else {
-          console.log("submitOrder-return:")
-          console.log(res);
-          successFunc(res);
-        }
-      },
-      fail: function (res) {
-        console.log("net work wrong");
-      }
-    })
-  },
-  getOrderList(data,successFunc) {
-    console.log("getOrderList-data:");
-    console.log(data);
-    console.log("usersession:"+this.globalData.user_session);
-    if (this.globalData.user_session) {
+  _get(url, data, successFunc = res => { console.log(res) }, failFunc = res => { console.log(res) }) {
+    if(this.globalData.user_session)
+    {  
+      console.log(url + "   data:");
+      console.log(data);
+      console.log("session: " + this.globalData.user_session)
       wx.request({
-        url: this.globalData.backend + `/u/order/list`,
-        method: "GET",
+        url: this.globalData.backend + url,
+        data: data,
         header: {
           "Authorization": this.globalData.user_session
         },
-        data:data,
+        method: "GET",
         success: res => {
-          if (res.data["code"] == 1) {
-            console.log("getOrderList-return-list:")
-            console.log(res.data["data"]["order_list"])
-            successFunc(res.data["data"]["order_list"])
-          }
-          else {
-            console.log(res);
-          }
+          console.log(url + "   return:");
+          console.log(res);
+          if (res.data["code"] == 0)
+            util.msgPrompt(res.data["msg"]);
+          else
+            successFunc(res);
         },
         fail: res => {
-          util.msgPrompt("network wrong");
+          failFunc(res);
         }
       })
     }
-    else{
-      this.getUserSession(this.getOrderList(data, successFunc) )
-    }
-  },
-  changeOrder(data,successFunc){
-    console.log("changeOrder-data:");
-    console.log(data);
-    wx.request({
-      url: this.globalData.backend + `/u/order/change/`,
-      data: data,
-      header: {
-        "Authorization": this.globalData.user_session
-      },
-      method: "POST",
-      success: res => {
-        console.log("changeOrder-return");
-        console.log(res);
-        successFunc(res)
-      },
-      fail: res => {
-        console.log(res);
-      }
-    })
-  },
-  cancelOrder(data,successFunc){
-    console.log("cancelOrder-data:");
-    console.log(data);
-    wx.request({
-      url: this.globalData.backend + `/u/order/cancel/`,
-
-      data: data,
-      header: {
-        "Authorization": this.globalData.user_session
-      },
-      method: "POST",
-      success: res => {
-        console.log("cancelOrder-return");
-        console.log(res);
-        successFunc(res);
-      },
-      fail: res => {
-        console.log(res);
-      }
-    })
+    else
+      this.getUserSession(this._get,url,data,successFunc,failFunc)
   },
   globalData: {
     userInfo: null,
@@ -207,3 +158,6 @@ App({
     user_session:null
   }
 })
+
+
+module.exports = app;

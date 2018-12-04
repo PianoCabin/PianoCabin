@@ -26,7 +26,9 @@ Page({
     cancel_view:false,
     open_time:[12,0],
     close_time:[22,30],
-    nickname:"默认用户"
+    nickname:"默认用户",
+    saved:true,
+    valid:true
   },
 
   /**
@@ -37,7 +39,6 @@ Page({
     this.getOrderInfo(order_id);
     
     this.setData({
-      cur_date:new Date().toLocaleDateString(),
       nickname: app.globalData.user_nickname
     })
   },
@@ -47,9 +48,10 @@ Page({
     })
   },
   getOrderInfo(order_id){
-    app.getOrderList({ order_id: order_id }, res => { this.updateOrderInfo(res[0])})
+    app.getOrderList({ order_id: order_id },this.updateOrderInfo)
   },
-  updateOrderInfo(data){
+  updateOrderInfo(res){
+    let data = res.data["data"]["order_list"][0]
     let info = {};
     info["piano_type"] = data["brand"];
     info["type"] = data["piano_type"]
@@ -71,6 +73,7 @@ Page({
       info:info,
       start_time: util.timestampToTimeString(data["start_time"] * 1000),
       end_time:util.timestampToTimeString(data["end_time"]*1000),
+      cur_date:(new Date(data["start_time"]*1000)).toLocaleDateString()
     })
     if (data["order_status"] == 1)
       this.getRoomInfo(data["room_num"]);
@@ -87,6 +90,7 @@ Page({
   },
   setOrderInfo(res){
     this.setStartList(res.data["data"]["room_list"][0]);
+    this.initEndList(res.data["data"]["room_list"][0]);
     this.setData({
       roominfo: res.data['data']["room_list"][0]
     })
@@ -147,7 +151,30 @@ Page({
     }
     this.setData({ starttime_list: start_list,edit:true });
   },
-  
+  initEndList(room_info){
+    let end_list = [];
+    let transer = new Date()
+    transer.setHours(this.data.close_time[0], this.data.close_time[1], 0, 0)
+    let start = new Date(this.data.info["start_time"]);
+    let max_end = transer.getTime();
+
+    for (let i = 0; i < room_info["occupied_time"].length; i++) {
+      if (start <= room_info["occupied_time"][i][0]) {
+        max_end = room_info["occupied_time"][i][0];
+        break;
+      }
+      if (i == room_info["occupied_time"].length - 1) {
+        transer.setHours(this.data.close_time[0], this.data.close_time[1], 0, 0)
+        max_end = transer.getTime();
+      }
+    }
+    start = start.getTime() + this.data.min_order;
+    while (start <= max_end) {
+      end_list.push(util.timestampToTimeString(start));
+      start = start + this.data.min_interval;
+    }
+    this.setData({ endtime_list: end_list});
+  },
   setOrderStart(event) {
     let info = this.data.info;
     let end_list = [];
@@ -158,6 +185,7 @@ Page({
     let transer = new Date()
     transer.setHours(this.data.close_time[0], this.data.close_time[1], 0, 0)
     let start = new Date(util.timeStringToTimestamp(this.data.cur_date, this.data.starttime_list[index]));
+    
     let max_end = transer.getTime();
 
     for (let i = 0; i < room_info["occupied_time"].length; i++) {
@@ -170,15 +198,33 @@ Page({
         max_end = transer.getTime();
       }
     }
+    
     start = start.getTime() + this.data.min_order;
     while (start <= max_end) {
       end_list.push(util.timestampToTimeString(start));
       start = start + this.data.min_interval;
     }
+
     info["order_start"] = this.data.starttime_list[index];
-    info["order_end"] = "结束";
-    info["price"] = "";
-    this.setData({ endtime_list: end_list, info: info, start_time: info["order_start"],end_time:info['order_end']});
+    start = util.timeStringToTimestamp(this.data.cur_date,info["order_start"]);
+    if(info["end_time"]-start<this.data.min_order)
+    {
+      info["order_end"] = "结束";
+      info["price"] = "";
+      this.setData({ endtime_list: end_list, info: info, start_time: info["order_start"],end_time:info['order_end'],saved:false,valid:false});
+    }
+    else{
+      let end = util.timeStringToTimestamp(this.data.cur_date, info["order_end"]);
+      let hours = parseInt((end - start) / (60 * 60 * 1000)) + ((end - start) % (60 * 60 * 1000) > 0);
+      let newprice = hours * this.data.roominfo["unit_price"];
+      info["price"] = newprice;
+      this.setData({
+        info: info,
+        saved: false,
+        start_time: info["order_start"], end_time: info['order_end'],
+        valid: true
+      })
+    }
   },
   setOrderEnd(event){
     let index = event.detail["value"];
@@ -191,7 +237,9 @@ Page({
     info["order_end"] = this.data.endtime_list[index];
     this.setData({
       end_time:info["order_end"],
-      info:info
+      info:info,
+      saved:false,
+      valid:true
     })
   },
   toOrderPage(){
@@ -202,7 +250,10 @@ Page({
   changeOrder(){
     let info = this.getInfoObject();
     
-    app.changeOrder(info, res => { this.onLoad({ order_id: info["order_id"] });});
+    app.changeOrder(info, res => { 
+      this.onLoad({ order_id: info["order_id"] });
+      this.setData({saved:true});
+      });
     
   },
   cancelOrder(){
