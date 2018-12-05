@@ -196,13 +196,8 @@
       // 响应单行点击
       getDetail(row, event, column) {
         let feedback_id = parseInt(event.currentTarget.getElementsByClassName('feedback-id')[0].innerText)
-        Utils.get(this, '/a/feedback/detail?feedback_id=' + feedback_id, null, function (_this, res) {
-          if (res.code === 0) {
-            _this.$message.error("获取反馈详细信息失败")
-          } else {
-            console.log(res.data)
-          }
-        })
+        Utils.setURL('feedback-detail@' + feedback_id+ '/')
+
       }
     }
   }

@@ -19,6 +19,7 @@ from .views import *
 urlpatterns = [
     path('room-detail@<str:page>/', RoomDetail.as_view()),
     path('news-create@<str:page>/',NewsCreate.as_view()),
+    path('feedback-detail@<str:page>/',FeedbackDetail.as_view()),
     path('<str:page>/', Page.as_view()),
     path('a/', include('admin_end.urls')),
     path('u/', include('user_end.urls')),
