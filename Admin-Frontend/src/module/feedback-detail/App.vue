@@ -18,13 +18,13 @@
             <el-row><hr class="inner-segment-line" noshade=true/></el-row>
             <el-row class="info">
               <el-col :span="12" class="publisher">发布人：{{feedback_detail.user_id}}</el-col>
-              <el-col :span="12" class="publish-time">发布时间：{{feedback_detail.feedback_time}}</el-col>
+              <el-col :span="12" class="publish-time">发布时间：{{feedback_detail.feedback_time | getFullTime}}</el-col>
             </el-row>
             <el-row><div class="feedback-content">{{feedback_detail.feedback_content}}</div></el-row>
           </el-card>
 
           <!--返回按钮-->
-          <el-button class="return-button" @click="returnToRoom"></el-button>
+          <el-button class="return-button" @click="returnToFeedback"></el-button>
         </div>
       </el-main>
     </el-container>
@@ -36,6 +36,11 @@
   import Heading from '../../components/Heading/Heading'
   import SideBar from "../../components/SideBar/SideBar"
   import Utils from "../../common/js/utils"
+  import * as Vue from "vue";
+
+  Vue.filter('getFullTime', function (timestamp) {
+    return new Date(parseFloat(timestamp) * 1000).toLocaleString()
+  })
 
   export default {
     name: 'app',
@@ -45,20 +50,36 @@
     },
 
     created() {
+      let len = window.location.href.split('/').length
+      let feedback_id = window.location.href.split('/')[len - 2].split('@')[1]
+      console.log(feedback_id);
+      Utils.get(this, '/a/feedback/detail?feedback_id=' + feedback_id, null, function (_this, res) {
+        if (res.code === 0) {
+          _this.$message.error("获取反馈详细信息失败")
+          Utils.setURL('feedback/')
+        } else {
+          console.log(res.data)
+          _this.feedback_detail = res.data
+        }
+      })
     },
 
     data() {
       return {
         feedback_detail: {
-          user_id: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          user_id: '',
           feedback_time: new Date().toLocaleString(),
-          feedback_content: 'nasdnjvaskdvnsiavjksndvjksdjv ksja vnjksdnvksdandsivk dvvivjakjs',
-          feedback_title: '国庆节放假安排何时制定？'
+          feedback_content: '',
+          feedback_title: ''
         }
       }
     },
 
-    methods: {}
+    methods: {
+      returnToFeedback: function () {
+        Utils.setURL('feedback/')
+      }
+    }
   }
 </script>
 

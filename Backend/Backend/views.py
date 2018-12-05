@@ -19,6 +19,10 @@ class RoomDetail(View):
     def dispatch(self, request, *args, **kwargs):
         return render(request, 'room-detail.html')
 
+class FeedbackDetail(View):
+    def dispatch(self, request, *args, **kwargs):
+        return render(request, 'feedback-detail.html')
+
 class NewsCreate(View):
     def dispatch(self, request, *args, **kwargs):
         return render(request, 'news-create.html')

@@ -23,19 +23,21 @@
   margin-right: 5%;
 }
 .empty_item{
-  width: 120rpx;
+  width: 20%;
 }
 .edge_item{
   width: 40rpx;
 }
 .type_item {
   text-align: center;
-  width: 120rpx;
+  width: 100%;
   margin-top: 15rpx;
   margin-bottom: 15rpx;
   font-size: 30rpx;
+  display: flex;
+  flex-direction: row;
 }
-#select_type {
+.select_type {
   color: #8E2782;
   box-sizing: content-boxs;
   border-bottom: 5rpx solid;

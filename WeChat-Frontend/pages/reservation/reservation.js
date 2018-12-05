@@ -5,11 +5,8 @@ var util = require("../../utils/util.js")
 
 const app = getApp()
 
-Page({
+let page = Page({
   data: {
-    piano_id:"",                                            //钢琴按钮的id
-    room_id:"",                                             //小琴房按钮的id
-    keyboard_id:"",                                         //电钢琴按钮的id
     list_type:null,                                         //当前显示的列表的类型（钢琴、小琴房或电钢琴）
     cur_date:"",                                            //当前选择的日期
     search_start:null,                                      //按时间查找的开始时间
@@ -31,58 +28,33 @@ Page({
     min_interval:10*60*1000,                                //开始时间最短间隔
     search_start_list:[],                                   //搜索开始时间列表
     search_end_list:[],                                     //搜索结束时间列表
-    completeable:true                                       //订单是否可支付
+    completeable:true,                                      //订单是否可支付
+    type_list:["钢琴房","小琴房","电钢琴"],                   //琴屋种类列表
+    type_id:0  
   },
 
   //初始化页面，默认显示钢琴页面
   onReady: function () {
-    this.setData({ piano_id: "select_type", room_id: "", keyboard_id: "", cur_date: new Date().toLocaleDateString(), list_type: "钢琴房" });
+    this.setData({ piano_id: "select_type", room_id: "", keyboard_id: "", cur_date: new Date().toLocaleDateString(), list_type: this.data.type_list[0] });
       this.getRoomList();
       this.initSearchPage();
-      // wx.startPullDownRefresh({
-      //   success:()=>{
-      //     console.log("pulldownrefresh");
-      //     this.resetSearch()
-      //     this.getRoomList();
-      //   },
-      //   fail:()=>{
-      //     util.msgPrompt("fail to refresh");
-      //   }
-      // });
   },
   onPullDownRefresh(){
     this.resetSearch()
     this.getRoomList();
   },
-  onShow:function(){  
-    // this.getRoomList();
+  onShow:function(){
     this.initSearchPage();
   },
 
   
   //显示钢琴列表
   pianoList:function(event){
-    
-    this.setData({ piano_id: "select_type", room_id: "", keyboard_id: "", list_type: "钢琴房", room_list: [] })
+    let type_id = event.currentTarget.id;
+    this.setData({ piano_id: "select_type", room_id: "", keyboard_id: "", list_type: this.data.type_list[type_id], room_list: [], type_id:type_id })
     this.getRoomList();
 
   },
-
-  //显示小琴房列表
-  roomList: function (event) {
-    
-    this.setData({ piano_id: "", room_id: "select_type", keyboard_id: "", list_type: "小琴房", room_list: [] })  
-    this.getRoomList();
-    
-  },
-
-  //显示电钢琴列表
-  keyboardList: function (event) {
-    this.setData({ piano_id: "", room_id: "", keyboard_id: "select_type", list_type: "电钢琴" });
-    this.getRoomList();
-    
-  },
-
   //预约日期向前推一天
   dayBefore:function(event){
     let cur = new Date(this.data.cur_date);
@@ -375,6 +347,7 @@ Page({
       new_list.push(element);
     }
     this.setData({room_list:new_list});
+    return new_list;
   },
 
   //根据选择的开始时间，计算可能的结束时间
@@ -530,3 +503,6 @@ Page({
     })
   }
 })
+
+
+module.exports=page;
