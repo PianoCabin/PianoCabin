@@ -3,9 +3,39 @@
     <heading></heading>
 
     <el-container>
-      <el-aside width="18rem"><side-bar activated="2" class="side-bar"></side-bar></el-aside>
+      <el-aside width="18rem">
+        <side-bar activated="2" class="side-bar"></side-bar>
+      </el-aside>
 
       <el-main>
+        <div class="filter">
+          <el-row>
+            <div class="search-item fl">
+              <span>订单编号：</span>
+              <el-input @blur="handleFilter" class="info" v-model="filter_info.order_id" placeholder="请输入订单编号">
+              </el-input>
+            </div>
+            <div class="search-item fl">
+              <span>琴房房号：</span>
+              <el-input @blur="handleFilter" class="info" v-model="filter_info.room_num" placeholder="请输入琴房房号">
+              </el-input>
+            </div>
+          </el-row>
+          <el-row>
+            <div class="search-item fl">
+              <el-select value="0" v-model="id_type_selected" style="width: 7rem">
+                <el-option key="0" value="0" label="学号工号："></el-option>
+                <el-option key="1" value="1" label="微信ID："></el-option>
+              </el-select>
+              <el-input @blur="handleFilter" class="info" v-model="filter_info.user_id" placeholder="请输入订单编号"></el-input>
+            </div>
+            <div class="search-item fl">
+              <span>下单时间：</span>
+              <el-date-picker :default-time="['00:00:00', '23:59:59']" @blur="handleFilter" v-model="date_range" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+              </el-date-picker>
+            </div>
+          </el-row>
+        </div>
         <div class="content select-panel">
           <el-tabs v-model="activated" @tab-click="handleTabClick">
             <el-tab-pane label="全部" name="0">
@@ -127,7 +157,7 @@
   Vue.filter('getFullTime', function (timestamp) {
     return new Date(parseFloat(timestamp) * 1000).toLocaleString()
   })
-  
+
   Vue.filter('getStatus', function (status) {
     switch (status) {
       case 0:
@@ -208,7 +238,20 @@
         page_end: 0,
 
         // 单页元素个数
-        page_size: 10
+        page_size: 10,
+
+        // 筛选信息
+        filter_info: {
+          order_id: '',
+          room_num: '',
+          user_id: ''
+        },
+
+        // 选择用于筛选的id类型
+        id_type_selected: "0",
+
+        // 订单日期范围
+        date_range: null
       }
     },
 
@@ -265,6 +308,60 @@
           default:
             break;
         }
+      },
+
+      // 响应筛选条件变化
+      handleFilter: function () {
+        let data = {}
+        let keys = Object.keys(this.filter_info)
+        for (let i = 0; i < keys.length; i++) {
+          let key = keys[i]
+          if (this.filter_info[key] !== '') {
+            if (key === 'user_id'){
+              if (this.id_type_selected === '0')
+                data.identity = this.filter_info.user_id
+              else
+                data.open_id = this.filter_info.user_id
+            }
+            else
+              data[key] = this.filter_info[key]
+          }
+        }
+
+        if (this.date_range !== null) {
+          data.start_date = this.date_range[0].getTime() / 1000
+          data.end_date = this.date_range[1].getTime() / 1000
+        }
+
+        Utils.post(this, '/a/order/list/', data, function (_this, res) {
+          if (res.code === 0)
+            _this.$message.error("获取订单失败")
+          else {
+            _this.order_list = res.data.order_list
+            let len = _this.order_list.length
+
+            for (let i = 0; i < len; i++) {
+              switch (_this.order_list[i].order_status) {
+                case 0:
+                  _this.canceled_order_list.push(_this.order_list[i]);
+                  break;
+                case 1:
+                  _this.unpaid_order_list.push(_this.order_list[i]);
+                  break;
+                case 2:
+                  _this.paid_order_list.push(_this.order_list[i]);
+                  break;
+                case 3:
+                  _this.finished_order_list.push(_this.order_list[i]);
+                  break;
+                default:
+                  break;
+              }
+            }
+
+            _this.handleTabClick({name: _this.activated})
+          }
+        })
       }
     }
   }
@@ -294,6 +391,23 @@
 
   .pagination {
     width: fit-content !important;
-    margin:0 auto !important;
+    margin: 0 auto !important;
+  }
+
+  .filter {
+    margin-bottom: 2rem;
+  }
+
+  .search-item {
+    width: 30rem;
+    margin-top: 2rem;
+  }
+
+  .info {
+    width: 13rem;
+  }
+
+  .fl {
+    float: left;
   }
 </style>

@@ -1,135 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ac4b9641-e5d1-4c80-9f5d-6cc9d34dd0cc" name="Default Changelist" comment="">
+    <list default="true" id="6b008e3f-cc9e-4dcf-83e6-8d4dc8524b34" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/feedback-detail/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/feedback-detail/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/feedback/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/feedback/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/Backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/Backend/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/Backend/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/Backend/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/feedback.022378c23e6819cc6a7cd1facff9af4a.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/feedback.022378c23e6819cc6a7cd1facff9af4a.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/feedback.2865016aba2e2f3d8b94a28a01ba290b.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/feedback.2865016aba2e2f3d8b94a28a01ba290b.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/feedback.545471df73511cf3b9990dd7d3ff0e91.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/feedback.545471df73511cf3b9990dd7d3ff0e91.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/feedback.aaddaced1a0c24db71984f1b24654bb0.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/feedback.aaddaced1a0c24db71984f1b24654bb0.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/feedback.b82d6cf03f618ba7ff46467cf87aa7e6.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/feedback.b82d6cf03f618ba7ff46467cf87aa7e6.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/login.d6c7aa550c0ae8d6c249d7fae3a24e56.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/login.d6c7aa550c0ae8d6c249d7fae3a24e56.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news-create.62c4518a909d3154e5e293f0da3529a0.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news-create.62c4518a909d3154e5e293f0da3529a0.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news-create.ffccbf2d04bcd0a092187f41a9020d2d.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news-create.ffccbf2d04bcd0a092187f41a9020d2d.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news.04b1ebdcbaf1ef64594b4c1c1a9a91a0.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news.04b1ebdcbaf1ef64594b4c1c1a9a91a0.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news.8c185a1d1a8e59d04d0933abe477e3de.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news.8c185a1d1a8e59d04d0933abe477e3de.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news.a40cb3e11f135e44146d314f13bdc6d2.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news.a40cb3e11f135e44146d314f13bdc6d2.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news.c82e6ce57767d8979c558f1df4988e2c.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news.c82e6ce57767d8979c558f1df4988e2c.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news.d883e1fee31bd8e23b51ae1cba0c8d05.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/news.d883e1fee31bd8e23b51ae1cba0c8d05.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/order.213007c0bd313b704393f2e699909940.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/order.213007c0bd313b704393f2e699909940.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/order.4972f8bb015125dae744da31e214c0e3.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/order.4972f8bb015125dae744da31e214c0e3.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/order.8481d0815a1eac8642d468f805c5d5e6.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/order.8481d0815a1eac8642d468f805c5d5e6.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/order.f83c526e176625eca3688e84e14b40fe.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/order.f83c526e176625eca3688e84e14b40fe.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/room-detail.04318314cd26f530f71d749aeae68560.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/room-detail.04318314cd26f530f71d749aeae68560.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/room-detail.29976fc1a10e5d4c8297a586495022e1.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/room-detail.29976fc1a10e5d4c8297a586495022e1.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/room.6748372e2c8433eb1ee963c0f2a943c1.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/room.6748372e2c8433eb1ee963c0f2a943c1.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/room.ebae5cdd6d161dfe64a2a6e0f1fcdb7a.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/css/module/room.ebae5cdd6d161dfe64a2a6e0f1fcdb7a.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/index.ed035ee4189a34b1c461.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/index.ed035ee4189a34b1c461.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.0b37555fdc3f86f5c384.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.0b37555fdc3f86f5c384.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.221ad73de72f6b9466f5.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.221ad73de72f6b9466f5.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.3ce261812b62704f0bd9.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.3ce261812b62704f0bd9.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.4237a0682cd561194a39.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.4237a0682cd561194a39.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.5b17c333ee2dd0b3cce8.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.5b17c333ee2dd0b3cce8.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.5f8240f9168fe6ee6e88.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.5f8240f9168fe6ee6e88.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.9d61f810e745beaef5f2.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.9d61f810e745beaef5f2.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.b75dc6d39a41457a2c74.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/manifest.b75dc6d39a41457a2c74.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/feedback.504f47b6bf6e412bdc70.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/feedback.504f47b6bf6e412bdc70.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/feedback.88afe1fe293c65353d92.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/feedback.88afe1fe293c65353d92.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/feedback.ad6760f9ecd52befd7cf.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/feedback.ad6760f9ecd52befd7cf.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/feedback.bb687525f2306b2880e7.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/feedback.bb687525f2306b2880e7.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/feedback.d5b3faa50c316d3a862b.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/feedback.d5b3faa50c316d3a862b.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/login.154fb55da4a234a8fa29.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/login.154fb55da4a234a8fa29.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/login.b3eb54bfe07fec872ba7.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/login.b3eb54bfe07fec872ba7.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news-create.4e1410379caf5211d1d5.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news-create.4e1410379caf5211d1d5.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news-create.b898be8d436ef93c09f6.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news-create.b898be8d436ef93c09f6.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news-create.d178601a6c4b8f23a97e.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news-create.d178601a6c4b8f23a97e.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news.2a6085434fc3f959fa86.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news.2a6085434fc3f959fa86.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news.845aad10466e26041096.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news.845aad10466e26041096.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news.9c6763954bac3d41c789.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news.9c6763954bac3d41c789.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news.dbf52ac7464cb0bfe970.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news.dbf52ac7464cb0bfe970.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news.f2463deb31bc2053c4f4.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/news.f2463deb31bc2053c4f4.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.03f9d90bf63cff01ada9.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.03f9d90bf63cff01ada9.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.0e73b67e589d7f55b42c.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.0e73b67e589d7f55b42c.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.144434f1b9362f636d00.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.144434f1b9362f636d00.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.17a0c56cdad620f27801.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.17a0c56cdad620f27801.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.2131e7cdbf4b6e61dbe7.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.2131e7cdbf4b6e61dbe7.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.9c7f6a138a66225026b7.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.9c7f6a138a66225026b7.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.c11836f72dc76ead998b.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.c11836f72dc76ead998b.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.e44d0bcf4c69209678bd.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/order.e44d0bcf4c69209678bd.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/room-detail.31116d9acd7573f94e92.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/room-detail.31116d9acd7573f94e92.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/room-detail.3a6471becb8f31de162b.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/room-detail.3a6471becb8f31de162b.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/room-detail.569712b0f4abe242698c.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/room-detail.569712b0f4abe242698c.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/room.4113b2c516381302dae4.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/room.4113b2c516381302dae4.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/room.74b9fdae355142bb12b6.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/room.74b9fdae355142bb12b6.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/room.815280e7fa9a1fbcf755.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/module/room.815280e7fa9a1fbcf755.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/vendor.7ce5ec13e1af41b2a0a6.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/vendor.7ce5ec13e1af41b2a0a6.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/vendor.f93f6ed0ecd7a7bf1353.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/vendor.f93f6ed0ecd7a7bf1353.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/order/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/order/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/admin_end/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/admin_end/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/static/js/index.eaf874e8c6317725fa85.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/static/js/index.eaf874e8c6317725fa85.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/templates/feedback-detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/templates/feedback-detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Backend/templates/feedback.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/templates/feedback.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Backend/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Backend/templates/news-create.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/templates/news-create.html" afterDir="false" />
@@ -147,81 +26,68 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="1202557889">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="vue" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Vue.js" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="vue" value="1711" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Vue.js" value="1711" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/module/room-detail/App.vue">
+        <entry file="file://$PROJECT_DIR$/src/module/feedback-detail/App.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="92" column="9" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
-              <folding>
-                <element signature="e#3648#3702#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/module/news-create/App.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="23" column="22" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
+            <state relative-caret-position="785">
+              <caret line="118" column="21" selection-start-line="118" selection-start-column="21" selection-end-line="118" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/module/feedback-detail/App.vue">
+        <entry file="file://$PROJECT_DIR$/src/module/order/App.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="72" column="27" selection-start-line="72" selection-start-column="27" selection-end-line="72" selection-end-column="27" />
+            <state relative-caret-position="397">
+              <caret line="33" column="29" selection-start-line="33" selection-start-column="29" selection-end-line="33" selection-end-column="29" />
               <folding>
-                <element signature="e#1091#1145#0" expanded="true" />
+                <element signature="n#style#0;n#el-select#0;n#div#0;n#el-row#1;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/module/feedback/App.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="79">
-              <caret line="88" selection-start-line="88" selection-end-line="88" />
-              <folding>
-                <element signature="n#style#0;n#el-table#0;n#el-tab-pane#1;n#el-tabs#0;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-table#0;n#el-tab-pane#2;n#el-tabs#0;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#4350#4410#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/module/room/App.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2323">
-              <caret line="96" column="17" selection-start-line="96" selection-start-column="17" selection-end-line="96" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="HTML File" />
-        <option value="JavaScript File" />
-        <option value="Vue Single File Component" />
-      </list>
-    </option>
-  </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>scope.row.content</find>
+      <find>filter.</find>
     </findStrings>
     <replaceStrings>
-      <replace>scope.row.feedback_content</replace>
+      <replace>filter_info.</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -230,28 +96,38 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/components/FeedbackCard/FeedbackCard.vue" />
-        <option value="$PROJECT_DIR$/src/module/feedback/feedback.html" />
-        <option value="$PROJECT_DIR$/src/module/feedback-detail/feedback-detail.js" />
-        <option value="$PROJECT_DIR$/src/module/feedback-detail/feedback-detail.html" />
-        <option value="$PROJECT_DIR$/src/module/feedback/App.vue" />
-        <option value="$PROJECT_DIR$/src/module/feedback-detail/App.vue" />
+        <option value="$PROJECT_DIR$/src/module/order/App.vue" />
       </list>
     </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
+    <package-json value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/package.json" />
+    </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="1" id="Add" />
-  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -270,70 +146,19 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="module" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="module" type="462c0819:PsiDirectoryNode" />
-              <item name="feedback" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="module" type="462c0819:PsiDirectoryNode" />
-              <item name="feedback-detail" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="module" type="462c0819:PsiDirectoryNode" />
-              <item name="news-create" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="module" type="462c0819:PsiDirectoryNode" />
-              <item name="room" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="module" type="462c0819:PsiDirectoryNode" />
-              <item name="room-detail" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="module" type="462c0819:PsiDirectoryNode" />
-              <item name="room-detail" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="prettierjs.PrettierConfiguration.Package" value="C:\Users\MasterYoda117\Downloads\PianoCabin\Admin-Frontend\node_modules\prettier" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\MasterYoda117\Downloads\PianoCabin\Admin-Frontend\src\module\feedback-detail\images" />
-    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -348,7 +173,7 @@
     </option>
   </component>
   <component name="RunManager" selected="npm.Build">
-    <configuration name="Build" type="js.build_tools.npm">
+    <configuration name="Build" type="js.build_tools.npm" factoryName="npm">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
@@ -358,7 +183,7 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="Dev" type="js.build_tools.npm">
+    <configuration name="Dev" type="js.build_tools.npm" factoryName="npm">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
@@ -378,40 +203,37 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ac4b9641-e5d1-4c80-9f5d-6cc9d34dd0cc" name="Default Changelist" comment="" />
-      <created>1543942538479</created>
+      <changelist id="6b008e3f-cc9e-4dcf-83e6-8d4dc8524b34" name="Default Changelist" comment="" />
+      <created>1543991107527</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1543942538479</updated>
-      <workItem from="1543942539858" duration="94000" />
-      <workItem from="1543971093223" duration="3949000" />
-      <workItem from="1543984903144" duration="1916000" />
-      <workItem from="1543987738308" duration="1576000" />
+      <updated>1543991107527</updated>
+      <workItem from="1543991110305" duration="13244000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7535000" />
+    <option name="totallyTimeSpent" value="13244000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.33350897" />
+      <window_info id="npm" side_tool="true" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="npm" order="2" side_tool="true" />
-      <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.329718" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39955357" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -420,115 +242,23 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/components/FeedbackCard/FeedbackCard.vue" />
-    <entry file="file://$PROJECT_DIR$/src/module/room-detail/room-detail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="16" lean-forward="true" selection-end-line="16" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Heading/Heading.vue">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/module/feedback/feedback.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/NewsCard/NewsCard.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1500">
-          <caret line="50" column="3" selection-start-line="39" selection-start-column="1" selection-end-line="50" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/module/feedback/feedback.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-191">
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/module/feedback-detail/feedback-detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/module/feedback-detail/feedback-detail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/module/room-detail/room-detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Room/Room.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-43" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/module/room/App.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2323">
-          <caret line="96" column="17" selection-start-line="96" selection-start-column="17" selection-end-line="96" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/module/room-detail/App.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="92" column="9" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
-          <folding>
-            <element signature="e#3648#3702#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/module/news-create/App.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="23" column="22" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/module/feedback/App.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="79">
-          <caret line="88" selection-start-line="88" selection-end-line="88" />
-          <folding>
-            <element signature="n#style#0;n#el-table#0;n#el-tab-pane#1;n#el-tabs#0;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-table#0;n#el-tab-pane#2;n#el-tabs#0;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#4350#4410#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/module/feedback-detail/App.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="72" column="27" selection-start-line="72" selection-start-column="27" selection-end-line="72" selection-end-column="27" />
+        <state relative-caret-position="785">
+          <caret line="118" column="21" selection-start-line="118" selection-start-column="21" selection-end-line="118" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/module/order/App.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="397">
+          <caret line="33" column="29" selection-start-line="33" selection-start-column="29" selection-end-line="33" selection-end-column="29" />
           <folding>
-            <element signature="e#1091#1145#0" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#div#0;n#el-row#1;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
