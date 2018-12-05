@@ -228,7 +228,7 @@ class FeedbackList(APIView):
         try:
             if self.msg.get('read_status'):
                 temp = Feedback.objects.filter(read_status=self.msg['read_status']).values(
-                    'feedback_title', 'id', 'user', 'feedback_time','read_status')
+                    'feedback_title', 'id', 'user', 'feedback_time','read_status', 'feedback_content')
                 a = list(temp)
                 for i in a:
                     i['feedback_time'] = i['feedback_time'].timestamp()
@@ -241,7 +241,7 @@ class FeedbackList(APIView):
                 return {'feedback_list': a}
             else:
                 temp = Feedback.objects.all().values(
-                    'feedback_title', 'id', 'user', 'feedback_time','read_status')
+                    'feedback_title', 'id', 'user', 'feedback_time','read_status', 'feedback_content')
                 a = list(temp)
                 for i in a:
                     i['feedback_time'] = i['feedback_time'].timestamp()
