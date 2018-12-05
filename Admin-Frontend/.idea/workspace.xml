@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b008e3f-cc9e-4dcf-83e6-8d4dc8524b34" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/module/order/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/order/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/admin_end/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/admin_end/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/static/js/index.eaf874e8c6317725fa85.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/static/js/index.eaf874e8c6317725fa85.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/templates/feedback-detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/templates/feedback-detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/templates/feedback.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/templates/feedback.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/templates/news-create.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/templates/news-create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/templates/news.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/templates/news.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/templates/order.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/templates/order.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/templates/room-detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/templates/room-detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/templates/room.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/templates/room.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -32,7 +19,8 @@
         <counts>
           <entry key="project.closed" value="1" />
           <entry key="project.open.time.3" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.open.time.5" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -47,18 +35,18 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="vue" value="1711" />
+          <entry key="vue" value="1785" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Vue.js" value="1711" />
+          <entry key="Vue.js" value="1785" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/module/feedback-detail/App.vue">
           <provider selected="true" editor-type-id="text-editor">
@@ -71,8 +59,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/module/order/App.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="397">
-              <caret line="33" column="29" selection-start-line="33" selection-start-column="29" selection-end-line="33" selection-end-column="29" />
+            <state relative-caret-position="2087">
+              <caret line="346" column="41" selection-start-line="346" selection-start-column="41" selection-end-line="346" selection-end-column="41" />
               <folding>
                 <element signature="n#style#0;n#el-select#0;n#div#0;n#el-row#1;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
               </folding>
@@ -146,6 +134,13 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="module" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="module" type="462c0819:PsiDirectoryNode" />
+              <item name="order" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -209,24 +204,21 @@
       <option name="presentableId" value="Default" />
       <updated>1543991107527</updated>
       <workItem from="1543991110305" duration="13244000" />
+      <workItem from="1544030909626" duration="197000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13244000" />
+    <option name="totallyTimeSpent" value="13441000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="npm" side_tool="true" />
-      <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="npm" order="2" side_tool="true" />
+      <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.329718" />
@@ -234,6 +226,10 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -255,8 +251,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/module/order/App.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="33" column="29" selection-start-line="33" selection-start-column="29" selection-end-line="33" selection-end-column="29" />
+        <state relative-caret-position="2087">
+          <caret line="346" column="41" selection-start-line="346" selection-start-column="41" selection-end-line="346" selection-end-column="41" />
           <folding>
             <element signature="n#style#0;n#el-select#0;n#div#0;n#el-row#1;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>

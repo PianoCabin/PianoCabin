@@ -340,6 +340,12 @@
             _this.order_list = res.data.order_list
             let len = _this.order_list.length
 
+            _this.order_list = []
+            _this.canceled_order_list = []
+            _this.unpaid_order_list = []
+            _this.paid_order_list = []
+            _this.finished_order_list = []
+
             for (let i = 0; i < len; i++) {
               switch (_this.order_list[i].order_status) {
                 case 0:
