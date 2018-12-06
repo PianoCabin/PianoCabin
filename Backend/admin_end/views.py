@@ -10,12 +10,15 @@ import json
 import datetime
 from collections import defaultdict
 from django.db import transaction
+import traceback
 
 # Create your views here.
 
-redis_manage.initDatabase()
-
-scheduledUpdate()
+try:
+    redis_manage.initDatabase()
+    scheduledUpdate()
+except:
+    pass
 
 
 class Login(APIView):
@@ -125,18 +128,22 @@ class OrderList(APIView):
     def post(self):
         if not self.request.user.is_authenticated:
             raise MsgError(0, 'not login')
-        count = self.checkMsgMultiOption("order_status", "identity", "date", "order_id")
+        count = self.checkMsgMultiOption("order_status", "identity", "start_date", "end_date", "order_id", "room_num")
         try:
             if count:
                 query_str = ''
+                if "room_num" in self.msg:
+                    query_str += 'Q(piano_room=get_or_none(PianoRoom, room_num=self.msg["room_num"]))&'
                 if "order_id" in self.msg:
-                    query_str += 'Q(id=self.msg["order_id"])&'
+                    query_str += 'Q(order_id=self.msg["order_id"])&'
                 if "identity" in self.msg:
-                    query_str += 'Q(identity=self.msg["identity"])&'
+                    query_str += 'Q(user=get_or_none(User, identity=self.msg["identity"]))&'
+                if "open_id" in self.msg:
+                    query_str += 'Q(user=get_or_none(User, open_id=self.msg["open_id"]))&'
                 if "order_status" in self.msg:
                     query_str += 'Q(order_status=self.msg["order_status"])&'
-                if "date" in self.msg:
-                    query_str += 'Q(date=datetime.date.fromtimestamp(self.msg["date"])&'
+                if "start_date" in self.msg and "end_date" in self.msg:
+                    query_str += 'Q(create_time__range=[datetime.datetime.fromtimestamp(self.msg["start_date"]), datetime.datetime.fromtimestamp(self.msg["end_date"])])&'
                 temp = Order.objects.filter(eval(query_str[:-1])).values(
                     'piano_room__brand', 'piano_room__room_num', 'user_id', 'start_time', 'end_time', 'price', 'order_id',
                     'create_time', 'order_status')
@@ -158,6 +165,7 @@ class OrderList(APIView):
                 item['room_num'] = item['piano_room__room_num']
             return {'order_list': temp}
         except:
+            traceback.print_exc()
             raise MsgError(0, 'fail to list order list')
 
 
