@@ -150,6 +150,7 @@
     let time = new Date(parseFloat(timestamp) * 1000)
     let hour = time.getHours().toString()
     let minute = time.getMinutes().toString()
+    if(minute === "0") minute = minute + minute
     return [hour, minute].join(':')
   })
 
