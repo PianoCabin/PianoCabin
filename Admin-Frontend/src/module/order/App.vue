@@ -12,12 +12,12 @@
           <el-row>
             <div class="search-item fl">
               <span>订单编号：</span>
-              <el-input @blur="handleFilter" class="info" v-model="filter_info.order_id" placeholder="请输入订单编号">
+              <el-input @blur="handleFilter" @keydown.enter.native="handleFilter" class="info" v-model="filter_info.order_id" placeholder="请输入订单编号">
               </el-input>
             </div>
             <div class="search-item fl">
               <span>琴房房号：</span>
-              <el-input @blur="handleFilter" class="info" v-model="filter_info.room_num" placeholder="请输入琴房房号">
+              <el-input @blur="handleFilter" @keydown.enter.native="handleFilter" class="info" v-model="filter_info.room_num" placeholder="请输入琴房房号">
               </el-input>
             </div>
           </el-row>
@@ -27,11 +27,11 @@
                 <el-option key="0" value="0" label="学号工号："></el-option>
                 <el-option key="1" value="1" label="微信ID："></el-option>
               </el-select>
-              <el-input @blur="handleFilter" class="info" v-model="filter_info.user_id" placeholder="请输入订单编号"></el-input>
+              <el-input @blur="handleFilter" @keydown.enter.native="handleFilter" class="info" v-model="filter_info.user_id" placeholder="请输入订单编号"></el-input>
             </div>
             <div class="search-item fl">
               <span>下单时间：</span>
-              <el-date-picker :default-time="['00:00:00', '23:59:59']" @blur="handleFilter" v-model="date_range" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker :default-time="['00:00:00', '23:59:59']" @change="handleFilter" @keydown.enter.native="handleFilter" v-model="date_range" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </div>
           </el-row>
@@ -339,7 +339,7 @@
           else {
             _this.order_list = res.data.order_list
             let len = _this.order_list.length
-            
+
             _this.canceled_order_list = []
             _this.unpaid_order_list = []
             _this.paid_order_list = []
