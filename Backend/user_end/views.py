@@ -162,7 +162,8 @@ class PianoRoomList(APIView):
         if self.msg.get('start_time') and self.msg.get('end_time'):
             start_time = self.msg.get('start_time')
             end_time = self.msg.get('end_time')
-            for orders in orders_rooms.values():
+            for room in rooms:
+                orders = orders_rooms[room.room_num]
                 orders.insert(0, [open_time, open_time, -1])
                 orders.append([close_time, close_time, -1])
                 sum_time = 0
