@@ -9,8 +9,8 @@ services:
 - mysql
 - redis-server
 before_install:
-- sudo cat ./Backend/mysql.cnf >> /etc/mysql/my.cnf
-- sudo cat ./Backend/mysql.cnf >> /etc/mysql/mysql.cnf
+- sudo mv ./Backend/mysql.cnf /etc/mysql/my.cnf
+- sudo mv ./Backend/mysql.cnf /etc/mysql/mysql.cnf
 - sudo service mysql restart
 - sudo mysql -e 'CREATE DATABASE piano_cabin DEFAULT CHARACTER SET utf8;'
 install:
