@@ -162,7 +162,9 @@ class PianoRoomList(APIView):
         if self.msg.get('start_time') and self.msg.get('end_time'):
             start_time = self.msg.get('start_time')
             end_time = self.msg.get('end_time')
-            for orders in orders_rooms.values():
+            print(orders_rooms)
+            for room in rooms:
+                orders = orders_rooms[room.room_num]
                 orders.insert(0, [open_time, open_time, -1])
                 orders.append([close_time, close_time, -1])
                 sum_time = 0
@@ -172,6 +174,7 @@ class PianoRoomList(APIView):
                     if orders[i][1] > end_time:
                         break
                     sum_time += min(orders[i + 1][0], end_time) - max(orders[i][1], start_time)
+                    print(sum_time)
                 sum_times.append(sum_time)
                 orders.pop()
                 orders.pop(0)
