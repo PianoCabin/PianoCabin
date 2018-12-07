@@ -10,6 +10,12 @@ services:
 - redis-server
 before_install:
 - sudo mysql -e 'CREATE DATABASE piano_cabin DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;'
+- sudo mysql -e ‘set character_set_client=utf8;’
+- sudo mysql -e ‘set character_set_connection=utf8;’
+- sudo mysql -e ‘set character_set_database=utf8;’
+- sudo mysql -e ‘set character_set_results=utf8;’
+- sudo mysql -e ‘set character_set_server=utf8;’
+- sudo mysql -e ‘set character_set_system=utf8;’
 install:
 - pip install -r ./Backend/requirements.txt
 before_script:
