@@ -9,8 +9,6 @@ services:
 - mysql
 - redis-server
 before_install:
-- cat /etc/mysql/my.cnf
-- cat /etc/mysql/mysql.cnf
 - sudo cp ./Backend/mysql.cnf /etc/mysql/my.cnf
 - sudo cp ./Backend/mysql.cnf /etc/mysql/mysql.cnf
 - sudo service mysql restart
