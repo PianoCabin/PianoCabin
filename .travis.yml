@@ -13,7 +13,7 @@ before_install:
 install:
 - pip install -r ./Backend/requirements.txt
 before_script:
-- cp ./Backend/configs.example.json ./Backend/configs.json
+- mv ./Backend/configs.example.json ./Backend/configs.json
 script:
 - python ./Backend/manage.py makemigrations
 - python ./Backend/manage.py migrate
