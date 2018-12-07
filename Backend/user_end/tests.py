@@ -119,29 +119,28 @@ class PianoListTest(TestCase):
         # 测试搜索时间
         now = datetime.now()
         self.client.post('/u/order/normal/', {
-            'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 15).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 16).timestamp(),
+            'room_num': 'F2-205',
+            'start_time': datetime(now.year, now.month, now.day + 1, 12).timestamp(),
+            'end_time': datetime(now.year, now.month, now.day + 1, 13).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 17).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 18).timestamp(),
+            'start_time': datetime(now.year, now.month, now.day + 1, 13).timestamp(),
+            'end_time': datetime(now.year, now.month, now.day + 1, 14).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         response = self.client.post('/u/order/piano-rooms-list/', {
             'date': datetime(now.year, now.month, now.day + 1).timestamp(),
             'type': '钢琴房',
-            'start_time': datetime(now.year, now.month, now.day + 1, 15).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 18).timestamp(),
+            'start_time': datetime(now.year, now.month, now.day + 1, 12).timestamp(),
+            'end_time': datetime(now.year, now.month, now.day + 1, 13).timestamp(),
             'authorization': self.user.session
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
-        self.assertEqual(response.json()['data']['room_list'][0]['room_num'], 'F2-205')
-        self.assertEqual(response.json()['data']['room_list'][1]['room_num'], 'F2-203')
+        self.assertEqual(response.json()['data']['room_list'][0]['room_num'], 'F2-203')
 
 
 class OrderNormalTest(TestCase):
