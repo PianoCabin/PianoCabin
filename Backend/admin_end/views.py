@@ -16,7 +16,9 @@ import traceback
 
 try:
     redis_manage.initDatabase()
-    scheduledUpdate()
+    TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
+    if not TESTING:
+        scheduledUpdate()
 except:
     pass
 

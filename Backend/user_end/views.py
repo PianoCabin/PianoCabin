@@ -229,7 +229,7 @@ class OrderNormal(APIView):
                         if i == len(orders):
                             orders.append([order.start_time.timestamp(), order.end_time.timestamp()])
                             break
-                        if order.end_time.timestamp() < orders[i][0]:
+                        if order.end_time.timestamp() <= orders[i][0]:
                             if i > 0:
                                 if order.start_time.timestamp() < orders[i - 1][1]:
                                     redis_manage.redis_lock.release()
