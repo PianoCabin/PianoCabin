@@ -10,8 +10,8 @@ services:
 - redis-server
 before_install:
 - sudo mysql -e 'CREATE DATABASE piano_cabin DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;'
-- sudo mysql -e 'SHOW VARIABLES LIKE 'character_set_%';‘
-- sudo mysql -e 'SHOW VARIABLES LIKE 'collation_%';’
+- sudo mysql -e "SHOW VARIABLES LIKE 'character_set_%';"
+- sudo mysql -e "SHOW VARIABLES LIKE 'collation_%';"
 install:
 - pip install -r ./Backend/requirements.txt
 before_script:
