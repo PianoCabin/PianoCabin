@@ -1,0 +1,19 @@
+language: python
+
+python:
+- "3.6"
+sudo: required
+env:
+- DJANGO=2.1.3
+services:
+- mysql
+- redis-server
+before_install:
+- sudo mysql -e 'CREATE DATABASE piano_cabin DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;'
+install:
+- pip install -r Backend/requirements.txt
+script:
+- cp Backend/configs.example.json Backend/configs.json
+- python Backend/manage.py makemigrations
+- python Backend/manage.py migrate
+- python Backend/manage.py test
