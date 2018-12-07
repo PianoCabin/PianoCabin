@@ -15,6 +15,7 @@ install:
 before_script:
 - mv ./Backend/configs.example.json ./Backend/configs.json
 script:
-- python ./Backend/manage.py makemigrations
-- python ./Backend/manage.py migrate
-- python ./Backend/manage.py test
+- cd Backend
+- python manage.py makemigrations
+- python manage.py migrate
+- python manage.py test
