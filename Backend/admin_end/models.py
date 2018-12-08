@@ -181,14 +181,14 @@ def updateUnpaidOrders():
 
 
 def scheduledUpdate():
-    schedule.every().minute.do(updateUnpaidOrders)
-    schedule.every().day.at("00:01").do(updateOrderList)
     threading.Thread(target=runSchedule).start()
 
 
 def runSchedule():
     while True:
-        schedule.run_pending()
+        updateUnpaidOrders()
+        if datetime.now().hour == 0 and datetime.now().minute == 1:
+            updateOrderList()
         time.sleep(60)
 
 

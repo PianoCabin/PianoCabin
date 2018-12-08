@@ -45,11 +45,11 @@ class APIView(View):
         except MsgError as e:
             code = e.code
             msg = e.msg
-            print(e.msg)
+            # print(e.msg)
         except Exception as e:
             code = 0
             msg = str(e)
-            traceback.print_exc()
+            # traceback.print_exc()
         try:
             response = json.dumps({
                 'code': code,
