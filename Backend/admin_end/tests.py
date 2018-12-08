@@ -53,7 +53,6 @@ class LoginTest(MyTest):
 
 
 class LogoutTest(MyTest):
-
     def test_post(self):
         # 登录后logout
         self.client.post('/a/login/', {"username": self.username, "password": self.password})
@@ -336,11 +335,79 @@ class NewsDeleteTest(MyTest):
 
 
 class FeedbackListTest(MyTest):
-    pass
+    @classmethod
+    def setUpTestData(cls):
+        cls.user1 = User.objects.create(
+            open_id='123456789',
+            identity='123456789',
+            permission=0,
+            session='123456789'
+        )
+        cls.feedback_1 = Feedback.objects.create(
+            user=cls.user1,
+            feedback_title='反馈标题1',
+            feedback_content='反馈内容1',
+            read_status=False,
+            feedback_time='2018-12-10'
+        )
+        cls.feedback_2 = Feedback.objects.create(
+            user=cls.user1,
+            feedback_title='反馈标题2',
+            feedback_content='反馈内容2',
+            read_status=True,
+            feedback_time='2018-12-10'
+        )
+        cls.answer_1 = {'feedback_list': [{'feedback_title': '反馈标题1', 'id': 3, 'user': 2,
+                                           'feedback_time': 1544371200.0, 'read_status': False,
+                                           'feedback_content': '反馈内容1', 'feedback_id': 3, 'user_id': '123456789'}]}
+        cls.answer_2 = {'feedback_list': [{'feedback_title': '反馈标题2', 'id': 4, 'user': 2,
+                                           'feedback_time': 1544371200.0, 'read_status': True,
+                                           'feedback_content': '反馈内容2', 'feedback_id': 4, 'user_id': '123456789'}]}
+
+    def test_get(self):
+        # 请求未读信息
+        response = self.login_client.get('/a/feedback/list/', {'read_status': 0})
+        self.assertEqual(response.json()['code'], 1)
+        self.assertEqual(response.json()['data'], self.answer_1)
+        # 请求已读信息
+        response = self.login_client.get('/a/feedback/list/', {'read_status': 1})
+        self.assertEqual(response.json()['code'], 1)
+        self.assertEqual(response.json()['data'], self.answer_2)
 
 
 class FeedbackDetailTest(MyTest):
-    pass
+    @classmethod
+    def setUpTestData(cls):
+        cls.user1 = User.objects.create(
+            open_id='1234567890',
+            identity='1234567890',
+            permission=0,
+            session='1234567890'
+        )
+        cls.feedback_1 = Feedback.objects.create(
+            user=cls.user1,
+            feedback_title='反馈标题3',
+            feedback_content='反馈内容3',
+            read_status=False,
+            feedback_time='2018-12-10'
+        )
+        cls.feedback_2 = Feedback.objects.create(
+            user=cls.user1,
+            feedback_title='反馈标题4',
+            feedback_content='反馈内容4',
+            read_status=True,
+            feedback_time='2018-12-10'
+        )
+        cls.answer_1 = {'feedback_content': '反馈内容3', 'feedback_title': '反馈标题3', 'feedback_time': 1544371200.0,
+                        'user_id': '1234567890'}
+
+    def test_get(self):
+        response = self.login_client.get('/a/feedback/detail/', {'feedback_id': 1})
+        self.assertEqual(response.json()['code'], 1)
+        self.assertEqual(response.json()['data'], self.answer_1)
+        response = self.login_client.get('/a/feedback/detail/', {'feedback_id': 100})
+        self.assertEqual(response.json()['code'], 0)
+        self.assertEqual(response.json()['msg'], 'cannot get the detail of this feedback')
 
 
 class UserUpdateTest(MyTest):
