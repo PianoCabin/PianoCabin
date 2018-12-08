@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from datetime import datetime, timedelta
 from .models import *
+from django.utils import timezone
 import json
 
 # Create your tests here.
@@ -244,19 +245,94 @@ class OrderListTest(MyTest):
 
 
 class NewsListTest(MyTest):
-    pass
+    @classmethod
+    def setUpTestData(cls):
+        cls.news1 = News.objects.create(
+            news_title='测试标题1',
+            news_content='测试内容1',
+            publish_time='2018-12-08 11:00:49.834183'
+        )
+        cls.news2 = News.objects.create(
+            news_title='测试标题2',
+            news_content='测试内容2',
+            publish_time='2018-12-09 11:00:49.834183'
+        )
+
+    def test_get(self):
+        response = self.login_client.get('/a/news/list/')
+        self.assertEqual(response.json()['code'], 1)
 
 
 class NewsCreateTest(MyTest):
-    pass
+    @classmethod
+    def setUpTestData(cls):
+        cls.news_dict_correct = {
+            'news_title': '测试标题3',
+            'news_content': '测试内容3'
+        }
+        cls.news_dict_attribute_miss = {
+            'news_title': '测试标题_wrong'
+        }
+
+    def test_post(self):
+        response = self.login_client.post('/a/news/create/', self.news_dict_correct)
+        self.assertEqual(response.json()['code'], 1)
+        response = self.login_client.post('/a/news/create/', self.news_dict_attribute_miss)
+        self.assertEqual(response.json()['code'], 0)
+        self.assertEqual(response.json()['msg'], 'API requires field "news_content"')
+
 
 
 class NewsDetailTest(MyTest):
-    pass
+    @classmethod
+    def setUpTestData(cls):
+        cls.news1 = News.objects.create(
+            news_title='测试标题4',
+            news_content='测试内容4',
+            publish_time='2018-12-10 11:00:49.834183'
+        )
+        cls.answer = {'news_title': '测试标题1', 'news_content': '测试内容1', 'publish_time': 1544238049.834183}
+
+    def test_get(self):
+        response = self.login_client.get('/a/news/detail/', {'news_id': 4})
+        self.assertEqual(response.json()['code'], 1)
+        response = self.login_client.get('/a/news/detail/', {'news_id': 100})
+        self.assertEqual(response.json()['code'], 0)
+        self.assertEqual(response.json()['msg'], 'news does not exist')
 
 
 class NewsDeleteTest(MyTest):
-    pass
+    @classmethod
+    def setUpTestData(cls):
+        cls.news1 = News.objects.create(
+            news_title='测试标题5',
+            news_content='测试内容5',
+            publish_time='2018-12-11 11:00:49.834183'
+        )
+        cls.news2 = News.objects.create(
+            news_title='测试标题6',
+            news_content='测试内容6',
+            publish_time='2018-12-12 11:00:49.834183'
+        )
+        cls.old_answer = {'news_list': [{'news_title': '测试标题5', 'id': 2, 'publish_time': 1544497249.834183,
+                                         'news_id': 2},
+                                        {'news_title': '测试标题6', 'id': 3, 'publish_time': 1544583649.834183,
+                                         'news_id': 3}]}
+        cls.new_answer = {'news_list': [{'news_title': '测试标题6', 'id': 3, 'publish_time': 1544583649.834183,
+                                         'news_id': 3}]}
+
+    def test_get(self):
+        response = self.login_client.get('/a/news/list/')
+        self.assertEqual(response.json()['code'], 1)
+        self.assertEqual(response.json()['data'], self.old_answer)
+        # 删除存在的新闻
+        response = self.login_client.get('/a/news/delete/', {'news_id': 2})
+        self.assertEqual(response.json()['code'], 1)
+        # 删除不存在的新闻
+        response = self.login_client.get('/a/news/delete/', {'news_id': 4})
+        self.assertEqual(response.json()['code'], 0)
+        response = self.login_client.get('/a/news/list/')
+        self.assertEqual(response.json()['data'], self.new_answer)
 
 
 class FeedbackListTest(MyTest):
