@@ -1,6 +1,15 @@
 /**index.wxss**/
 @import "room_item.wxss";
 
+.handle_masklayer{
+  height: 100%;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  background-color: transparent;
+}
+
 .list_page {
   height: 100%;
   display: flex;
@@ -92,7 +101,7 @@
   left:0%;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 3;
   background-color:#606060;
   opacity: 0.5;
 }
