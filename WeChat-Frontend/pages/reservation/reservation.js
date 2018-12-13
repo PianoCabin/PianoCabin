@@ -30,7 +30,12 @@ let page = Page({
     search_end_list:[],                                     //搜索结束时间列表
     completeable:true,                                      //订单是否可支付
     type_list:["钢琴房","小琴房","电钢琴"],                   //琴屋种类列表
-    type_id:0  
+    type_id:0, 
+    time:0,                                                 //移动计时
+    touch_dot:0,                                            //开始点击屏幕的横坐标
+    interval:null,                                          //计时器
+    timeout:false,                                          //是否处于手势停用期
+    hand_dir:0                                              //手势方向
   },
 
   //初始化页面，默认显示钢琴页面
@@ -40,6 +45,7 @@ let page = Page({
       this.initSearchPage();
   },
   onPullDownRefresh(){
+    console.log("pulldown");
     this.resetSearch()
     this.getRoomList();
   },
@@ -253,6 +259,7 @@ let page = Page({
   showRoomList(res){
     let list = res.data["data"]["room_list"];
     this.updateList(list);
+    wx.stopPullDownRefresh()
   },
 
   //获取琴房筛选条件
@@ -308,6 +315,12 @@ let page = Page({
       for (let i = 0; i < element["occupied_time"].length; i++) {
         element["occupied_time"][i][0] *= 1000;
         element["occupied_time"][i][1] *= 1000;
+        if(i>0){
+          if (element["occupied_time"][i][0] == element["occupied_time"][i - 1][0] && element["occupied_time"][i][1] == element["occupied_time"][i-1][1]){
+            element["occupied_time"].splice(i,1); 
+            i = i - 1;
+            }
+        }
       }
       
       //根据占用时间，计算整个预约开放时间内时间的空闲占用情况
@@ -442,7 +455,7 @@ let page = Page({
     let start = util.timeStringToTimestamp(this.data.cur_date,this.data.search_start_list[index]);
     let end = util.timeStringToTimestamp(this.data.cur_date,this.data.close_time[0]+':'+this.data.close_time[1]);
     let end_list = []
-    for (let i = start + this.data.min_interval; i < end + this.data.min_interval;i+=this.data.min_interval){
+    for (let i = Math.min(start + this.data.min_order,end); i < end + this.data.min_interval;i+=this.data.min_interval){
       end_list.push(util.timestampToTimeString(i));
     }
     this.setData({ search_end_list: end_list, search_start: this.data.search_start_list[index]});
@@ -501,6 +514,51 @@ let page = Page({
       search_end:null,
       search_room_num:""
     })
+  },
+  // 触摸开始事件
+  touchStart: function (e) {
+    if (this.data.timeout)
+      return;
+    console.log("start touch");
+    this.data.touch_dot = e.touches[0].pageX; // 获取触摸时的原点
+    // 使用js计时器记录时间  
+    let _this = this
+    
+    this.data.interval = setInterval(function () {
+      _this.data.time++;
+    }, 100);
+  },
+  // 触摸移动事件
+  touchMove: function (e) {
+    if(this.data.timeout)
+      return;
+    let touchMove = e.touches[0].pageX;
+    if (touchMove - this.data.touch_dot <= -100 && this.data.time < 10) {
+      console.log('向左滑动');
+      this.data.hand_dir = 1;
+      this.data.timeout = true;
+    }
+    // 向右滑动
+    if (touchMove - this.data.touch_dot >= 100 && this.data.time < 10) {
+      console.log('向右滑动');
+      this.data.hand_dir = 2;
+      this.data.timeout = true;
+    }
+  },
+  // 触摸结束事件
+  touchEnd: function (e) {
+    if(this.data.timeout)
+    {
+      let _this = this;
+      setTimeout(() => { _this.data.timeout = false }, 500)
+      if(this.data.hand_dir == 1)
+        this.dayAfter(null);
+      else if (this.data.hand_dir == 2)
+        this.dayBefore(null);
+    }
+    console.log("touch end")
+    clearInterval(this.data.interval); // 清除setInterval
+    this.data.time = 0;
   }
 })
 

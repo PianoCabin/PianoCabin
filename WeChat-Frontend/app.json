@@ -12,7 +12,8 @@
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "琴屋",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh":true
   },
   "tabBar": {
     "selectedColor": "#8E2782",
