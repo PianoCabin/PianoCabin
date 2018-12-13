@@ -1,8 +1,8 @@
 <!--index.wxml-->
 <import src="room_item.wxml"/>
 
-<view class='handle_masklayer'bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd"></view>
-<view class='list_page' >
+<view class='handle_masklayer' bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd"></view>
+<view class='list_page' bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd">
     <view class="room_type">
       <view class="edge_item"></view>
       <view  wx:for="{{type_list}}" wx:key="" class='type_item piano' bindtap='pianoList' id='{{index}}'>
