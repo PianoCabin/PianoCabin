@@ -8,6 +8,7 @@
   left: 0%;
   width: 100%;
   background-color: transparent;
+  z-index: -1;
 }
 
 .list_page {
@@ -84,7 +85,7 @@
 }
 
 .order_info{
-  z-index: 2;
+  z-index: 4;
   position: fixed;
   top: 40%;
   width:99%;
@@ -171,7 +172,7 @@
 
 
 .search_page{
-  z-index: 2;
+  z-index: 4;
   position: fixed;
   top: 40%;
   width:99%;
