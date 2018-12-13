@@ -131,6 +131,7 @@ class CreateFeedBack(APIView):
                 feedback_content=self.msg.get('feedback_content'),
                 feedback_time=datetime.now()
             )
+            feedback.save()
             if feedback is None:
                 raise MsgError
         except:
