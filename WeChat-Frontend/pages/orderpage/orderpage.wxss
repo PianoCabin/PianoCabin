@@ -76,12 +76,11 @@
 
 .order_icon{
   margin-top: 15%;
-  margin-left: 3%;
-  margin-right: 3%;
+  margin-left: 5%;
+  margin-right: 5%;
   object-fit:cover;
   height: 20%;
   width: 10%;
-  
 }
 
 

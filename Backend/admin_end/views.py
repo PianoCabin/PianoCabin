@@ -282,6 +282,9 @@ class FeedbackDetail(APIView):
                 a["user_id"] = user.identity
             else:
                 a["user_id"] = user.open_id
+            feedback = Feedback.objects.get(id=self.msg['feedback_id'])
+            feedback.read_status = True
+            feedback.save()
             return a
         except:
             raise MsgError(0, 'cannot get the detail of this feedback')
