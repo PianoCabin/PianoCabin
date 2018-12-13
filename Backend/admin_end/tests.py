@@ -402,7 +402,7 @@ class FeedbackDetailTest(MyTest):
                         'user_id': '1234567890'}
 
     def test_get(self):
-        response = self.login_client.get('/a/feedback/detail/', {'feedback_id': 1})
+        response = self.login_client.get('/a/feedback/detail/', {'feedback_id': self.feedback_1.id})
         self.assertEqual(response.json()['code'], 1)
         self.assertEqual(response.json()['data'], self.answer_1)
         response = self.login_client.get('/a/feedback/detail/', {'feedback_id': 100})

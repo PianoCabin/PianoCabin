@@ -56,13 +56,17 @@ class Bind(APIView):
         self.checkMsg('ticket', 'authorization')
         ticket = self.msg.get('ticket')
         user = self.getUserBySession()
-        url = 'https://id.tsinghua.edu.cn/thuser/authapi/checkticket'
-        url = parse.urljoin(url, CONFIGS['THU_APP_ID'])
-        url = parse.urljoin(url, ticket)
-        url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_'))
+        url = 'https://id-tsinghua-test.iterator-traits.com/thuser/authapi/checkticket/'
+        url = parse.urljoin(url, CONFIGS['THU_APP_ID'])+'/'
+        url = parse.urljoin(url, ticket)+'/'
+        url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_'))+'/'
         res = requests.get(url=url)
         try:
-            info = json.loads(res.text)
+            res = res.text.split(':')
+            info = {}
+            for text in res:
+                text = text.split('=')
+                info[text[0]] = text[1]
             if info.get('code') != 0:
                 raise MsgError
             else:

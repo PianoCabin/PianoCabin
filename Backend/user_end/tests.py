@@ -390,9 +390,9 @@ class OrderChangeTest(TestCase):
         self.assertEqual(response.json()['code'], 0)
 
 
-class OrderChangeTest(TestCase):
+class OrderCancelTest(TestCase):
 
-    # 测试OrderChange API
+    # 测试OrderCancel API
     @classmethod
     def setUpTestData(cls):
         cls.room_1 = PianoRoom.objects.create(
