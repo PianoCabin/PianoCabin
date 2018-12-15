@@ -81,7 +81,33 @@ class PianoRoomEdit(APIView):
         if not self.request.user.is_authenticated:
             raise MsgError(0, 'not login')
         self.checkMsg("room_num", "brand", "piano_type", "price_0", "price_1", "price_2", "usable", "art_ensemble")
-        if not PianoRoom.objects.filter(room_num=self.msg['room_num']).update(
+        room = PianoRoom.objects.filter(room_num=self.msg['room_num'])
+        if not self.msg["usable"] and room[0].usable:
+            try:
+                with transaction.atomic():
+                    order = Order.objects.select_for_update().get(piano_room=room[0], order_status=1)
+                    order.order_status = 0
+                    order.cancel_reason = 3
+                    order.save()
+                    if redis_manage.redis_lock.acquire():
+                        day = (order.date - datetime.now().date()).days
+                        room_orders = json.loads(
+                            redis_manage.order_list.lindex(order.piano_room.room_num, day).decode())
+                        for room_order in room_orders:
+                            if room_order[2] == order.id:
+                                room_orders.remove(room_order)
+                                break
+                        room_orders = json.dumps(room_orders)
+                        redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
+                        redis_manage.unpaid_orders.delete(order.id)
+                        redis_manage.redis_lock.release()
+            except:
+                try:
+                    redis_manage.redis_lock.release()
+                except:
+                    pass
+                raise MsgError(msg='Unable to cancel order')
+        if not room.update(
                 brand=self.msg["brand"],
                 piano_type=self.msg["piano_type"],
                 price_0=self.msg["price_0"],

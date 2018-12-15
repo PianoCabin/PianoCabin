@@ -57,9 +57,9 @@ class Bind(APIView):
         ticket = self.msg.get('ticket')
         user = self.getUserBySession()
         url = 'https://id-tsinghua-test.iterator-traits.com/thuser/authapi/checkticket/'
-        url = parse.urljoin(url, CONFIGS['THU_APP_ID'])+'/'
-        url = parse.urljoin(url, ticket)+'/'
-        url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_'))+'/'
+        url = parse.urljoin(url, CONFIGS['THU_APP_ID']) + '/'
+        url = parse.urljoin(url, ticket) + '/'
+        url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_')) + '/'
         res = requests.get(url=url)
         try:
             res = res.text.split(':')
@@ -87,9 +87,9 @@ class OrderList(APIView):
         self.checkMsg('authorization')
         user = self.getUserBySession()
         if self.msg.get('order_id'):
-            order_list = user.order_set.filter(order_id=self.msg.get('order_id'), order_status__range=[1, 2])
+            order_list = user.order_set.filter(order_id=self.msg.get('order_id'))
         else:
-            order_list = user.order_set.filter(order_status__range=[1, 2])
+            order_list = user.order_set.all()
         data = []
         for order in order_list:
             code = qrcode.QRCode(version=5)
@@ -104,7 +104,7 @@ class OrderList(APIView):
                 user_id = order.user.open_id
             data.append({
                 'piano_type': order.piano_room.piano_type,
-                'brand':order.piano_room.brand,
+                'brand': order.piano_room.brand,
                 'room_num': order.piano_room.room_num,
                 'start_time': order.start_time.timestamp(),
                 'end_time': order.end_time.timestamp(),
@@ -113,7 +113,8 @@ class OrderList(APIView):
                 'create_time': order.create_time.timestamp(),
                 'order_id': order.order_id,
                 'qrcode': code_base,
-                'user_id': user_id
+                'user_id': user_id,
+                'cancel_reason': order.cancel_reason
             })
         return {"order_list": data}
 
@@ -133,8 +134,22 @@ class CreateFeedBack(APIView):
             )
             if feedback is None:
                 raise MsgError
+            feedback.save()
         except:
             raise MsgError(msg='Submitting feedback fails')
+
+
+class NewsList(APIView):
+    # feedback/list API
+
+    def post(self):
+        if 'news_id' in self.msg:
+            news_list = News.objects.filter(id=self.msg['feedback_id'])
+        else:
+            news_list = News.objects.all()
+        news_list = news_list.values()
+        news_list = json.dumps(news_list)
+        return {'news_list': news_list}
 
 
 class PianoRoomList(APIView):
@@ -144,9 +159,9 @@ class PianoRoomList(APIView):
         self.checkMsg('date', 'type', 'authorization')
         user = self.getUserBySession()
         if self.msg.get('brand'):
-            rooms = PianoRoom.objects.filter(brand=self.msg.get('brand'), piano_type=self.msg.get('type'), usable=True)
+            rooms = PianoRoom.objects.filter(brand=self.msg.get('brand'), piano_type=self.msg.get('type'), usable=True, art_ensemble=0)
         else:
-            rooms = PianoRoom.objects.filter(piano_type=self.msg.get('type'), usable=True)
+            rooms = PianoRoom.objects.filter(piano_type=self.msg.get('type'), usable=True, art_ensemble=0)
 
         if self.msg.get('room_num'):
             rooms = PianoRoom.objects.filter(room_num=self.msg.get('room_num'), usable=True)
@@ -181,12 +196,12 @@ class PianoRoomList(APIView):
                 orders.pop()
                 orders.pop(0)
             room_time = zip(sum_times, rooms)
-            room_time = sorted(room_time, key=lambda x: x[0],reverse=True)
+            room_time = sorted(room_time, key=lambda x: x[0], reverse=True)
             try:
                 sum_times, rooms = zip(*room_time)
             except:
                 sum_times = []
-                rooms  = []
+                rooms = []
             rooms = list(rooms)
             for i, sum_time in enumerate(sum_times):
                 if sum_time < 3600:
@@ -230,7 +245,7 @@ class OrderNormal(APIView):
                 h, m = divmod(m, 60)
                 if m > 0:
                     h += 1
-                unit_price = getattr(piano_room, 'price_'+str(user.permission))
+                unit_price = getattr(piano_room, 'price_' + str(user.permission))
                 price = unit_price * h
                 if price != self.msg.get('price'):
                     raise django.db.IntegrityError
@@ -382,6 +397,7 @@ class OrderCancel(APIView):
             with transaction.atomic():
                 order = Order.objects.select_for_update().get(order_id=self.msg.get('order_id'))
                 order.order_status = 0
+                order.cancel_reason = 2
                 order.save()
                 if redis_manage.redis_lock.acquire():
                     day = (order.date - datetime.now().date()).days
@@ -400,4 +416,3 @@ class OrderCancel(APIView):
             except:
                 pass
             raise MsgError(msg='Unable to cancel order')
-
