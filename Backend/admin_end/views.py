@@ -301,6 +301,9 @@ class FeedbackDetail(APIView):
         try:
             temp = Feedback.objects.filter(id=self.msg['feedback_id']).values(
                 'feedback_title','feedback_content', 'id', 'user', 'feedback_time', 'read_status')[0]
+            feedback = Feedback.objects.get(pk=self.msg['feedback_id'])
+            feedback.read_status = 1
+            feedback.save()
             user = User.objects.get(pk=temp['user'])
             a = {'feedback_content': temp['feedback_content'], 'feedback_title': temp['feedback_title'],
                  'feedback_time': temp['feedback_time'].timestamp()}
