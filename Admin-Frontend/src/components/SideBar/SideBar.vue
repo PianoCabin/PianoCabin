@@ -18,6 +18,10 @@
           <i class="el-icon-service"></i>
           <span>反馈管理</span>
         </el-menu-item>
+        <el-menu-item index="5" class="menu-item">
+          <i class="el-icon-edit"></i>
+          <span>用户管理</span>
+        </el-menu-item>
       </el-menu>
     </div>
 </template>
@@ -44,6 +48,9 @@
             break;
           case "4":
             Utils.setURL('feedback/');
+            break;
+          case "5":
+            Utils.setURL('user/');
             break;
           default:
             break;

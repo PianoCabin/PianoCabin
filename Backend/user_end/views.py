@@ -148,8 +148,7 @@ class NewsList(APIView):
             news_list = News.objects.filter(id=self.msg['feedback_id'])
         else:
             news_list = News.objects.all()
-        news_list = news_list.values()
-        news_list = json.dumps(news_list)
+        news_list = list(news_list.values())
         return {'news_list': news_list}
 
 
@@ -227,6 +226,8 @@ class OrderNormal(APIView):
     def post(self):
         self.checkMsg('room_num', 'start_time', 'end_time', 'price', 'authorization')
         user = self.getUserBySession()
+        if not user.order_permission:
+            raise MsgError(msg='Unauthorized to order')
         id = 0
         try:
             with transaction.atomic():
