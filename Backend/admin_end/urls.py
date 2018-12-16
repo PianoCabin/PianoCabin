@@ -16,4 +16,6 @@ urlpatterns = [
     path('feedback/list/', FeedbackList.as_view()),
     path('feedback/detail/', FeedbackDetail.as_view()),
     path('user/update/', UserUpdate.as_view()),
+    path('user/list/', UserList.as_view()),
+    path('user/edit/', UserEdit.as_view()),
 ]

@@ -36,6 +36,7 @@ class User(models.Model):
     identity = models.CharField(default=None, max_length=255, unique=True, null=True, blank=True)
     permission = models.IntegerField(default=0)
     session = models.TextField(default='')
+    order_permission = models.BooleanField(default=True)
 
     def __str__(self):
         return self.id
@@ -51,6 +52,7 @@ class Order(models.Model):
     create_time = models.DateTimeField(default='2018-01-01')
     price = models.IntegerField(default=0)
     order_status = models.IntegerField(default=1)
+    cancel_reason = models.IntegerField(default=0)
 
     def __str__(self):
         return self.id
@@ -159,6 +161,7 @@ def updateUnpaidOrders():
                 with transaction.atomic():
                     order = Order.objects.get(id=int(id.decode()))
                     order.order_status = 0
+                    order.cancel_reason = 1
                     order.save()
                     if redis_manage.redis_lock.acquire():
                         redis_manage.unpaid_orders.delete(id)

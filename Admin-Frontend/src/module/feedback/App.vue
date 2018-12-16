@@ -227,6 +227,7 @@
 
   .pagination {
     width: fit-content !important;
+    height: fit-content;
     margin: 0 auto !important;
   }
 

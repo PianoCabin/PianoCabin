@@ -83,6 +83,14 @@ class APIView(View):
                 count += 1
         return count
 
+    # 获取不定输入
+    def getMultiOption(self, *keys):
+        msg = {}
+        for k in keys:
+            if k in self.msg:
+                msg[k] = self.msg[k]
+        return msg
+
     # 解析session获取用户
     def getUserBySession(self):
         """
