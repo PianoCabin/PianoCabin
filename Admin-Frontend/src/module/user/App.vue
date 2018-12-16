@@ -38,7 +38,7 @@
               <el-input @blur="handleFilter" @keydown.enter.native="handleFilter" class="info" v-model="filter_info.user_id" placeholder="请输入用户ID"></el-input>
             </div>
             <div class="search-item fl">
-              <el-button @click="handlePermissionChange" class="el-button--primary" :disabled="!is_modified">保存修改</el-button>
+              <el-button @click="dialog_visible = true" class="el-button--primary" :disabled="!is_modified">保存修改</el-button>
             </div>
           </el-row>
           <el-row><hr class="line" noshade=true/></el-row>
@@ -76,6 +76,18 @@
         </div>
       </el-main>
     </el-container>
+
+    <!--保存弹出区-->
+    <el-dialog
+      title="确认"
+      :visible.sync="dialog_visible"
+      width="30%">
+      <span>确认提交修改？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialog_visible = false">取 消</el-button>
+        <el-button type="primary" @click="handlePermissionChange">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -125,6 +137,8 @@
         is_modified : false,
 
         select_all: true,
+
+        dialog_visible: false,
 
         user_list: [],
 
