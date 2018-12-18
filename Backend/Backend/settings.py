@@ -29,7 +29,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CONFIGS = json.load(open('configs.json'))
+try:
+    CONFIGS = json.load(open('configs.json'))
+except:
+    CONFIGS = json.load(open('configs.example.json'))
 
 
 # Application definition

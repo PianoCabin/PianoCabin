@@ -36,6 +36,7 @@ class User(models.Model):
     identity = models.CharField(default=None, max_length=255, unique=True, null=True, blank=True)
     permission = models.IntegerField(default=0)
     session = models.TextField(default='')
+    order_permission = models.BooleanField(default=True)
 
     def __str__(self):
         return self.id
@@ -51,6 +52,7 @@ class Order(models.Model):
     create_time = models.DateTimeField(default='2018-01-01')
     price = models.IntegerField(default=0)
     order_status = models.IntegerField(default=1)
+    cancel_reason = models.IntegerField(default=0)
 
     def __str__(self):
         return self.id
@@ -159,6 +161,7 @@ def updateUnpaidOrders():
                 with transaction.atomic():
                     order = Order.objects.get(id=int(id.decode()))
                     order.order_status = 0
+                    order.cancel_reason = 1
                     order.save()
                     if redis_manage.redis_lock.acquire():
                         redis_manage.unpaid_orders.delete(id)
@@ -166,9 +169,11 @@ def updateUnpaidOrders():
                         if day == 0:
                             room_orders = redis_manage.order_list.lindex(order.piano_room.room_num, day).decode()
                             room_orders = json.loads(room_orders)
-                            for room_order in room_orders:
+                            length = len(room_orders)
+                            for i in range(length):
+                                room_order = room_orders[i]
                                 if room_order[2] == order.id:
-                                    room_orders.remove(room_order)
+                                    room_orders.pop(i)
                             room_orders = json.dumps(room_orders)
                             redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
                         redis_manage.redis_lock.release()
@@ -181,14 +186,14 @@ def updateUnpaidOrders():
 
 
 def scheduledUpdate():
-    schedule.every().minute.do(updateUnpaidOrders)
-    schedule.every().day.at("00:01").do(updateOrderList)
     threading.Thread(target=runSchedule).start()
 
 
 def runSchedule():
     while True:
-        schedule.run_pending()
+        updateUnpaidOrders()
+        if datetime.now().hour == 0 and datetime.now().minute == 1:
+            updateOrderList()
         time.sleep(60)
 
 

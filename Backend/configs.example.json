@@ -1,6 +1,7 @@
 {
   "APP_ID": "appid here",
   "APP_SECRET": "app_secret here",
+  "THU_APP_ID": "PIANO",
   "SQL_NAME": "piano_cabin",
   "SQL_USER": "root",
   "SQL_PASS": "",

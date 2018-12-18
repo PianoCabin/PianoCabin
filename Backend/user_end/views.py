@@ -56,13 +56,17 @@ class Bind(APIView):
         self.checkMsg('ticket', 'authorization')
         ticket = self.msg.get('ticket')
         user = self.getUserBySession()
-        url = 'https://id.tsinghua.edu.cn/thuser/authapi/checkticket'
-        url = parse.urljoin(url, CONFIGS['THU_APP_ID'])
-        url = parse.urljoin(url, ticket)
-        url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_'))
+        url = 'https://id-tsinghua-test.iterator-traits.com/thuser/authapi/checkticket/'
+        url = parse.urljoin(url, CONFIGS['THU_APP_ID']) + '/'
+        url = parse.urljoin(url, ticket) + '/'
+        url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_')) + '/'
         res = requests.get(url=url)
         try:
-            info = json.loads(res.text)
+            res = res.text.split(':')
+            info = {}
+            for text in res:
+                text = text.split('=')
+                info[text[0]] = text[1]
             if info.get('code') != 0:
                 raise MsgError
             else:
@@ -83,9 +87,9 @@ class OrderList(APIView):
         self.checkMsg('authorization')
         user = self.getUserBySession()
         if self.msg.get('order_id'):
-            order_list = user.order_set.filter(order_id=self.msg.get('order_id'), order_status__range=[1, 2])
+            order_list = user.order_set.filter(order_id=self.msg.get('order_id'))
         else:
-            order_list = user.order_set.filter(order_status__range=[1, 2])
+            order_list = user.order_set.all()
         data = []
         for order in order_list:
             code = qrcode.QRCode(version=5)
@@ -100,7 +104,7 @@ class OrderList(APIView):
                 user_id = order.user.open_id
             data.append({
                 'piano_type': order.piano_room.piano_type,
-                'brand':order.piano_room.brand,
+                'brand': order.piano_room.brand,
                 'room_num': order.piano_room.room_num,
                 'start_time': order.start_time.timestamp(),
                 'end_time': order.end_time.timestamp(),
@@ -109,7 +113,8 @@ class OrderList(APIView):
                 'create_time': order.create_time.timestamp(),
                 'order_id': order.order_id,
                 'qrcode': code_base,
-                'user_id': user_id
+                'user_id': user_id,
+                'cancel_reason': order.cancel_reason
             })
         return {"order_list": data}
 
@@ -127,10 +132,24 @@ class CreateFeedBack(APIView):
                 feedback_content=self.msg.get('feedback_content'),
                 feedback_time=datetime.now()
             )
+            feedback.save()
             if feedback is None:
                 raise MsgError
+            feedback.save()
         except:
             raise MsgError(msg='Submitting feedback fails')
+
+
+class NewsList(APIView):
+    # feedback/list API
+
+    def post(self):
+        if 'news_id' in self.msg:
+            news_list = News.objects.filter(id=self.msg['feedback_id'])
+        else:
+            news_list = News.objects.all()
+        news_list = list(news_list.values())
+        return {'news_list': news_list}
 
 
 class PianoRoomList(APIView):
@@ -140,9 +159,9 @@ class PianoRoomList(APIView):
         self.checkMsg('date', 'type', 'authorization')
         user = self.getUserBySession()
         if self.msg.get('brand'):
-            rooms = PianoRoom.objects.filter(brand=self.msg.get('brand'), piano_type=self.msg.get('type'), usable=True)
+            rooms = PianoRoom.objects.filter(brand=self.msg.get('brand'), piano_type=self.msg.get('type'), usable=True, art_ensemble=0)
         else:
-            rooms = PianoRoom.objects.filter(piano_type=self.msg.get('type'), usable=True)
+            rooms = PianoRoom.objects.filter(piano_type=self.msg.get('type'), usable=True, art_ensemble=0)
 
         if self.msg.get('room_num'):
             rooms = PianoRoom.objects.filter(room_num=self.msg.get('room_num'), usable=True)
@@ -158,10 +177,12 @@ class PianoRoomList(APIView):
         for room in rooms:
             orders_rooms[room.room_num] = json.loads(redis_manage.order_list.lindex(room.room_num, day).decode())
 
+        # 按可用时间排序
         if self.msg.get('start_time') and self.msg.get('end_time'):
             start_time = self.msg.get('start_time')
             end_time = self.msg.get('end_time')
-            for orders in orders_rooms.values():
+            for room in rooms:
+                orders = orders_rooms[room.room_num]
                 orders.insert(0, [open_time, open_time, -1])
                 orders.append([close_time, close_time, -1])
                 sum_time = 0
@@ -175,12 +196,12 @@ class PianoRoomList(APIView):
                 orders.pop()
                 orders.pop(0)
             room_time = zip(sum_times, rooms)
-            room_time = sorted(room_time, key=lambda x: x[0],reverse=True)
+            room_time = sorted(room_time, key=lambda x: x[0], reverse=True)
             try:
                 sum_times, rooms = zip(*room_time)
             except:
                 sum_times = []
-                rooms  = []
+                rooms = []
             rooms = list(rooms)
             for i, sum_time in enumerate(sum_times):
                 if sum_time < 3600:
@@ -205,16 +226,38 @@ class OrderNormal(APIView):
     def post(self):
         self.checkMsg('room_num', 'start_time', 'end_time', 'price', 'authorization')
         user = self.getUserBySession()
+        if not user.order_permission:
+            raise MsgError(msg='Unauthorized to order')
         id = 0
         try:
             with transaction.atomic():
                 piano_room = PianoRoom.objects.select_for_update().get(room_num=self.msg.get('room_num'))
+
+                # 判断时间是否合理
+                start_time = datetime.fromtimestamp(self.msg.get('start_time'))
+                end_time = datetime.fromtimestamp(self.msg.get('end_time'))
+                open_time = datetime(start_time.year, start_time.month, start_time.day, CONFIGS['OPEN_TIME'])
+                close_time = datetime(start_time.year, start_time.month, start_time.day, CONFIGS['CLOSE_TIME'])
+                if start_time < datetime.now() or start_time < open_time or end_time > close_time:
+                    raise django.db.IntegrityError
+
+                # 计算价格是否正确
+                time_elapse = end_time - start_time
+                m, s = divmod(time_elapse.seconds, 60)
+                h, m = divmod(m, 60)
+                if m > 0:
+                    h += 1
+                unit_price = getattr(piano_room, 'price_' + str(user.permission))
+                price = unit_price * h
+                if price != self.msg.get('price'):
+                    raise django.db.IntegrityError
+
                 order = Order.objects.select_for_update().create(
                     piano_room=piano_room,
                     user=user,
-                    date=datetime.fromtimestamp(self.msg.get('start_time')).date(),
-                    start_time=datetime.fromtimestamp(self.msg.get('start_time')),
-                    end_time=datetime.fromtimestamp(self.msg.get('end_time')),
+                    date=start_time.date(),
+                    start_time=start_time,
+                    end_time=end_time,
                     create_time=datetime.now(),
                     price=self.msg.get('price'),
                 )
@@ -223,13 +266,17 @@ class OrderNormal(APIView):
                 day = (order.date - datetime.now().date()).days
                 if day >= CONFIGS['MAX_ORDER_DAYS'] or day < 0:
                     raise django.db.IntegrityError
+
                 if redis_manage.redis_lock.acquire():
                     orders = json.loads(redis_manage.order_list.lindex(piano_room.room_num, day).decode())
-                    for i in range(len(orders) + 1):
-                        if i == len(orders):
-                            orders.append([order.start_time.timestamp(), order.end_time.timestamp()])
+                    length = len(orders)
+                    for i in range(length + 1):
+                        if i == length:
+                            if length > 0 and order.start_time.timestamp() < orders[-1][1]:
+                                raise django.db.IntegrityError
+                            orders.append([order.start_time.timestamp(), order.end_time.timestamp(), order.id])
                             break
-                        if order.end_time.timestamp() < orders[i][0]:
+                        if order.end_time.timestamp() <= orders[i][0]:
                             if i > 0:
                                 if order.start_time.timestamp() < orders[i - 1][1]:
                                     redis_manage.redis_lock.release()
@@ -279,18 +326,59 @@ class OrderChange(APIView):
         try:
             with transaction.atomic():
                 order = Order.objects.select_for_update().get(order_id=self.msg.get('order_id'))
-                order.start_time = datetime.fromtimestamp(self.msg.get('start_time'))
-                order.end_time = datetime.fromtimestamp(self.msg.get('end_time'))
+
+                # 判断是否已支付
+                if order.order_status == 2:
+                    raise django.db.IntegrityError
+
+                # 判断时间是否合理
+                start_time = datetime.fromtimestamp(self.msg.get('start_time'))
+                end_time = datetime.fromtimestamp(self.msg.get('end_time'))
+                open_time = datetime(start_time.year, start_time.month, start_time.day, CONFIGS['OPEN_TIME'])
+                close_time = datetime(start_time.year, start_time.month, start_time.day, CONFIGS['CLOSE_TIME'])
+                if start_time < datetime.now() or start_time < open_time or end_time > close_time:
+                    raise django.db.IntegrityError
+
+                # 计算价格是否正确
+                time_elapse = end_time - start_time
+                m, s = divmod(time_elapse.seconds, 60)
+                h, m = divmod(m, 60)
+                if m > 0:
+                    h += 1
+                unit_price = getattr(order.piano_room, 'price_' + str(order.user.permission))
+                price = unit_price * h
+                if price != self.msg.get('price'):
+                    raise django.db.IntegrityError
+
+                order.start_time = start_time
+                order.end_time = end_time
                 order.date = datetime.fromtimestamp(self.msg.get('date')).date()
+                if order.date != start_time.date():
+                    raise django.db.IntegrityError
                 order.price = self.msg.get('price')
                 order.save()
                 if redis_manage.redis_lock.acquire():
                     day = (order.date - datetime.now().date()).days
                     room_orders = json.loads(redis_manage.order_list.lindex(order.piano_room.room_num, day).decode())
-                    for room_order in room_orders:
-                        if room_order[2] == order.id:
-                            room_order[0] = order.start_time.timestamp()
-                            room_order[1] = order.end_time.timestamp()
+                    length = len(room_orders)
+                    for i in range(length):
+                        if order.id == room_orders[i][2]:
+                            room_orders.pop(i)
+                            break
+                    length = len(room_orders)
+                    for i in range(length + 1):
+                        if i == length:
+                            if length > 0 and order.start_time.timestamp() < room_orders[-1][1]:
+                                raise django.db.IntegrityError
+                            room_orders.append([order.start_time.timestamp(), order.end_time.timestamp(), order.id])
+                            break
+                        if order.end_time.timestamp() <= room_orders[i][0]:
+                            if i > 0:
+                                if order.start_time.timestamp() < room_orders[i - 1][1]:
+                                    redis_manage.redis_lock.release()
+                                    raise django.db.IntegrityError
+                            room_orders.insert(i, [order.start_time.timestamp(), order.end_time.timestamp(), order.id])
+                            break
                     room_orders = json.dumps(room_orders)
                     redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
                     redis_manage.redis_lock.release()
@@ -311,6 +399,7 @@ class OrderCancel(APIView):
             with transaction.atomic():
                 order = Order.objects.select_for_update().get(order_id=self.msg.get('order_id'))
                 order.order_status = 0
+                order.cancel_reason = 2
                 order.save()
                 if redis_manage.redis_lock.acquire():
                     day = (order.date - datetime.now().date()).days
@@ -329,4 +418,3 @@ class OrderCancel(APIView):
             except:
                 pass
             raise MsgError(msg='Unable to cancel order')
-

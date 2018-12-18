@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="ac4b9641-e5d1-4c80-9f5d-6cc9d34dd0cc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/dev-server.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/dev-server.js" afterDir="false" />
@@ -12,6 +13,10 @@
       <change beforePath="$PROJECT_DIR$/src/module/room/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/room/App.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Backend/admin_end/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/admin_end/migrations/0001_initial.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Backend/admin_end/migrations/0002_auto_20181124_1334.py" beforeDir="false" />
+=======
+    <list default="true" id="6b008e3f-cc9e-4dcf-83e6-8d4dc8524b34" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/module/user/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/user/App.vue" afterDir="false" />
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -25,11 +30,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
       <file leaf-file-name="Heading.spec.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/unit/specs/Heading.spec.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
               <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+=======
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/module/feedback-detail/App.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2530">
+              <caret line="118" column="21" selection-start-line="118" selection-start-column="21" selection-end-line="118" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/module/room/App.vue">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/module/room-detail/App.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2027">
+              <caret line="71" column="21" selection-start-line="71" selection-start-column="21" selection-end-line="71" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/module/user/user.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -37,24 +72,53 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="Heading.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Heading/Heading.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-120">
               <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
+=======
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/module/user/user.html">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/module/order/App.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="6820">
+              <caret line="314" column="17" selection-start-line="314" selection-start-column="17" selection-end-line="314" selection-end-column="17" />
+              <folding>
+                <element signature="n#style#0;n#el-select#0;n#div#0;n#el-row#1;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+              </folding>
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="NewsCard.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/NewsCard/NewsCard.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="330">
               <caret line="45" column="16" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
+=======
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/module/user/App.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="503">
+              <caret line="40" column="54" selection-start-line="40" selection-start-column="54" selection-end-line="40" selection-end-column="54" />
+              <folding>
+                <element signature="n#style#0;n#el-table#0;n#div#1;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-switch#0;n#template#0;n#el-table-column#3;n#el-table#0;n#div#1;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+              </folding>
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="OrderCard.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/OrderCard/OrderCard.vue">
           <provider selected="true" editor-type-id="text-editor">
@@ -70,10 +134,18 @@
               <folding>
                 <element signature="n#style#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
               </folding>
+=======
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/SideBar/SideBar.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1122">
+              <caret line="51" column="18" selection-start-line="51" selection-start-column="18" selection-end-line="51" selection-end-column="18" />
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="SideBar.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/SideBar/SideBar.vue">
           <provider selected="true" editor-type-id="text-editor">
@@ -88,12 +160,23 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
               <caret line="6" column="23" lean-forward="true" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+=======
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/module/feedback/App.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2266">
+              <caret line="108" column="26" selection-start-line="108" selection-start-column="26" selection-end-line="108" selection-end-column="26" />
+              <folding>
+                <element signature="n#style#0;n#el-table#0;n#el-tab-pane#0;n#el-tabs#0;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+              </folding>
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
+<<<<<<< HEAD
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -114,6 +197,16 @@
     <replaceStrings>
       <replace>scope.row.feedback_content</replace>
       <replace>app</replace>
+=======
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>filter.</find>
+      <find>order_permission_selected</find>
+      <find>handleFilter</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>filter_info.</replace>
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -122,11 +215,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/components/FeedbackCard/FeedbackCard.vue" />
-        <option value="$PROJECT_DIR$/src/module/feedback/feedback.html" />
-        <option value="$PROJECT_DIR$/src/module/feedback-detail/feedback-detail.js" />
-        <option value="$PROJECT_DIR$/src/module/feedback-detail/feedback-detail.html" />
+        <option value="$PROJECT_DIR$/src/module/order/App.vue" />
         <option value="$PROJECT_DIR$/src/module/feedback/App.vue" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/src/module/feedback-detail/App.vue" />
         <option value="$PROJECT_DIR$/src/module/login/App.vue" />
         <option value="$PROJECT_DIR$/build/dev-server.js" />
@@ -143,6 +234,10 @@
         <option value="$PROJECT_DIR$/test/unit/specs/Heading.spec.js" />
         <option value="$PROJECT_DIR$/src/common/js/utils.js" />
         <option value="$PROJECT_DIR$/src/components/SideBar/SideBar.vue" />
+=======
+        <option value="$PROJECT_DIR$/src/components/SideBar/SideBar.vue" />
+        <option value="$PROJECT_DIR$/src/module/user/App.vue" />
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
       </list>
     </option>
   </component>
@@ -165,9 +260,7 @@
     <option name="width" value="975" />
     <option name="height" value="1050" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="1" id="Add" />
-  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -190,6 +283,7 @@
               <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
               <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="module" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -198,11 +292,19 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="module" type="462c0819:PsiDirectoryNode" />
               <item name="login" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
             </path>
             <path>
               <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
               <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="test" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="module" type="462c0819:PsiDirectoryNode" />
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
             </path>
             <path>
               <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
@@ -213,9 +315,15 @@
             <path>
               <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
               <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="unit" type="462c0819:PsiDirectoryNode" />
               <item name="specs" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="module" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
             </path>
           </expand>
           <select />
@@ -224,19 +332,22 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="editor.config.ad.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="prettierjs.PrettierConfiguration.Package" value="C:\Users\MasterYoda117\Downloads\PianoCabin\Admin-Frontend\node_modules\prettier" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+<<<<<<< HEAD
       <recent name="E:\Desktop\PianoCabin\Admin-Frontend\build" />
       <recent name="C:\Users\MasterYoda117\Downloads\PianoCabin\Admin-Frontend\src\module\feedback-detail\images" />
+=======
+      <recent name="C:\Users\MasterYoda117\Downloads\PianoCabin\Admin-Frontend\src\module\user" />
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
     </key>
   </component>
   <component name="RunDashboard">
@@ -290,20 +401,25 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ac4b9641-e5d1-4c80-9f5d-6cc9d34dd0cc" name="Default Changelist" comment="" />
-      <created>1543942538479</created>
+      <changelist id="6b008e3f-cc9e-4dcf-83e6-8d4dc8524b34" name="Default Changelist" comment="" />
+      <created>1543991107527</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1543942538479</updated>
-      <workItem from="1543942539858" duration="94000" />
-      <workItem from="1543971093223" duration="3949000" />
-      <workItem from="1543984903144" duration="1916000" />
-      <workItem from="1543987738308" duration="1576000" />
+      <updated>1543991107527</updated>
+      <workItem from="1543991110305" duration="13244000" />
+      <workItem from="1544030909626" duration="581000" />
+      <workItem from="1544061607391" duration="305000" />
+      <workItem from="1544062388321" duration="235000" />
+      <workItem from="1544064143811" duration="45000" />
+      <workItem from="1544241596072" duration="363000" />
+      <workItem from="1544242070205" duration="44000" />
+      <workItem from="1544888545922" duration="11987000" />
+      <workItem from="1544946133657" duration="2688000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7535000" />
+    <option name="totallyTimeSpent" value="29257000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -322,6 +438,7 @@
       <window_info anchor="right" id="SciView" order="0" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="3" side_tool="true" />
+<<<<<<< HEAD
       <window_info anchor="bottom" id="Debug" order="5" weight="0.39914772" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
@@ -331,6 +448,22 @@
       <window_info anchor="bottom" id="Message" order="2" />
       <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="3" />
+=======
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3286334" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39937598" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -340,6 +473,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/module/room-detail/App.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2760">
@@ -409,9 +543,40 @@
           <caret line="11" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/module/feedback-detail/feedback-detail.js">
+=======
+    <entry file="file://$PROJECT_DIR$/src/components/Heading/Heading.vue">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="631">
+          <caret line="54" column="3" lean-forward="true" selection-start-line="52" selection-start-column="2" selection-end-line="54" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/module/feedback-detail/App.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2530">
+          <caret line="118" column="21" selection-start-line="118" selection-start-column="21" selection-end-line="118" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/module/room/App.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/module/user/user.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/module/user/user.html">
+      <provider selected="true" editor-type-id="text-editor" />
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/module/order/App.vue">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="480">
           <caret line="16" selection-start-line="16" selection-end-line="16" />
         </state>
@@ -428,12 +593,34 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2760">
           <caret line="92" column="9" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
+=======
+        <state relative-caret-position="6820">
+          <caret line="314" column="17" selection-start-line="314" selection-start-column="17" selection-end-line="314" selection-end-column="17" />
           <folding>
-            <element signature="e#3648#3702#0" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#div#0;n#el-row#1;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/SideBar/SideBar.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1122">
+          <caret line="51" column="18" selection-start-line="51" selection-start-column="18" selection-end-line="51" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/module/feedback/App.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2266">
+          <caret line="108" column="26" selection-start-line="108" selection-start-column="26" selection-end-line="108" selection-end-column="26" />
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
+          <folding>
+            <element signature="n#style#0;n#el-table#0;n#el-tab-pane#0;n#el-tabs#0;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/module/news-create/App.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="690">
@@ -616,6 +803,22 @@
           <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/src/module/room-detail/App.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2027">
+          <caret line="71" column="21" selection-start-line="71" selection-start-column="21" selection-end-line="71" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/module/user/App.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="503">
+          <caret line="40" column="54" selection-start-line="40" selection-start-column="54" selection-end-line="40" selection-end-column="54" />
+          <folding>
+            <element signature="n#style#0;n#el-table#0;n#div#1;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-switch#0;n#template#0;n#el-table-column#3;n#el-table#0;n#div#1;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+>>>>>>> c1bfb492335d77002eea900799cd8bb60e78bf21
           </folding>
         </state>
       </provider>

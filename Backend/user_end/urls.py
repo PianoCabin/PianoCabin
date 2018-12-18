@@ -6,6 +6,7 @@ urlpatterns = [
     path('bind/', Bind.as_view()),
     path('order/list/', OrderList.as_view()),
     path('feedback/', CreateFeedBack.as_view()),
+    path('news/list/', NewsList.as_view()),
     path('order/piano-rooms-list/', PianoRoomList.as_view()),
     path('order/normal/', OrderNormal.as_view()),
     path('order/change/', OrderChange.as_view()),

@@ -45,11 +45,11 @@ class APIView(View):
         except MsgError as e:
             code = e.code
             msg = e.msg
-            print(e.msg)
+            # print(e.msg)
         except Exception as e:
             code = 0
             msg = str(e)
-            traceback.print_exc()
+            # traceback.print_exc()
         try:
             response = json.dumps({
                 'code': code,
@@ -82,6 +82,14 @@ class APIView(View):
             if k in self.msg:
                 count += 1
         return count
+
+    # 获取不定输入
+    def getMultiOption(self, *keys):
+        msg = {}
+        for k in keys:
+            if k in self.msg:
+                msg[k] = self.msg[k]
+        return msg
 
     # 解析session获取用户
     def getUserBySession(self):
