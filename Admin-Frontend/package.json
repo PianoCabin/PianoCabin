@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
-    "test": "npm run unit",
     "build": "node build/build.js"
   },
   "dependencies": {
