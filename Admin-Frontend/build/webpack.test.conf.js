@@ -1,11 +1,14 @@
 'use strict'
 // This is the webpack config used for unit tests.
 
-const utils = require('./utils')
-const webpack = require('webpack')
-const merge = require('webpack-merge')
-const baseWebpackConfig = require('./webpack.base.conf')
-
+var path = require('path');
+var config = require('../config')
+var webpack = require('webpack')
+var merge = require('webpack-merge')
+var utils = require('./utils')
+var baseWebpackConfig = require('./webpack.base.conf')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+var glob = require('glob')
 const webpackConfig = merge(baseWebpackConfig, {
   // use inline sourcemap for karma-sourcemap-loader
   module: {
@@ -18,6 +21,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       // see discussion at https://github.com/vuejs/vue-loader/issues/724
       'scss-loader': 'sass-loader'
     }
+  },
+  module: {
+    loaders: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
   plugins: [
     new webpack.DefinePlugin({
