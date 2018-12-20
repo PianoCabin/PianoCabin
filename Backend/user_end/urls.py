@@ -5,6 +5,7 @@ urlpatterns = [
     path('login/', Login.as_view()),
     path('bind/', Bind.getPersonalInfo),
     path('bind/confirmed/', Bind.as_view()),
+    path('bind/info/', BindInfo.as_view()),
     path('order/list/', OrderList.as_view()),
     path('feedback/', CreateFeedBack.as_view()),
     path('news/list/', NewsList.as_view()),

@@ -109,6 +109,13 @@ class Bind(APIView):
         user.save()
 
 
+class BindInfo(APIView):
+    def get(self):
+        self.checkMsg('authorization')
+        user = self.getUserBySession()
+        return {'identity': user.identity, 'permission': user.permission}
+
+
 class OrderList(APIView):
     # order/list API
 
