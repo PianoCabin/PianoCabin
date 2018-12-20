@@ -90,7 +90,6 @@ class Bind(APIView):
                         data['permission'] = 1
                     elif info.get('yhlb') in ['X0011', 'X0021', 'X0031']:
                         data['permission'] = 2
-                    sign = cls.get
                     msg['data'] = data
                     return render(request, 'bind.html', msg)
             except:
