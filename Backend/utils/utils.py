@@ -34,7 +34,7 @@ class APIView(View):
             except:
                 msg = {}
         msg['authorization'] = self.request.META.get('HTTP_AUTHORIZATION')
-        if self.request.META.has_key('HTTP_X_FORWARDED_FOR'):
+        if self.request.META.get('HTTP_X_FORWARDED_FOR'):
             msg['ip'] = self.request.META.get('HTTP_X_FORWARDED_FOR')
         else:
             msg['ip'] = self.request.META.get('REMOTE_ADDR')
