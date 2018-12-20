@@ -3,3 +3,4 @@ __pycache__/
 envir/
 env/
 log/
+migrations/
