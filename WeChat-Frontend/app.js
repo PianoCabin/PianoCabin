@@ -61,16 +61,16 @@ let app = App({
               callback(arg1, arg2, arg3, arg4);
             }
             else {
-              util.msgPrompt(res.data["msg"]);
+              util.msgPrompt(res.data["msg"],false);
             }
           },
           fail: res => {
-            util.msgPrompt("get session failed");
+            util.msgPrompt("get session failed",false);
           }
         })
       },
       fail: res => {
-        util.msgPrompt("login failed");
+        util.msgPrompt("login failed",false);
       }
     })
   },
@@ -98,6 +98,12 @@ let app = App({
   getPayMsg(data,successFunc){
     this._post(`/u/order/pay/`,data,successFunc)
   },
+  bindConfirm(data, successFunc) {
+    this._post(`/u/bind/confirmed/`,data,successFunc)
+  },
+  getBindInfo(data,successFunc){
+    this._get(`/u/bind/info/`,data,successFunc)
+  },
   payForOrder(timestamp, nonce_str, prepare_id, sign) {
     console.log(timestamp);
     console.log(nonce_str);
@@ -122,13 +128,14 @@ let app = App({
       fail: function (res) {
         console.log("支付失败!!");
         console.log(res);
-        util.msgPrompt('支付失败!!');
+        util.msgPrompt('支付失败!!',false);
         // wx.navigateTo({
         //   url: '/pages/orderpage/orderpage',
         // })
       }
     })
   },
+  
   _post(url, data, successFunc = res => { console.log(res) }, failFunc = res => { console.log(res) }) {
     if (this.globalData.user_session) {
       let _this = this;
@@ -153,7 +160,7 @@ let app = App({
           console.log(url + "   return:");
           console.log(res);
           if (res.data["code"] == 0)
-            util.msgPrompt(res.data["msg"]);
+            util.msgPrompt(res.data["msg"],false);
           else
             successFunc(res);
         },
@@ -194,7 +201,7 @@ let app = App({
           console.log(url + "   return:");
           console.log(res);
           if (res.data["code"] == 0)
-            util.msgPrompt(res.data["msg"]);
+            util.msgPrompt(res.data["msg"],false);
           else
             successFunc(res);
         },

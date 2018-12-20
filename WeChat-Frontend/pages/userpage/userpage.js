@@ -9,6 +9,9 @@ Page({
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
+  // handleGetMessage: function (e) {
+  //   console.log(e.target.data)
+  // },
   onLoad: function () {
     if (app.globalData.userInfo) {
       this.setData({

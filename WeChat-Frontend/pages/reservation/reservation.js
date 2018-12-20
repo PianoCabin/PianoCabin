@@ -498,7 +498,7 @@ let page = Page({
       this.submitOrder(order);
     }
     else{
-      util.msgPrompt("no complete")
+      util.msgPrompt("no complete",false)
     }
   },
   submitOrder(order_data){

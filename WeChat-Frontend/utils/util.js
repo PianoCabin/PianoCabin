@@ -19,13 +19,21 @@ const formatTime = date => {
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 
-const msgPrompt = msg =>{
+const msgPrompt = (msg,needIcon=true) =>{
+  if(needIcon)
   wx.showToast({
     title: msg,
     icon: 'success',
     duration: 1000,
     mask: true
   })
+  else
+    wx.showToast({
+      title: msg,
+      icon:"none",
+      duration: 1000,
+      mask: true
+    })
 }
 
 const formatNumber = n => {
