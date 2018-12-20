@@ -5,6 +5,7 @@ from Backend.settings import *
 from admin_end.models import *
 import json
 import xml.etree.ElementTree as ET
+import hashlib
 import jwt
 import traceback
 
@@ -104,6 +105,22 @@ class APIView(View):
             for child in root:
                 msg[child.tag] = child.text
         return msg
+
+    def getSign(self, msg):
+        msg_keys = list(msg.keys())
+        msg_keys.sort()
+        msg_str = ''
+        for msg_key in msg_keys:
+            msg_str += '&'
+            msg_str += msg_key
+            msg_str += '='
+            msg_str += str(msg[msg_key])
+        msg_str = msg_str[1:]
+        msg_str += ('&key=' + CONFIGS['MCH_KEY'])
+        md5 = hashlib.md5()
+        md5.update(msg_str.encode())
+        msg_str = md5.hexdigest().upper()
+        return msg_str
 
     # 解析session获取用户
     def getUserBySession(self):
