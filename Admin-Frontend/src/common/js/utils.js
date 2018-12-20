@@ -6,7 +6,7 @@ class Utils {
     // 测试用
     // window.location.href = window.location.protocol + '//' + window.location.host + '/module' + '/' + url.replace('/','') + '.html'
     console.log(url)
-    window.location.href =  window.location.protocol + '//' + window.location.host + '/' + url
+    window.location.href = window.location.protocol + '//' + window.location.host + '/' + url
   }
 
   // 根据api生成完整地址

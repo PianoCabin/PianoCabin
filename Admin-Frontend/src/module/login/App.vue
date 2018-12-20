@@ -48,7 +48,7 @@
     created () {
       Utils.get(this, '/a/login/', null, function (_this, res) {
         if(res.code === 1)
-          Utils.setURL("room/")
+          Utils.setURL("room")
       })
     },
 

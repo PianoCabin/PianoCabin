@@ -2,6 +2,6 @@
     <socket>:8000</socket>
     <chdir>/home/ubuntu/PianoCabin/Backend</chdir>
     <module>Backend.wsgi</module>
-    <processes>16</processes> <!-- 进程数 --> 
+    <processes>15</processes> <!-- 进程数 --> 
 </uwsgi>
 
