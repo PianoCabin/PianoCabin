@@ -60,7 +60,7 @@ class Bind(APIView):
     @classmethod
     def getPersonalInfo(cls, request):
         if request.method == 'GET':
-            ticket = request['GET'].get('ticket')
+            ticket = request.GET.get('ticket')
             msg = {
                 'code': 1,
                 'msg': '',
