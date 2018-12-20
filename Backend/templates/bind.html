@@ -11,7 +11,7 @@
         setTimeout(()=>{
             let info = "{{ msg }}";
             info = info.replace(/&quot;/g, '\"');
-            wx.miniProgram.postMessage({ data: info });
+            wx.miniProgram.postMessage({ msg: info });
             wx.miniProgram.navigateBack();
         },2000);
     }
