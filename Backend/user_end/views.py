@@ -3,6 +3,7 @@ from admin_end.models import *
 from datetime import datetime
 from django.db import transaction
 from django.template.loader import get_template
+from django.shortcuts import render
 from urllib import parse
 from io import BytesIO
 import json
@@ -55,6 +56,45 @@ class Login(APIView):
 
 class Bind(APIView):
     # bind API
+
+    @classmethod
+    def getPersonalInfo(cls, request):
+        if request.method == 'GET':
+            ticket = request['GET'].get('ticket')
+            msg = {
+                'code': 1,
+                'msg': '',
+                'data': None
+            }
+            data = {}
+            if not ticket:
+                msg['code'] = 0
+                msg['msg'] = 'No ticket'
+                return render(request, 'bind.html', msg)
+            url = 'https://id-tsinghua-test.iterator-traits.com/thuser/authapi/checkticket/'
+            url = parse.urljoin(url, CONFIGS['THU_APP_ID']) + '/'
+            url = parse.urljoin(url, ticket) + '/'
+            url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_')) + '/'
+            res = requests.get(url=url)
+            try:
+                res = res.text.split(':')
+                info = {}
+                for text in res:
+                    text = text.split('=')
+                    info[text[0]] = text[1]
+                if info.get('code') != 0:
+                    raise MsgError
+                else:
+                    data['identity'] = info.get('zjh')
+                    if info.get('yhlb') in ['J0000', 'H0000', 'J0054']:
+                        data['permission'] = 1
+                    elif info.get('yhlb') in ['X0011', 'X0021', 'X0031']:
+                        data['permission'] = 2
+                    sign = cls.get
+                    msg['data'] = data
+                    return render(request, 'bind.html', msg)
+            except:
+                return render(request, 'bind.html', msg)
 
     def get(self):
         self.checkMsg('ticket', 'authorization')
