@@ -77,3 +77,24 @@
  width: 70%;
  font-size: 30rpx;
 }
+
+.news_button{
+  position: fixed;
+  bottom: 50rpx;
+  right: 50rpx;
+  z-index: 1;
+  width:100rpx;
+  height: 100rpx; 
+  border-radius: 50rpx;
+  box-shadow: 0px 4px 8px #A7A7A7;
+  background: #8E2782 !important;
+}
+
+.news_button_img {
+  position: fixed;
+  bottom: 70rpx;
+  right: 70rpx;
+  z-index: 1;
+  width:55rpx;
+  height: 55rpx; 
+}

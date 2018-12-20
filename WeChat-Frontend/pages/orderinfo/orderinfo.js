@@ -323,4 +323,10 @@ Page({
       })
     }.bind(this), 100)
   },
+  payOrder(){
+    app.getPayMsg({"order_id":this.data.info["order_id"]},(res)=>{
+      
+      app.payForOrder(res.data["data"]['timeStamp'], res.data["data"]['nonceStr'], res.data["data"]['package'], res.data["data"]['paySign']);
+    });
+  }
 })

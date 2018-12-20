@@ -24,24 +24,48 @@
   height: 10%;
 }
 
-.page_name{
+.order_type{
   text-align: center;
   width: 100%;
   font-size: 28rpx;
   color: #8E2782;
-  /* font-weight: bold; */
   margin:2%;
 }
+
+
 .empty_item{
-  width:8%;
+  width:10%;
 }
+
+
+.edge_item{
+  width: 40rpx;
+}
+.type_item {
+  text-align: center;
+  width: 100%;
+  margin-top: 10rpx;
+  margin-bottom: 15rpx;
+  font-size: 30rpx;
+  display: flex;
+  flex-direction: row;
+}
+.select_type {
+  color: #8E2782;
+  box-sizing: content-boxs;
+  border-bottom: 5rpx solid;
+  padding-bottom: 6rpx;
+  padding-left: 4rpx;
+  padding-right: 4rpx;
+}
+
 
 .icon{
   margin-top: 3%;
   margin-left: 2%;
   object-fit: cover;
-  width: 5%;
-  height: 5%;
+  width: 20%;
+  height: 20%;
 }
 
 

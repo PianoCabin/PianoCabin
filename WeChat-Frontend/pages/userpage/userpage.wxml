@@ -8,7 +8,7 @@
       </view>
     <!-- <image class="userinfo-avatar" src="/image/icon/LOGO.jpg" mode="cover"></image> -->
     
-  </view>
+    </view>
   <view wx:else>
       <view class="userinfo">
         <block >
@@ -22,7 +22,7 @@
         <text class='item_name'>我的订单</text>
         <image src='/image/icon/right-arrow.png' class='item_Icon'></image>
       </view>
-      <view class='list_item'>
+      <view class='list_item' bindtap='goToBindPage'>
         <image src='/image/icon/identity_Icon.png' class='item_Icon'></image>
         <text class='item_name'>身份验证</text>
         <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
@@ -37,9 +37,9 @@
         <text class='item_name'>地图</text>
         <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
       </view>
-      <view class='list_item'>
+      <view class='list_item' bindtap='goToFeedback'>
         <image src='/image/icon/feed_back_Icon.png' class='item_Icon'></image>
-        <text class='item_name'>客服</text>
+        <text class='item_name'>反馈</text>
         <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
       </view>
       <view class='list_item'>
@@ -47,5 +47,8 @@
         <text class='item_name'>帮助</text>
         <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
       </view>
-    
+
+    <button class='news_button'  bindtap='showNewsPage'>
+      <image class='news_button_img' src='/image/icon/news.png'></image>
+    </button>
 </view>
