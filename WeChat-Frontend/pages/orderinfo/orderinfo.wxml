@@ -44,9 +44,9 @@
           </view>
         
         <view class='info_order_op'>
-          <view class='info_cancel' wx:if="{{info.status  == 1}} || {{info.status  == 2}}" bindtap='checkCancelOrder'>退订</view>
+          <view class='info_cancel' wx:if="{{info.status  == 1}}" bindtap='checkCancelOrder'>退订</view>
           <view class='info_cancel' id='unreachable' wx:else>退订</view>
-          <view class='info_pay' wx:if="{{info.status  == 1 && saved && valid}}">支付</view>
+          <view class='info_pay' wx:if="{{info.status  == 1 && saved && valid}}" bindtap='payOrder'>支付</view>
           <view class="info_pay" id='unreachable' wx:else>支付</view>
           <view class='info_edit'  wx:if="{{info.status  == 1 && !saved && valid}}" bindtap='changeOrder'>修改</view>
           <view class='info_edit' id='unreachable' wx:else>修改</view>

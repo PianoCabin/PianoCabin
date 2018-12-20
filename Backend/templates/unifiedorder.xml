@@ -8,6 +8,6 @@
     <out_trade_no>{{ out_trade_no }}</out_trade_no>
     <spbill_create_ip>{{ spbill_create_ip }}</spbill_create_ip>
     <total_fee>{{ total_fee }}</total_fee>
-    <trade_type>JSAPI</trade_type>
+    <trade_type>{{ trade_type }}</trade_type>
     <sign>{{ sign }}</sign>
 </xml>

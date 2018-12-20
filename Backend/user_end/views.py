@@ -14,7 +14,7 @@ import qrcode
 import base64
 import random
 import string
-import hashlib
+import socket
 
 
 # Create your views here.
@@ -149,6 +149,11 @@ class OrderPay(APIView):
         self.checkMsg('order_id')
         user = self.getUserBySession()
         order = Order.objects.get(order_id=self.msg.get('order_id'))
+
+        #本机IP
+        myname = socket.gethostname()
+        myaddr = socket.gethostbyname(myname)
+
         nonce_str = ''.join(random.sample(string.ascii_letters + string.digits, 32))
         msg = {
             'appid': CONFIGS['APP_ID'],
@@ -158,8 +163,9 @@ class OrderPay(APIView):
             'notify_url': CONFIGS['DOMAIN'] + '/u/order/paid/',
             'openid': user.open_id,
             'out_trade_no': order.order_id,
-            'spbill_create_ip': self.msg['ip'],
+            'spbill_create_ip': myaddr,
             'total_fee': order.price * 100,
+            'trade_type': 'JSAPI',
         }
         sign = self.getSign(msg)
         msg['sign'] = sign
@@ -181,28 +187,15 @@ class OrderPay(APIView):
         else:
             raise MsgError(msg=res.get('return_msg') or res.get('err_code_des'))
 
-    def getSign(self, msg):
-        msg_keys = list(msg.keys())
-        msg_keys.sort()
-        msg_str = ''
-        for msg_key in msg_keys:
-            msg_str += '&'
-            msg_str += msg_key
-            msg_str += '='
-            msg_str += msg[msg_key]
-        msg_str = msg_str[0:]
-        msg_str += ('&key=' + CONFIGS['MCH_KEY'])
-        md5 = hashlib.md5()
-        md5.update(msg_str.encode())
-        msg_str = md5.hexdigest().upper()
-        return msg_str
-
 
 class OrderPaid(APIView):
     def post(self):
-        result = self.request.raw_post_data
+        result = self.request.body
         result = self.parseXML(result)
         if result.get('return_code') == 'SUCCESS' and result.get('result_code') == 'SUCCESS':
+            sign = result.pop('sign')
+            if sign != self.getSign(result):
+                raise MsgError(msg='Invalid Sign')
             order_id = result.get('out_trade_no')
             order = Order.objects.get(order_id=order_id)
             order.order_status = 2

@@ -47,5 +47,20 @@ Page({
     wx.navigateTo({
       url: '/pages/orderpage/orderpage',
     })
+  },
+  goToBindPage(){
+    wx.navigateTo({
+      url: '/pages/out/out',
+    })
+  },
+  goToFeedback(){
+    wx.navigateTo({
+      url: '/pages/feedback/feedback',
+    })
+  },
+  showNewsPage(event) {
+    wx.navigateTo({
+      url: '/pages/news/news',
+    })
   }
 })

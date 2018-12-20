@@ -89,6 +89,46 @@ let app = App({
   cancelOrder(data, successFunc) {
     this._post(`/u/order/cancel/`, data, successFunc)
   },
+  feedback(data,successFunc){
+    this._post(`/u/feedback/`,data,successFunc)
+  },
+  getNewsList(data,successFunc){
+    this._post(`/u/news/list/`,data,successFunc)
+  },
+  getPayMsg(data,successFunc){
+    this._post(`/u/order/pay/`,data,successFunc)
+  },
+  payForOrder(timestamp, nonce_str, prepare_id, sign) {
+    console.log(timestamp);
+    console.log(nonce_str);
+    console.log(prepare_id);
+    console.log(sign);
+
+
+    wx.requestPayment({
+      timeStamp: timestamp,
+      nonceStr: nonce_str,
+      package: prepare_id,
+      signType: 'MD5',
+      paySign: sign,
+      success: function (res) {
+        console.log("支付成功!");
+        console.log(res);
+        util.msgPrompt('支付成功!');
+        wx.navigateTo({
+          url: '/pages/orderpage/orderpage',
+        })
+      },
+      fail: function (res) {
+        console.log("支付失败!!");
+        console.log(res);
+        util.msgPrompt('支付失败!!');
+        // wx.navigateTo({
+        //   url: '/pages/orderpage/orderpage',
+        // })
+      }
+    })
+  },
   _post(url, data, successFunc = res => { console.log(res) }, failFunc = res => { console.log(res) }) {
     if (this.globalData.user_session) {
       let _this = this;
@@ -170,14 +210,16 @@ let app = App({
     else
       this.getUserSession(this._get, url, data, successFunc, failFunc)
   },
+  
   globalData: {
     userInfo: null,
     user_session: null,
     user_nickname: "默认用户",
-    backend: `https://711602.iterator-traits.com`,
-    // backend: `http://127.0.0.1:80`,
-    // backend:`http://f23e7fdc.ngrok.io`,
-    user_session: null
+    // backend: `https://711602.iterator-traits.com`,
+    backend: `http://127.0.0.1:80`,
+    // backend: `https://0a8bba0a.ngrok.io`,
+    user_session: null,
+    network_waiting:0
   }
 })
 
