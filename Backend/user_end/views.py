@@ -70,7 +70,7 @@ class Bind(APIView):
             if not ticket:
                 msg['code'] = 0
                 msg['msg'] = 'No ticket'
-                return render(request, 'bind.html', msg)
+                return render(request, 'bind.html', {'msg': json.dumps(msg)})
             url = 'https://id-tsinghua-test.iterator-traits.com/thuser/authapi/checkticket/'
             url = parse.urljoin(url, CONFIGS['THU_APP_ID']) + '/'
             url = parse.urljoin(url, ticket) + '/'
@@ -93,11 +93,13 @@ class Bind(APIView):
                     sign = cls.getSign(data)
                     data['sign'] = sign
                     msg['data'] = data
-                    return render(request, 'bind.html', msg)
+                    return render(request, 'bind.html', {'msg': json.dumps(msg)})
             except:
-                return render(request, 'bind.html', msg)
+                msg['code'] = 0
+                msg['msg'] = 'Error'
+                return render(request, 'bind.html', {'msg': json.dumps(msg)})
 
-    def get(self):
+    def post(self):
         self.checkMsg('user_info', 'authorization')
         info = self.msg.get('user_info')
         user = self.getUserBySession()
