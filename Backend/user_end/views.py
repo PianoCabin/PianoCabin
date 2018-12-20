@@ -2,6 +2,7 @@ from utils.utils import *
 from admin_end.models import *
 from datetime import datetime
 from django.db import transaction
+from django.template.loader import get_template
 from urllib import parse
 from io import BytesIO
 import json
@@ -11,6 +12,9 @@ import uuid
 import django
 import qrcode
 import base64
+import random
+import string
+import hashlib
 
 
 # Create your views here.
@@ -140,6 +144,72 @@ class CreateFeedBack(APIView):
             raise MsgError(msg='Submitting feedback fails')
 
 
+class OrderPay(APIView):
+    def post(self):
+        self.checkMsg('order_id')
+        user = self.getUserBySession()
+        order = Order.objects.get(order_id=self.msg.get('order_id'))
+        nonce_str = ''.join(random.sample(string.ascii_letters + string.digits, 32))
+        msg = {
+            'appid': CONFIGS['APP_ID'],
+            'body': 'Payment',
+            'mch_id': CONFIGS['MCH_ID'],
+            'nonce_str': nonce_str,
+            'notify_url': CONFIGS['DOMAIN'] + '/u/order/paid/',
+            'openid': user.open_id,
+            'out_trade_no': order.order_id,
+            'spbill_create_ip': self.msg['ip'],
+            'total_fee': order.price * 100,
+        }
+        sign = self.getSign(msg)
+        msg['sign'] = sign
+        unified_order_msg = get_template('unifiedorder.xml').render(msg)
+        headers = {'content-type': 'text/xml'}
+        res = requests.post('https://api.mch.weixin.qq.com/pay/unifiedorder', data=unified_order_msg, headers=headers)
+        res = self.parseXML(res.text)
+        if res.get('return_code') == 'SUCCESS' and res.get('result_code') == 'SUCCESS':
+            msg_nd = {
+                'appId': CONFIGS['APP_ID'],
+                'timeStamp': str(int(datetime.now().timestamp())),
+                'nonceStr': nonce_str,
+                'package': 'prepay_id=' + res.get('prepay_id'),
+                'signType': 'MD5'
+            }
+            sign = self.getSign(msg_nd)
+            msg_nd['paySign'] = sign
+            return msg_nd
+        else:
+            raise MsgError(msg=res.get('return_msg') or res.get('err_code_des'))
+
+    def getSign(self, msg):
+        msg_keys = list(msg.keys())
+        msg_keys.sort()
+        msg_str = ''
+        for msg_key in msg_keys:
+            msg_str += '&'
+            msg_str += msg_key
+            msg_str += '='
+            msg_str += msg[msg_key]
+        msg_str = msg_str[0:]
+        msg_str += ('&key='+CONFIGS['MCH_KEY'])
+        md5 = hashlib.md5()
+        md5.update(msg_str.encode())
+        msg_str = md5.hexdigest().upper()
+        return msg_str
+
+
+class OrderPaied(APIView):
+    def post(self):
+        result = self.request.raw_post_data
+        result = self.parseXML(result)
+        if result.get('return_code') == 'SUCCESS' and result.get('result_code') == 'SUCCESS':
+            order_id = result.get('out_trade_no')
+            order = Order.objects.get(order_id=order_id)
+            order.order_status = 2
+            order.save()
+
+
+
 class NewsList(APIView):
     # feedback/list API
 
@@ -159,7 +229,8 @@ class PianoRoomList(APIView):
         self.checkMsg('date', 'type', 'authorization')
         user = self.getUserBySession()
         if self.msg.get('brand'):
-            rooms = PianoRoom.objects.filter(brand=self.msg.get('brand'), piano_type=self.msg.get('type'), usable=True, art_ensemble=0)
+            rooms = PianoRoom.objects.filter(brand=self.msg.get('brand'), piano_type=self.msg.get('type'), usable=True,
+                                             art_ensemble=0)
         else:
             rooms = PianoRoom.objects.filter(piano_type=self.msg.get('type'), usable=True, art_ensemble=0)
 
@@ -261,7 +332,7 @@ class OrderNormal(APIView):
                     create_time=datetime.now(),
                     price=self.msg.get('price'),
                 )
-                order.order_id = str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id)))
+                order.order_id = ''.join(str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id))).split('-'))
                 order.save()
                 day = (order.date - datetime.now().date()).days
                 if day >= CONFIGS['MAX_ORDER_DAYS'] or day < 0:

@@ -4,6 +4,7 @@ from urllib import parse, request
 from Backend.settings import *
 from admin_end.models import *
 import json
+import xml.etree.ElementTree as ET
 import jwt
 import traceback
 
@@ -33,6 +34,11 @@ class APIView(View):
             except:
                 msg = {}
         msg['authorization'] = self.request.META.get('HTTP_AUTHORIZATION')
+        if self.request.META.has_key('HTTP_X_FORWARDED_FOR'):
+            msg['ip'] = self.request.META.get('HTTP_X_FORWARDED_FOR')
+        else:
+            msg['ip'] = self.request.META.get('REMOTE_ADDR')
+
         return msg
 
     # 处理不同请求类型并包装返回值
@@ -89,6 +95,14 @@ class APIView(View):
         for k in keys:
             if k in self.msg:
                 msg[k] = self.msg[k]
+        return msg
+
+    def parseXML(self, text):
+        root = ET.fromstring(text)
+        msg = dict()
+        if root.tag == 'xml':
+            for child in root:
+                msg[child.tag] = child.text
         return msg
 
     # 解析session获取用户
