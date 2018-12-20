@@ -12,5 +12,5 @@ urlpatterns = [
     path('order/change/', OrderChange.as_view()),
     path('order/cancel/', OrderCancel.as_view()),
     path('order/pay/', OrderPay.as_view()),
-    path('order/paid/', OrderPaied.as_view())
+    path('order/paid/', OrderPaid.as_view())
 ]

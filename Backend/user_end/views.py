@@ -191,14 +191,14 @@ class OrderPay(APIView):
             msg_str += '='
             msg_str += msg[msg_key]
         msg_str = msg_str[0:]
-        msg_str += ('&key='+CONFIGS['MCH_KEY'])
+        msg_str += ('&key=' + CONFIGS['MCH_KEY'])
         md5 = hashlib.md5()
         md5.update(msg_str.encode())
         msg_str = md5.hexdigest().upper()
         return msg_str
 
 
-class OrderPaied(APIView):
+class OrderPaid(APIView):
     def post(self):
         result = self.request.raw_post_data
         result = self.parseXML(result)
@@ -207,7 +207,6 @@ class OrderPaied(APIView):
             order = Order.objects.get(order_id=order_id)
             order.order_status = 2
             order.save()
-
 
 
 class NewsList(APIView):
