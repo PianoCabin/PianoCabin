@@ -90,37 +90,23 @@ class Bind(APIView):
                         data['permission'] = 1
                     elif info.get('yhlb') in ['X0011', 'X0021', 'X0031']:
                         data['permission'] = 2
+                    sign = cls.getSign(data)
+                    data['sign'] = sign
                     msg['data'] = data
                     return render(request, 'bind.html', msg)
             except:
                 return render(request, 'bind.html', msg)
 
     def get(self):
-        self.checkMsg('ticket', 'authorization')
-        ticket = self.msg.get('ticket')
+        self.checkMsg('user_info', 'authorization')
+        info = self.msg.get('user_info')
         user = self.getUserBySession()
-        url = 'https://id-tsinghua-test.iterator-traits.com/thuser/authapi/checkticket/'
-        url = parse.urljoin(url, CONFIGS['THU_APP_ID']) + '/'
-        url = parse.urljoin(url, ticket) + '/'
-        url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_')) + '/'
-        res = requests.get(url=url)
-        try:
-            res = res.text.split(':')
-            info = {}
-            for text in res:
-                text = text.split('=')
-                info[text[0]] = text[1]
-            if info.get('code') != 0:
-                raise MsgError
-            else:
-                user.identity = info.get('zjh')
-                if info.get('yhlb') in ['J0000', 'H0000', 'J0054']:
-                    user.permission = 1
-                elif info.get('yhlb') in ['X0011', 'X0021', 'X0031']:
-                    user.permission = 2
-                user.save()
-        except:
-            raise MsgError('Invalid ticket')
+        sign = info.pop('sign')
+        if sign != self.getSign(info):
+            raise MsgError(msg='Invalid sign')
+        user.identity = info.get('identity')
+        user.permission = info.get('permission')
+        user.save()
 
 
 class OrderList(APIView):

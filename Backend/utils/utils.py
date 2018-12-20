@@ -98,7 +98,8 @@ class APIView(View):
                 msg[k] = self.msg[k]
         return msg
 
-    def parseXML(self, text):
+    @classmethod
+    def parseXML(cls, text):
         root = ET.fromstring(text)
         msg = dict()
         if root.tag == 'xml':
@@ -106,7 +107,8 @@ class APIView(View):
                 msg[child.tag] = child.text
         return msg
 
-    def getSign(self, msg):
+    @classmethod
+    def getSign(cls, msg):
         msg_keys = list(msg.keys())
         msg_keys.sort()
         msg_str = ''
