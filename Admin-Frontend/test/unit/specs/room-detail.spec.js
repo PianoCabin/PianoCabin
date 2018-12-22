@@ -29,7 +29,7 @@ describe('琴房详情界面', () => {
         expect(typeof vm.$el.querySelector(".return-button").click).to.be.equal('function');
         expect(vm.$el.querySelectorAll(".el-dialog").length > 0).to.be.equal(true)
     })
-    it('检查琴房信息显示', () => {
+    it('检查琴房信息显示', done => {
         let test_info = { brand: "星海立时钢琴", room_num: "F2-201", piano_type: "钢琴房", price_0: 5, price_1: 10, price_2: 15, usable: "下线", art_ensemble: "非艺术团" };
         vm.room_info = test_info;
         Vue.nextTick(() => {
@@ -43,6 +43,7 @@ describe('琴房详情界面', () => {
                     expect(vm.$el.querySelector(".el-form-item.is-required > label[for='" + key + "']+div>div>div>input.el-input__inner").value).to.be.equal(test_info[key].toString())
 
             });
+            done()
         })
     })
 

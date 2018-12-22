@@ -23,12 +23,13 @@ describe('信息详情界面', () => {
         expect(typeof vm.$el.querySelector(".save-button").click).to.be.equal('function');
     })
 
-    it('检查信息数据绑定', () => {
+    it('检查信息数据绑定', done=> {
         let test_info = { news_title: "title", news_content: "content" }
         vm.news_info = test_info;
         Vue.nextTick(() => {
             expect(vm.$el.querySelector('input').value).to.be.equal(test_info["news_title"])
             expect(vm.$el.querySelector('textarea').value).to.be.equal(test_info["news_content"])
+            done()
         })
     })
 })

@@ -22,17 +22,19 @@ describe('琴房列表界面', () => {
         expect(vm.$el.querySelectorAll(".fab").length > 0).to.be.equal(true);
         expect(typeof vm.$el.querySelector(".fab").click).to.be.equal('function');
     })
-    it('检查琴房种类列表数据绑定', () => {
+    it('检查琴房种类列表数据绑定', done => {
         vm.room_list = { "钢琴房": {}, "电钢琴": {}, "小琴房": {}, "test": {} };
         Vue.nextTick(() => {
             expect(vm.$el.querySelectorAll(".el-submenu").length === 4).to.be.equal(true);
+            done()
         })
     })
-    it('检查房间列表数据绑定', () => {
+    it('检查房间列表数据绑定', done => {
         vm.selected_list = [{ "room_num": "F2-201" }, { "room_num": "F2-202" }, { "room_num": "F2-203" }];
         Vue.nextTick(() => {
             expect(vm.$el.querySelectorAll(".room").length === 3).to.be.equal(true);
             expect(typeof vm.$el.querySelector('.room').click).to.be.equal('function')
+            done()
         })
     })
 })
