@@ -11,8 +11,9 @@ Page({
   },
 
   handleGetMessage: function (e) {
-    let msg = JSON.parse(e.detail.msg);
-    if(msg["code"] != 1){
+    let msg = JSON.parse(e.detail.data[0]);
+    console.log(msg);
+    if(msg["code"] !== 1){
       util.msgPrompt("绑定失败",false);      
       return;
     }
