@@ -1,2 +1,4 @@
 <!--pages/out/out.wxml-->
-<web-view src="https://www.baidu.com/"></web-view>
+<view wx:if="{{s}}"></view>
+<web-view wx:else src=" https://id-tsinghua-test.iterator-traits.com/do/off/ui/auth/login/form/ef6dcf375679288e8fe520ec07f29130/0?/callback-711602"></web-view>
+<!-- <web-view  wx:else src="file:///C:/Users/Whale/Desktop/test.html" bindmessage="handleGetMessage"></web-view> -->

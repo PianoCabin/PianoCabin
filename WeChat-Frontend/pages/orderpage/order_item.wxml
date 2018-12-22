@@ -5,7 +5,8 @@
         <view class='order_piano'>{{piano_type}}</view>
         <view class='order_date'>日期：{{order_date}}</view>
         <view class='order_time'>时间：{{start_time}}~{{end_time}}</view>
-        <view class='order_status'>订单状态：{{order_status}}</view>
+        <view wx:if="{{status === 0 && cancel_reason != 2 && cancel_reason != 0 }}"  class='order_status'>订单状态：<text class='abnormal_cancel'>{{order_status}}</text></view>
+        <view wx:else class='order_status'>订单状态：{{order_status}}</view>
       </view>
       <view class='order_info2'>
         <view class='room_num'>{{room_num}}</view>

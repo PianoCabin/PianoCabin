@@ -1,6 +1,9 @@
 {
+  "DOMAIN": "0.0.0.0",
   "APP_ID": "appid here",
   "APP_SECRET": "app_secret here",
+  "MCH_ID": "mch_id here",
+  "MCH_KEY": "mch_key here",
   "THU_APP_ID": "PIANO",
   "SQL_NAME": "piano_cabin",
   "SQL_USER": "root",

@@ -2,6 +2,8 @@ from utils.utils import *
 from admin_end.models import *
 from datetime import datetime
 from django.db import transaction
+from django.template.loader import get_template
+from django.shortcuts import render
 from urllib import parse
 from io import BytesIO
 import json
@@ -11,6 +13,9 @@ import uuid
 import django
 import qrcode
 import base64
+import random
+import string
+import socket
 
 
 # Create your views here.
@@ -52,32 +57,65 @@ class Login(APIView):
 class Bind(APIView):
     # bind API
 
-    def get(self):
-        self.checkMsg('ticket', 'authorization')
-        ticket = self.msg.get('ticket')
+    @classmethod
+    def getPersonalInfo(cls, request):
+        if request.method == 'GET':
+            ticket = request.GET.get('ticket')
+            msg = {
+                'code': 1,
+                'msg': '',
+                'data': None
+            }
+            data = {}
+            if not ticket:
+                msg['code'] = 0
+                msg['msg'] = 'No ticket'
+                return render(request, 'bind.html', {'msg': json.dumps(msg)})
+            url = 'https://id-tsinghua-test.iterator-traits.com/thuser/authapi/checkticket/'
+            url = parse.urljoin(url, CONFIGS['THU_APP_ID']) + '/'
+            url = parse.urljoin(url, ticket) + '/'
+            url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_')) + '/'
+            res = requests.get(url=url)
+            try:
+                res = res.text.split(':')
+                info = {}
+                for text in res:
+                    text = text.split('=')
+                    info[text[0]] = text[1]
+                if info.get('code') != 0:
+                    raise MsgError
+                else:
+                    data['identity'] = info.get('zjh')
+                    if info.get('yhlb') in ['J0000', 'H0000', 'J0054']:
+                        data['permission'] = 1
+                    elif info.get('yhlb') in ['X0011', 'X0021', 'X0031']:
+                        data['permission'] = 2
+                    sign = cls.getSign(data)
+                    data['sign'] = sign
+                    msg['data'] = data
+                    return render(request, 'bind.html', {'msg': json.dumps(msg)})
+            except:
+                msg['code'] = 0
+                msg['msg'] = 'Error'
+                return render(request, 'bind.html', {'msg': json.dumps(msg)})
+
+    def post(self):
+        self.checkMsg('user_info', 'authorization')
+        info = self.msg.get('user_info')
         user = self.getUserBySession()
-        url = 'https://id-tsinghua-test.iterator-traits.com/thuser/authapi/checkticket/'
-        url = parse.urljoin(url, CONFIGS['THU_APP_ID']) + '/'
-        url = parse.urljoin(url, ticket) + '/'
-        url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_')) + '/'
-        res = requests.get(url=url)
-        try:
-            res = res.text.split(':')
-            info = {}
-            for text in res:
-                text = text.split('=')
-                info[text[0]] = text[1]
-            if info.get('code') != 0:
-                raise MsgError
-            else:
-                user.identity = info.get('zjh')
-                if info.get('yhlb') in ['J0000', 'H0000', 'J0054']:
-                    user.permission = 1
-                elif info.get('yhlb') in ['X0011', 'X0021', 'X0031']:
-                    user.permission = 2
-                user.save()
-        except:
-            raise MsgError('Invalid ticket')
+        sign = info.pop('sign')
+        if sign != self.getSign(info):
+            raise MsgError(msg='Invalid sign')
+        user.identity = info.get('identity')
+        user.permission = info.get('permission')
+        user.save()
+
+
+class BindInfo(APIView):
+    def get(self):
+        self.checkMsg('authorization')
+        user = self.getUserBySession()
+        return {'identity': user.identity, 'permission': user.permission}
 
 
 class OrderList(APIView):
@@ -140,6 +178,64 @@ class CreateFeedBack(APIView):
             raise MsgError(msg='Submitting feedback fails')
 
 
+class OrderPay(APIView):
+    def post(self):
+        self.checkMsg('order_id')
+        user = self.getUserBySession()
+        order = Order.objects.get(order_id=self.msg.get('order_id'))
+
+        #本机IP
+        myname = socket.gethostname()
+        myaddr = socket.gethostbyname(myname)
+
+        nonce_str = ''.join(random.sample(string.ascii_letters + string.digits, 32))
+        msg = {
+            'appid': CONFIGS['APP_ID'],
+            'body': 'Payment',
+            'mch_id': CONFIGS['MCH_ID'],
+            'nonce_str': nonce_str,
+            'notify_url': CONFIGS['DOMAIN'] + '/u/order/paid/',
+            'openid': user.open_id,
+            'out_trade_no': order.order_id,
+            'spbill_create_ip': myaddr,
+            'total_fee': order.price * 100,
+            'trade_type': 'JSAPI',
+        }
+        sign = self.getSign(msg)
+        msg['sign'] = sign
+        unified_order_msg = get_template('unifiedorder.xml').render(msg)
+        headers = {'content-type': 'text/xml'}
+        res = requests.post('https://api.mch.weixin.qq.com/pay/unifiedorder', data=unified_order_msg, headers=headers)
+        res = self.parseXML(res.text)
+        if res.get('return_code') == 'SUCCESS' and res.get('result_code') == 'SUCCESS':
+            msg_nd = {
+                'appId': CONFIGS['APP_ID'],
+                'timeStamp': str(int(datetime.now().timestamp())),
+                'nonceStr': nonce_str,
+                'package': 'prepay_id=' + res.get('prepay_id'),
+                'signType': 'MD5'
+            }
+            sign = self.getSign(msg_nd)
+            msg_nd['paySign'] = sign
+            return msg_nd
+        else:
+            raise MsgError(msg=res.get('return_msg') or res.get('err_code_des'))
+
+
+class OrderPaid(APIView):
+    def post(self):
+        result = self.request.body
+        result = self.parseXML(result)
+        if result.get('return_code') == 'SUCCESS' and result.get('result_code') == 'SUCCESS':
+            sign = result.pop('sign')
+            if sign != self.getSign(result):
+                raise MsgError(msg='Invalid Sign')
+            order_id = result.get('out_trade_no')
+            order = Order.objects.get(order_id=order_id)
+            order.order_status = 2
+            order.save()
+
+
 class NewsList(APIView):
     # feedback/list API
 
@@ -159,7 +255,8 @@ class PianoRoomList(APIView):
         self.checkMsg('date', 'type', 'authorization')
         user = self.getUserBySession()
         if self.msg.get('brand'):
-            rooms = PianoRoom.objects.filter(brand=self.msg.get('brand'), piano_type=self.msg.get('type'), usable=True, art_ensemble=0)
+            rooms = PianoRoom.objects.filter(brand=self.msg.get('brand'), piano_type=self.msg.get('type'), usable=True,
+                                             art_ensemble=0)
         else:
             rooms = PianoRoom.objects.filter(piano_type=self.msg.get('type'), usable=True, art_ensemble=0)
 
@@ -261,7 +358,7 @@ class OrderNormal(APIView):
                     create_time=datetime.now(),
                     price=self.msg.get('price'),
                 )
-                order.order_id = str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id)))
+                order.order_id = ''.join(str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id))).split('-'))
                 order.save()
                 day = (order.date - datetime.now().date()).days
                 if day >= CONFIGS['MAX_ORDER_DAYS'] or day < 0:

@@ -9,6 +9,7 @@ let page = Page({
   data: {
     list_type:null,                                         //当前显示的列表的类型（钢琴、小琴房或电钢琴）
     cur_date:"",                                            //当前选择的日期
+    cur_date_show:"",
     search_start:null,                                      //按时间查找的开始时间
     search_end:null,                                        //按时间查找的结束时间
     selected_room:"",                                     //选中的房间在列表中的id
@@ -16,7 +17,7 @@ let page = Page({
     show_order_info:false,                                  //是否显示订单弹窗
     order_info:{},                                          //订单的详细内容
     animation_data:null,                                    //动画接口
-    animation_time:250,                                     //动画执行时间
+    animation_time:100,                                     //动画执行时间
     room_list: [],                                          //显示的琴房的信息列表
     starttime_list:[],                                      //订单窗口，开始时间的picker的range
     endtime_list: [],                                       //订单窗口，结束时间的picker的range
@@ -40,7 +41,7 @@ let page = Page({
 
   //初始化页面，默认显示钢琴页面
   onReady: function () {
-    this.setData({ piano_id: "select_type", room_id: "", keyboard_id: "", cur_date: new Date().toLocaleDateString(), list_type: this.data.type_list[0] });
+    this.setData({ piano_id: "select_type", room_id: "", keyboard_id: "", cur_date: new Date().toLocaleDateString(), list_type: this.data.type_list[0], cur_date_show: util.datetimeShowString(new Date())});
       this.getRoomList();
       this.initSearchPage();
   },
@@ -69,7 +70,7 @@ let page = Page({
     today.setHours(0,0,0,0);
     if(new_date >= today)
     {  
-      this.setData({cur_date:new_date.toLocaleDateString()});
+      this.setData({ cur_date: new_date.toLocaleDateString(), cur_date_show: util.datetimeShowString(new_date)});
       this.getRoomList();
     }
  },
@@ -83,7 +84,7 @@ let page = Page({
     let seven_day = latest.getTime()+7*24*60*60*1000;
     if (seven_day>new_date)
     {
-      this.setData({ cur_date: new_date.toLocaleDateString() });
+      this.setData({ cur_date: new_date.toLocaleDateString(), cur_date_show: util.datetimeShowString(new_date)});
       this.getRoomList();
     }
   },
@@ -497,7 +498,7 @@ let page = Page({
       this.submitOrder(order);
     }
     else{
-      util.msgPrompt("no complete")
+      util.msgPrompt("no complete",false)
     }
   },
   submitOrder(order_data){

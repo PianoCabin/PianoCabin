@@ -9,6 +9,9 @@ Page({
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
+  // handleGetMessage: function (e) {
+  //   console.log(e.target.data)
+  // },
   onLoad: function () {
     if (app.globalData.userInfo) {
       this.setData({
@@ -46,6 +49,21 @@ Page({
   goToOrderPage(){
     wx.navigateTo({
       url: '/pages/orderpage/orderpage',
+    })
+  },
+  goToBindPage(){
+    wx.navigateTo({
+      url: '/pages/out/out',
+    })
+  },
+  goToFeedback(){
+    wx.navigateTo({
+      url: '/pages/feedback/feedback',
+    })
+  },
+  showNewsPage(event) {
+    wx.navigateTo({
+      url: '/pages/news/news',
     })
   }
 })

@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <import src="room_item.wxml"/>
 
-<view class='handle_masklayer' bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd"></view>
+<view class='handle_masklayer'bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd"></view>
 <view class='list_page' bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd">
     <view class="room_type">
       <view class="edge_item"></view>
@@ -16,7 +16,7 @@
     <view class='container'>
     <view class='date-set'>
       <image src='/image/icon/left-arrow.png' class='icon' bindtap='dayBefore'></image>
-      <text class='date_shower'>{{cur_date}}</text>
+      <text class='date_shower'>{{cur_date_show}}</text>
       <image src='/image/icon/right-arrow.png' class='icon'bindtap='dayAfter'></image>
     </view>
     </view>
@@ -26,7 +26,9 @@
         <template is="room_item" data="{{...item}}"/>
       </view>
     </view>
-    <image class='search_button' src='/image/icon/search_Icon.png' bindtap='showSearchPage'></image>
+    <button class='search_button'>
+    <image class='search_button_img' src='/image/icon/search_Icon.png' bindtap='showSearchPage'></image>
+    </button>
     
     
     <view class='container' wx:if="{{show_order_info}}">
@@ -59,7 +61,7 @@
         <view class='search_title'>搜索</view>
         <view class='search_brand_input'>
         <view>品牌名：</view>
-        <input class='text_input' type='text' auto-focus confirm-type='search' bindinput='searchInputConfirm'></input>
+        <input class='text_input' type='text' confirm-type='search' bindinput='searchInputConfirm'></input>
         </view>
         <view class="search_time_setter">
           <view>时　间：</view>

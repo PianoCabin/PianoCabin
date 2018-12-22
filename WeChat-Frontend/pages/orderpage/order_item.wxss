@@ -77,3 +77,7 @@
   color: #AAAAAA;
   margin-left: 12%;
 }
+
+.abnormal_cancel{
+  color: #8E2782;
+}

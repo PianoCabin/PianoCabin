@@ -1,0 +1,13 @@
+<xml>
+    <appid>{{ appid }}</appid>
+    <body>{{ body }}</body>
+    <mch_id>{{ mch_id }}</mch_id>
+    <nonce_str>{{ nonce_str }}</nonce_str>
+    <notify_url>{{ notify_url }}</notify_url>
+    <openid>{{ openid }}</openid>
+    <out_trade_no>{{ out_trade_no }}</out_trade_no>
+    <spbill_create_ip>{{ spbill_create_ip }}</spbill_create_ip>
+    <total_fee>{{ total_fee }}</total_fee>
+    <trade_type>{{ trade_type }}</trade_type>
+    <sign>{{ sign }}</sign>
+</xml>
