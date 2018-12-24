@@ -222,8 +222,8 @@ let app = App({
     userInfo: null,
     user_session: null,
     user_nickname: "默认用户",
-    backend: `https://711602.iterator-traits.com`,
-    // backend: `http://127.0.0.1:80`,
+    // backend: `https://711602.iterator-traits.com`,
+    backend: `http://127.0.0.1:80`,
     // backend: `https://0a8bba0a.ngrok.io`,
     user_session: null,
     network_waiting:0
