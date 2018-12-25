@@ -44,7 +44,7 @@
 }
 
 .order_info{
-  height: 1180rpx;
+  height: 1200rpx;
   width: 84%;
   border:1rpx solid #AAAAAA;
   margin-left: 8%;
@@ -77,6 +77,8 @@
 }
 
 .info_piano_type{
+  width: 300rpx;
+  text-overflow:ellipsis;
   margin-top: 15%;
   font-size: 48rpx;
   font-weight: bolder;
@@ -298,5 +300,5 @@
 
 .order_id_text {
   height: 72rpx;
-  margin-right: 4rpx;
+  margin-right: 5%;
 }
