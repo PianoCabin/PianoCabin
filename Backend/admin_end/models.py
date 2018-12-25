@@ -33,6 +33,7 @@ class PianoRoom(models.Model):
 
 class User(models.Model):
     open_id = models.CharField(default="", max_length=255, unique=True)
+    user_id = models.CharField(default=None, max_length=255, unique=True, null=True, blank=True)
     identity = models.CharField(default=None, max_length=255, unique=True, null=True, blank=True)
     permission = models.IntegerField(default=0)
     session = models.TextField(default='')

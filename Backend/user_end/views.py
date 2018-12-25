@@ -47,7 +47,8 @@ class Login(APIView):
                     'openid': open_id
                 }
                 session = jwt.encode(payload=payload, key=CONFIGS['APP_SECRET'], algorithm='HS256').decode()
-                user = User.objects.create(open_id=open_id, session=session)
+                user_id = ''.join(str(uuid.uuid3(uuid.NAMESPACE_DNS, open_id)).split('-'))
+                user = User.objects.create(open_id=open_id, session=session, user_id=user_id)
                 if user is None:
                     raise MsgError(msg='Creating user fails')
                 redis_manage.session_user.set(session, user.id)
@@ -139,7 +140,7 @@ class OrderList(APIView):
             if order.user.identity is not None:
                 user_id = order.user.identity
             else:
-                user_id = order.user.open_id
+                user_id = order.user.user_id
             data.append({
                 'piano_type': order.piano_room.piano_type,
                 'brand': order.piano_room.brand,
