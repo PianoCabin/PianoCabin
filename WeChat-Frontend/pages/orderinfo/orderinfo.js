@@ -38,14 +38,14 @@ Page({
     let order_id = options.order_id;
     this.getOrderInfo(order_id);
     
-    this.setData({
-      nickname: app.globalData.user_nickname
-    })
+    // this.setData({
+    //   nickname: app.globalData.user_nickname
+    // })
   },
   onShow(){
-    this.setData({
-      nickname: app.globalData.user_nickname
-    })
+    // this.setData({
+    //   nickname: app.globalData.user_nickname
+    // })
   },
   getOrderInfo(order_id){
     app.getOrderList({ order_id: order_id },this.updateOrderInfo)

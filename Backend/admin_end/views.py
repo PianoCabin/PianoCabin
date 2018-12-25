@@ -85,22 +85,24 @@ class PianoRoomEdit(APIView):
         if not self.msg["usable"] and room[0].usable:
             try:
                 with transaction.atomic():
-                    order = Order.objects.select_for_update().get(piano_room=room[0], order_status=1)
-                    order.order_status = 0
-                    order.cancel_reason = 3
-                    order.save()
-                    if redis_manage.redis_lock.acquire():
-                        day = (order.date - datetime.now().date()).days
-                        room_orders = json.loads(
-                            redis_manage.order_list.lindex(order.piano_room.room_num, day).decode())
-                        for room_order in room_orders:
-                            if room_order[2] == order.id:
-                                room_orders.remove(room_order)
-                                break
-                        room_orders = json.dumps(room_orders)
-                        redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
-                        redis_manage.unpaid_orders.delete(order.id)
-                        redis_manage.redis_lock.release()
+                    orders = Order.objects.select_for_update().filter(piano_room=room[0], order_status=1)
+                    for order in orders:
+                        order.order_status = 0
+                        order.cancel_reason = 3
+                        order.save()
+                        if redis_manage.redis_lock.acquire():
+                            day = (order.date - datetime.datetime.now().date()).days
+                            room_orders = json.loads(
+                                redis_manage.order_list.lindex(order.piano_room.room_num, day).decode())
+                            length = len(room_orders)
+                            for i in range(length):
+                                if order.id == room_orders[i][2]:
+                                    room_orders.pop(i)
+                                    break
+                            room_orders = json.dumps(room_orders)
+                            redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
+                            redis_manage.unpaid_orders.delete(order.id)
+                            redis_manage.redis_lock.release()
             except:
                 try:
                     redis_manage.redis_lock.release()

@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
 </head>
-<body>
+<body onload="postMsg()">
+<script>
+    function postMsg() {
+        setTimeout(()=>{
+            let info = "{{ msg }}";
+            info = info.replace(/&quot;/g, '\"');
+            wx.miniProgram.postMessage({ data: info });
+            wx.miniProgram.navigateBack();
+        },2000);
+    }
+</script>
 
 </body>
 </html>
