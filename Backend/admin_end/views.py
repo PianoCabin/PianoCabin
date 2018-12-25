@@ -158,7 +158,8 @@ class OrderList(APIView):
     def post(self):
         if not self.request.user.is_authenticated:
             raise MsgError(0, 'not login')
-        count = self.checkMsgMultiOption("order_status", "identity", "start_date", "end_date", "order_id", "room_num")
+        count = self.checkMsgMultiOption("order_status", "identity", "start_date", "end_date", "order_id", "room_num",
+                                         "user_id")
         try:
             if count:
                 query_str = ''
