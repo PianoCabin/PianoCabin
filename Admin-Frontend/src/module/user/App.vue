@@ -43,7 +43,7 @@
             <div class="search-item fl">
               <el-select value="0" v-model="id_type_selected" style="width: 7rem">
                 <el-option key="0" value="0" label="学号工号："></el-option>
-                <el-option key="1" value="1" label="微信ID："></el-option>
+                <el-option key="1" value="1" label="用户ID："></el-option>
               </el-select>
               <el-input
                 @blur="handleFilter"
@@ -67,7 +67,7 @@
         </div>
         <div class="content">
           <el-table :data="user_list" style="width: 100%">
-            <el-table-column prop="open_id" label="微信ID"></el-table-column>
+            <el-table-column prop="user_id" label="用户ID"></el-table-column>
             <el-table-column label="工学号">
               <template slot-scope="scope">{{scope.row.identity | getIdentity }}</template>
             </el-table-column>
@@ -191,7 +191,7 @@ export default {
           if (key === "user_id") {
             if (this.id_type_selected === "0")
               data.identity = this.filter_info.user_id;
-            else data.open_id = this.filter_info.user_id;
+            else data.user_id = this.filter_info.user_id;
           } else data[key] = this.filter_info[key];
         }
       }
