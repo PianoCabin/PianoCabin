@@ -97,7 +97,7 @@ class Bind(APIView):
             except:
                 return render(request, 'bind.html', msg)
 
-    def get(self):
+    def post(self):
         self.checkMsg('user_info', 'authorization')
         info = self.msg.get('user_info')
         user = self.getUserBySession()
