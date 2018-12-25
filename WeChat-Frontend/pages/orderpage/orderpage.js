@@ -69,6 +69,7 @@ Page({
     console.log(this.data.cancel_list)
     console.log("classified")
     console.log(this.data.classified);
+    wx.stopPullDownRefresh();
   },
   editOrder(event){
     this.showEditView()

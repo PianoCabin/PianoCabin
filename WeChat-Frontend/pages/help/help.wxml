@@ -1,0 +1,45 @@
+<view class='help_page'>
+    <view class="page_title">
+      <image src='/image/icon/left-arrow.png' class='icon' mode='widthFix' bindtap='toUserPage'></image>
+      <view class="page_name">使用帮助</view>
+      <view class='empty_item'></view>
+    </view>
+    <view class='help_content'>
+    <view class='help_content_div' >
+      <text style='color:#8E2782;font-size:35rpx;'>(1)“预约”    :</text>
+      小程序首页为“预约页面”，在小程序首页点击任意琴房，即可出现该琴房的预约窗口。
+    </view>
+    <view class='help_content_div' >
+    <text style='color:#8E2782;font-size:35rpx;'>(2)“日期调整”:</text>
+    在“预约页面”进行“左右横滑”即可切换预约日期，点击“日期”左右的“小箭头”也有同样的效果。
+    </view>
+    <view class='help_content_div' >
+    <text style='color:#8E2782;font-size:35rpx;'>(3)“搜索”    :</text>
+    在“预约页面”点击“搜索”按钮，会弹出搜索框
+    </view>
+    <view class='help_content_div' >
+    <text style='color:#8E2782;font-size:35rpx;'>(4)“查看订单”:</text>
+    在“个人页面”点击“我的订单”按钮，进入订单列表页面，顶部有订单类型显示，点击就可查看对应类型的订单
+    </view>
+    <view class='help_content_div' >
+    <text style='color:#8E2782;font-size:35rpx;'>(5)“订单详情”:</text>
+    在订单列表页面点击订单项，即可进入订单详情页面，显示订单的详细信息
+    </view>
+    <view class='help_content_div' >
+    <text style='color:#8E2782;font-size:35rpx;'>(6)“修改订单”:</text>
+    在“订单详情”页面，“未支付”的订单可修改订单的时间和取消订单
+    </view>
+    <view class='help_content_div' >
+    <text style='color:#8E2782;font-size:35rpx;'>(7)“身份绑定”:</text>
+    在“个人页面”点击“身份验证”，即可进行“身份验证”
+    </view>
+    <view class='help_content_div' >
+    <text style='color:#8E2782;font-size:35rpx;'>(8)“公告消息”:</text>
+    在“个人页面”点击“消息按钮”即可进入“消息”
+    </view>
+    <view class='help_content_div' >
+    <text style='color:#8E2782;font-size:35rpx;'>(9)“反馈”:</text>
+    在“个人页面”点击“反馈”，即可进入“反馈页面”，填写标题和正文后即可提交。
+    </view>
+  </view>
+</view>

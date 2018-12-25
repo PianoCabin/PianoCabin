@@ -65,5 +65,10 @@ Page({
     wx.navigateTo({
       url: '/pages/news/news',
     })
+  },
+  goToHelp(event){
+    wx.navigateTo({
+      url: '/pages/help/help',
+    })
   }
 })

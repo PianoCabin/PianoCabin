@@ -7,8 +7,8 @@
     "pages/index/index",
     "pages/feedback/feedback",
     "pages/news/news",
+    "pages/help/help",
     "pages/out/out"
-    
   ],
   "window": {
     "backgroundTextStyle": "light",

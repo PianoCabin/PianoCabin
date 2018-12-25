@@ -136,7 +136,7 @@ class OrderList(APIView):
             buffer = BytesIO()
             code.make_image().save(buffer, format='PNG')
             code_base = 'data:image/png;base64,' + base64.b64encode(buffer.getvalue()).decode()
-            if order.user.identity != '':
+            if order.user.identity is not None:
                 user_id = order.user.identity
             else:
                 user_id = order.user.open_id
@@ -245,6 +245,8 @@ class NewsList(APIView):
         else:
             news_list = News.objects.all()
         news_list = list(news_list.values())
+        for ele in news_list:
+            ele["publish_time"] = int(ele["publish_time"].timestamp())
         return {'news_list': news_list}
 
 
@@ -324,11 +326,13 @@ class OrderNormal(APIView):
         self.checkMsg('room_num', 'start_time', 'end_time', 'price', 'authorization')
         user = self.getUserBySession()
         if not user.order_permission:
-            raise MsgError(msg='Unauthorized to order')
+            raise MsgError(msg='您的预约权限被关闭，请联系管理员')
         id = 0
         try:
             with transaction.atomic():
-                piano_room = PianoRoom.objects.select_for_update().get(room_num=self.msg.get('room_num'))
+                piano_room = get_or_none(PianoRoom, room_num=self.msg.get('room_num'), usable=True, art_ensemble=0)
+                if piano_room is None:
+                    raise MsgError(msg='琴房已下线或不存在，请刷新页面或联系管理员')
 
                 # 判断时间是否合理
                 start_time = datetime.fromtimestamp(self.msg.get('start_time'))
@@ -501,9 +505,10 @@ class OrderCancel(APIView):
                 if redis_manage.redis_lock.acquire():
                     day = (order.date - datetime.now().date()).days
                     room_orders = json.loads(redis_manage.order_list.lindex(order.piano_room.room_num, day).decode())
-                    for room_order in room_orders:
-                        if room_order[2] == order.id:
-                            room_orders.remove(room_order)
+                    length = len(room_orders)
+                    for i in range(length):
+                        if order.id == room_orders[i][2]:
+                            room_orders.pop(i)
                             break
                     room_orders = json.dumps(room_orders)
                     redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)

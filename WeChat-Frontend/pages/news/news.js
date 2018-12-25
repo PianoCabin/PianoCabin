@@ -19,6 +19,9 @@ Page({
   onLoad: function (options) {
     this.getNewsList()
   },
+  onPullDownRefresh(){
+    this.getNewsList();
+  },
   getNewsList(){
     app.getNewsList({},this.updateNewsList)
   },
@@ -32,6 +35,7 @@ Page({
       res_list[i]["index"] = i;
     }
     this.setData({news_list:res_list})
+    wx.stopPullDownRefresh();
   },
   newsDetail(event){
     let news_id = event.currentTarget.id
