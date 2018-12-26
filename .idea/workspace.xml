@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="198c83d4-6176-4ad1-aba7-6cf196319232" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/feedback-detail.a74c03088ccbf6f0a773970a44d65054.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/feedback-detail.a74c03088ccbf6f0a773970a44d65054.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/feedback.5af5ba4d2c4e3590e8a2c42522074e62.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/feedback.5af5ba4d2c4e3590e8a2c42522074e62.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/news-create.12776a87c33f3aff0811d3fd4790d0a2.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/news-create.12776a87c33f3aff0811d3fd4790d0a2.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/news.e1442e6c155c3d91a3798c278bd2b820.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/news.e1442e6c155c3d91a3798c278bd2b820.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/order.a3fa560a6e6a1b0078db234ce774f1f5.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/order.a3fa560a6e6a1b0078db234ce774f1f5.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/room-detail.de8f820ce6c955edfb833ea3bd1e0f17.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/room-detail.de8f820ce6c955edfb833ea3bd1e0f17.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/room.86e0e07e5f410a4a114eb67932b77ca2.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/room.86e0e07e5f410a4a114eb67932b77ca2.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/user.e317e80cf18afc2748fcf89278a8daa7.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/css/module/user.e317e80cf18afc2748fcf89278a8daa7.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/manifest.00add75cea89b414a03d.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/manifest.00add75cea89b414a03d.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/manifest.785beca22e3ff1911a0f.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/manifest.785beca22e3ff1911a0f.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/manifest.c5b0b9e723b38a73ca5c.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/manifest.c5b0b9e723b38a73ca5c.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/manifest.e0685414a9859ac72d74.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/manifest.e0685414a9859ac72d74.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/feedback-detail.1b40cbf2b1842cc4bfaf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/feedback-detail.1b40cbf2b1842cc4bfaf.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/feedback.8ba7a7aead8b7274086b.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/feedback.8ba7a7aead8b7274086b.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/feedback.a5e292dce1fce45053b5.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/feedback.a5e292dce1fce45053b5.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/feedback.bc71690945ad9c1989d7.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/feedback.bc71690945ad9c1989d7.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/login.05af511427f7bc4bad54.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/login.05af511427f7bc4bad54.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/login.76c6b6a3296c432c8e91.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/login.76c6b6a3296c432c8e91.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/news-create.530243577686eea0e4b3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/news-create.530243577686eea0e4b3.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/news.8c3b23c51a7e80664814.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/news.8c3b23c51a7e80664814.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/order.5b8d11948adc3d53d255.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/order.5b8d11948adc3d53d255.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/order.fb1a932b2b88720e0f6e.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/order.fb1a932b2b88720e0f6e.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/room-detail.6bd5f460a35aead25b49.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/room-detail.6bd5f460a35aead25b49.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/room.e507312d9040ab4cfbd5.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/room.e507312d9040ab4cfbd5.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/user.0f8a9b191c921ffba553.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/user.0f8a9b191c921ffba553.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/user.5d1790a7651e1a2423f3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/user.5d1790a7651e1a2423f3.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/user.ca58c299cbbca7b94c53.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/static/js/module/user.ca58c299cbbca7b94c53.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/help/help.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/help/help.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/help/help.wxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/help/help.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin-Frontend/.idea/Admin-Frontend.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin-Frontend/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin-Frontend/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin-Frontend/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin-Frontend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Admin-Frontend/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin-Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Admin-Frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin-Frontend/src/module/feedback/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Admin-Frontend/src/module/feedback/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin-Frontend/src/module/order/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Admin-Frontend/src/module/order/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin-Frontend/src/module/user/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Admin-Frontend/src/module/user/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin-Frontend/test/unit/coverage/lcov-report/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Admin-Frontend/test/unit/coverage/lcov-report/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/admin_end/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/admin_end/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/admin_end/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/admin_end/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/static/css/module/feedback.427c9b4b0c41cdfc4869c3b7c124acfb.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/static/css/module/feedback.427c9b4b0c41cdfc4869c3b7c124acfb.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/static/css/module/login.19eb41697ce73fdedc5a3cc615b54e78.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/static/css/module/login.19eb41697ce73fdedc5a3cc615b54e78.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/static/js/module/feedback-detail.69840c231fa6a86e7a42.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/static/js/module/feedback-detail.69840c231fa6a86e7a42.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/static/js/module/news-create.bb177de9593695bf8241.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/static/js/module/news-create.bb177de9593695bf8241.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/static/js/module/news.186de6d76c48d253a5f8.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/static/js/module/news.186de6d76c48d253a5f8.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/static/js/module/room-detail.11ad93f20a5de70c4fa3.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/static/js/module/room-detail.11ad93f20a5de70c4fa3.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/static/js/module/room.e77b6ba9d37fcd66a306.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/static/js/module/room.e77b6ba9d37fcd66a306.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/static/piano.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/static/piano1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/static/playhouse.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/templates/feedback-detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/templates/feedback-detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/templates/feedback.html" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/templates/feedback.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/templates/news-create.html" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/templates/news-create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/templates/news.html" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/templates/news.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/templates/order.html" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/templates/order.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/templates/room-detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/templates/room-detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/templates/room.html" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/templates/room.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/templates/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/templates/user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/user_end/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/user_end/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/pages/news/news.js" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/news/news.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/pages/news/news.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/news/news.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/pages/orderinfo/orderinfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/orderinfo/orderinfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/pages/orderinfo/orderinfo.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/orderinfo/orderinfo.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/pages/orderinfo/orderinfo.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/orderinfo/orderinfo.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/pages/orderpage/orderpage.js" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/orderpage/orderpage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/pages/orderpage/orderpage.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/orderpage/orderpage.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/pages/reservation/reservation.js" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/reservation/reservation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/pages/reservation/reservation.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/reservation/reservation.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/pages/reservation/reservation.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/reservation/reservation.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/pages/userpage/userpage.js" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/userpage/userpage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/pages/userpage/userpage.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/WeChat-Frontend/pages/userpage/userpage.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeChat-Frontend/project.config.json" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="950" />
+    <option name="width" value="975" />
+    <option name="height" value="1050" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="PianoCabin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PianoCabin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PianoCabin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PianoCabin" type="462c0819:PsiDirectoryNode" />
+              <item name="WeChat-Frontend" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="198c83d4-6176-4ad1-aba7-6cf196319232" name="Default" comment="" />
+      <created>1545802931843</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1545802931843</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Python Console" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="SciView" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+    </layout>
+  </component>
+</project>

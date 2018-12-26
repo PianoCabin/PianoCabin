@@ -16,6 +16,7 @@ window.test = true;
 describe('订单列表界面', () => {
     const vm = new Vue(App).$mount()
     it('检查页面元素', () => {
+        expect(vm.$el.querySelector(".el-menu-item.menu-item.is-active span").textContent).to.be.equal("订单管理");
         expect(vm.$el.querySelectorAll(".side-bar").length > 0).to.be.equal(true);
         expect(vm.$el.querySelectorAll(".heading").length > 0).to.be.equal(true);
         expect(vm.$el.querySelectorAll(".el-menu").length > 0).to.be.equal(true);
