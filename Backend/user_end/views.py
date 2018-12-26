@@ -47,7 +47,8 @@ class Login(APIView):
                     'openid': open_id
                 }
                 session = jwt.encode(payload=payload, key=CONFIGS['APP_SECRET'], algorithm='HS256').decode()
-                user = User.objects.create(open_id=open_id, session=session)
+                user_id = ''.join(str(uuid.uuid3(uuid.NAMESPACE_DNS, open_id)).split('-'))
+                user = User.objects.create(open_id=open_id, session=session, user_id=user_id)
                 if user is None:
                     raise MsgError(msg='Creating user fails')
                 redis_manage.session_user.set(session, user.id)
@@ -74,15 +75,18 @@ class Bind(APIView):
             url = 'https://id-tsinghua-test.iterator-traits.com/thuser/authapi/checkticket/'
             url = parse.urljoin(url, CONFIGS['THU_APP_ID']) + '/'
             url = parse.urljoin(url, ticket) + '/'
-            url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_')) + '/'
+            url = parse.urljoin(url, CONFIGS['IP'].replace('.', '_')) + '/'
             res = requests.get(url=url)
             try:
                 res = res.text.split(':')
                 info = {}
                 for text in res:
                     text = text.split('=')
-                    info[text[0]] = text[1]
-                if info.get('code') != 0:
+                    if len(text) == 2:
+                        info[text[0]] = text[1]
+                    elif len(text) == 1:
+                        info[text[0]] = None
+                if info.get('code') != '0':
                     raise MsgError
                 else:
                     data['identity'] = info.get('zjh')
@@ -136,10 +140,10 @@ class OrderList(APIView):
             buffer = BytesIO()
             code.make_image().save(buffer, format='PNG')
             code_base = 'data:image/png;base64,' + base64.b64encode(buffer.getvalue()).decode()
-            if order.user.identity != '':
+            if order.user.identity is not None:
                 user_id = order.user.identity
             else:
-                user_id = order.user.open_id
+                user_id = order.user.user_id
             data.append({
                 'piano_type': order.piano_room.piano_type,
                 'brand': order.piano_room.brand,
@@ -185,8 +189,9 @@ class OrderPay(APIView):
         order = Order.objects.get(order_id=self.msg.get('order_id'))
 
         #本机IP
-        myname = socket.gethostname()
-        myaddr = socket.gethostbyname(myname)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
+        sock.connect(('8.8.8.8', 80))
+        myaddr = sock.getsockname()[0]
 
         nonce_str = ''.join(random.sample(string.ascii_letters + string.digits, 32))
         msg = {
@@ -219,6 +224,9 @@ class OrderPay(APIView):
             msg_nd['paySign'] = sign
             return msg_nd
         else:
+            if res['err_code'] == 'ORDERPAID':
+                order.order_status = 2
+                order.save()
             raise MsgError(msg=res.get('return_msg') or res.get('err_code_des'))
 
 
@@ -245,6 +253,8 @@ class NewsList(APIView):
         else:
             news_list = News.objects.all()
         news_list = list(news_list.values())
+        for ele in news_list:
+            ele["publish_time"] = int(ele["publish_time"].timestamp())
         return {'news_list': news_list}
 
 
@@ -324,11 +334,13 @@ class OrderNormal(APIView):
         self.checkMsg('room_num', 'start_time', 'end_time', 'price', 'authorization')
         user = self.getUserBySession()
         if not user.order_permission:
-            raise MsgError(msg='Unauthorized to order')
+            raise MsgError(msg='您的预约权限被关闭，请联系管理员')
         id = 0
         try:
             with transaction.atomic():
-                piano_room = PianoRoom.objects.select_for_update().get(room_num=self.msg.get('room_num'))
+                piano_room = get_or_none(PianoRoom, room_num=self.msg.get('room_num'), usable=True, art_ensemble=0)
+                if piano_room is None:
+                    raise MsgError(msg='琴房已下线或不存在，请刷新页面或联系管理员')
 
                 # 判断时间是否合理
                 start_time = datetime.fromtimestamp(self.msg.get('start_time'))
@@ -358,7 +370,7 @@ class OrderNormal(APIView):
                     create_time=datetime.now(),
                     price=self.msg.get('price'),
                 )
-                order.order_id = ''.join(str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id))).split('-'))
+                order.order_id = ''.join(str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id)+str(datetime.now().timestamp()))).split('-'))
                 order.save()
                 day = (order.date - datetime.now().date()).days
                 if day >= CONFIGS['MAX_ORDER_DAYS'] or day < 0:
@@ -501,9 +513,10 @@ class OrderCancel(APIView):
                 if redis_manage.redis_lock.acquire():
                     day = (order.date - datetime.now().date()).days
                     room_orders = json.loads(redis_manage.order_list.lindex(order.piano_room.room_num, day).decode())
-                    for room_order in room_orders:
-                        if room_order[2] == order.id:
-                            room_orders.remove(room_order)
+                    length = len(room_orders)
+                    for i in range(length):
+                        if order.id == room_orders[i][2]:
+                            room_orders.pop(i)
                             break
                     room_orders = json.dumps(room_orders)
                     redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)

@@ -1,7 +1,7 @@
 <template name="news_item">
     <view class='news_item' id='{{index}}' bindtap="newsDetail">
-      <view class='news_title'>{{news_title}}</view>
-      <view class='cut_off'></view>
-      <view class='publish_time'> 发布时间：{{publish_time}}</view>
+        <view class='news_title'>{{news_title}}</view>
+        <view class='cut_off'></view>
+        <view class='publish_time'> 发布时间：{{publish_time}}</view>
     </view>
 </template>

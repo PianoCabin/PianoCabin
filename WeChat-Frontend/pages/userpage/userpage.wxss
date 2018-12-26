@@ -8,7 +8,7 @@
   justify-content: space-between;
   padding: 0rpx 0;
   box-sizing: border-box;
-} 
+}
 
 .page_head{
   height: 240rpx;
@@ -61,14 +61,14 @@
 }
 
 .item_Icon{
-  margin-left: 5%; 
+  margin-left: 5%;
   margin-right: 4%;
   object-fit: cover;
   height: 40rpx;
   width: 40rpx;
   vertical-align: middle;
  /* border: 1rpx solid; */
-  
+
 }
 
 .item_name{
@@ -84,7 +84,7 @@
   right: 50rpx;
   z-index: 1;
   width:100rpx;
-  height: 100rpx; 
+  height: 100rpx;
   border-radius: 50rpx;
   box-shadow: 0px 4px 8px #A7A7A7;
   background: #8E2782 !important;
@@ -96,5 +96,5 @@
   right: 70rpx;
   z-index: 1;
   width:55rpx;
-  height: 55rpx; 
+  height: 55rpx;
 }

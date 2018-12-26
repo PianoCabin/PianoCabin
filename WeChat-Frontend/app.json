@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/help/help",
     "pages/reservation/reservation",
     "pages/userpage/userpage",
     "pages/orderpage/orderpage",
@@ -8,7 +9,6 @@
     "pages/feedback/feedback",
     "pages/news/news",
     "pages/out/out"
-    
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -20,7 +20,7 @@
   object-fit:cover;
   height: 28%;
   width: 10%;
-  
+
 }
 
 .room_info{
@@ -68,7 +68,7 @@
   border-left:1rpx solid;
   border-right:1rpx solid;
   border-color:#AAAAAA; */
-  width: 100%; 
+  width: 100%;
   font-size:18rpx;
   text-align: center;
   justify-content: center;

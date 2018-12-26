@@ -13,14 +13,14 @@
           <!--琴房类型导航栏-->
           <el-menu :default-active="activated" mode="horizontal" @select="select">
             <el-submenu v-for="(_, key) in room_list" :index="key">
-              <template slot="title">{{key}}</template>
-              <el-menu-item v-for="(_, sub_key) in room_list[key]" :index="sub_key">{{sub_key}}</el-menu-item>
+              <template slot="title">{{ key }}</template>
+              <el-menu-item v-for="(_, sub_key) in room_list[key]" :index="sub_key">{{ sub_key }}</el-menu-item>
             </el-submenu>
           </el-menu>
 
           <!--单房间按钮-->
           <room @click="getDetail" v-for="room in selected_list" class="room">
-            <template slot="room-num">{{room.room_num}}</template>
+            <template slot="room-num">{{ room.room_num }}</template>
           </room>
         </div>
 

@@ -1,21 +1,22 @@
 <template name="order_item">
     <view class='order_item' style='' id='{{index}}' bindtap="orderDetail">
-      <image src='/image/icon/room_icon.png' class='order_icon'></image>
-      <view class='order_info1'>
-        <view class='order_piano'>{{piano_type}}</view>
-        <view class='order_date'>日期：{{order_date}}</view>
-        <view class='order_time'>时间：{{start_time}}~{{end_time}}</view>
-        <view wx:if="{{status === 0 && cancel_reason != 2 && cancel_reason != 0 }}"  class='order_status'>订单状态：<text class='abnormal_cancel'>{{order_status}}</text></view>
-        <view wx:else class='order_status'>订单状态：{{order_status}}</view>
-      </view>
-      <view class='order_info2'>
-        <view class='room_num'>{{room_num}}</view>
-        <view class='order_price'>￥{{price}}.00</view>
-        
-        <view class='order_op'>
-        <view class='reachable' id='{{index}}'>订单详情</view>
+        <image src='/image/icon/room_icon.png' class='order_icon'></image>
+        <view class='order_info1'>
+            <view class='order_piano'>{{piano_type}}</view>
+            <view class='order_date'>日期：{{order_date}}</view>
+            <view class='order_time'>时间：{{start_time}}~{{end_time}}</view>
+            <view wx:if="{{status === 0 && cancel_reason != 2 && cancel_reason != 0 }}" class='order_status'>订单状态：
+                <text class='abnormal_cancel'>{{order_status}}</text>
+            </view>
+            <view wx:else class='order_status'>订单状态：{{order_status}}</view>
         </view>
-      </view>
+        <view class='order_info2'>
+            <view class='room_num'>{{room_num}}</view>
+            <view class='order_price'>￥{{price}}.00</view>
+
+            <view class='order_op'>
+                <view class='reachable' id='{{index}}'>订单详情</view>
+            </view>
+        </view>
     </view>
-  
 </template>

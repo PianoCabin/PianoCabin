@@ -1,16 +1,16 @@
 <view class='feedback_page'>
     <view class="feedback_title">
-      <image src='/image/icon/left-arrow.png' class='icon' mode='widthFix' bindtap='toUserPage'></image>
-      <view class="page_name">反馈</view>
-      <view class='empty_item'></view>
+        <image src='/image/icon/left-arrow.png' class='icon' mode='widthFix' bindtap='toUserPage'></image>
+        <view class="page_name">反馈</view>
+        <view class='empty_item'></view>
     </view>
     <view class='feedback__title'>
-      <span class='title_label'>标题</span>
-      <input class='title_input' type='text' bindinput='titleInputConfirm'></input>
+        <span class='title_label'>标题</span>
+        <input class='title_input' type='text' bindinput='titleInputConfirm'></input>
     </view>
     <view class='feedback_content'>
-    <view class='content_label'>内容</view>
-    <textarea class='content_input' bindinput='contentInputConfirm'></textarea>
+        <view class='content_label'>内容</view>
+        <textarea class='content_input' bindinput='contentInputConfirm'></textarea>
     </view>
     <button class='commit_button' bindtap='commit' disabled='{{checked}}'>提交</button>
 </view>

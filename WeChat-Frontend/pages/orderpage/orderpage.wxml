@@ -3,22 +3,23 @@
 
 <view class='order_page'>
     <view class="order_title">
-      <image src='/image/icon/left-arrow.png' class='icon' mode='widthFix' bindtap='toUserPage'></image>
-      <view  wx:for="{{order_status_list}}" class='type_item' wx:key="" bindtap='orderType' id='{{index}}'>
-        <view class="empty_item"></view>        
-        <view wx:if="{{select_status == index}}" class='select_type'>{{item}}</view>
-        <view wx:else class='order_type'>{{item}}</view>    
-        <view class="empty_item"></view>
-      </view>
-      <view class='empty_item'></view>
+        <image src='/image/icon/left-arrow.png' class='icon' mode='widthFix' bindtap='toUserPage'></image>
+        <view wx:for="{{order_status_list}}" class='type_item' wx:key="" bindtap='orderType' id='{{index}}'>
+            <view class="empty_item"></view>
+            <view wx:if="{{select_status == index}}" class='select_type'>{{item}}</view>
+            <view wx:else class='order_type'>{{item}}</view>
+            <view class="empty_item"></view>
+        </view>
+        <view class='empty_item'></view>
     </view>
 
-    
+
     <view wx:if="{{select_order_list.length>0}}">
-      <view  class='order_list' wx:for="{{select_order_list}}" wx:key="">
-        <template is="order_item" data="{{...item}}" />
-      </view>
+        <view class='order_list' wx:for="{{select_order_list}}" wx:key="">
+            <template is="order_item" data="{{...item}}"/>
+        </view>
     </view>
     <view wx:else class='list_empty'>
-    当前无订单</view>
+        当前无订单
+    </view>
 </view>
