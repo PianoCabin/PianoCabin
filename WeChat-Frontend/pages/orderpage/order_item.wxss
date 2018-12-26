@@ -32,7 +32,7 @@
   font-size: 25rpx;
   color: #AAAAAA;
   margin-top: 15rpx;
-  
+
 }
 
 .order_status{

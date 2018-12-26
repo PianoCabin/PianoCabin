@@ -8,7 +8,7 @@
   padding: 0rpx 0;
   box-sizing: border-box;
   width: 100%;
-} 
+}
 
 .page_title {
   display: flex;

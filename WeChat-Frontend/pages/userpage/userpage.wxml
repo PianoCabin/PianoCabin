@@ -1,49 +1,48 @@
 <!--index.wxml-->
 <view class="user_page">
-  <view class='page_head'></view>
-  <view  wx:if="{{!hasUserInfo && canIUse}}">
-    <view class="userinfo">
-          <image class="userinfo-avatar" src="/image/icon/LOGO.jpg" mode="cover"></image>
-          <button class='getUserInfo' open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像 </button>
-      </view>
-    <!-- <image class="userinfo-avatar" src="/image/icon/LOGO.jpg" mode="cover"></image> -->
-    
+    <view class='page_head'></view>
+    <view wx:if="{{!hasUserInfo && canIUse}}">
+        <view class="userinfo">
+            <image class="userinfo-avatar" src="/image/icon/LOGO.jpg" mode="cover"></image>
+            <button class='getUserInfo' open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像</button>
+        </view>
+        <!-- <image class="userinfo-avatar" src="/image/icon/LOGO.jpg" mode="cover"></image> -->
     </view>
-  <view wx:else>
-      <view class="userinfo">
-        <block >
-          <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-          <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-        </block>
-      </view>
+    <view wx:else>
+        <view class="userinfo">
+            <block>
+                <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+                <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+            </block>
+        </view>
     </view>
-      <view class='list_item' bindtap='goToOrderPage'>
+    <view class='list_item' bindtap='goToOrderPage'>
         <image src='/image/icon/order_Icon.png' class='item_Icon'></image>
         <text class='item_name'>我的订单</text>
         <image src='/image/icon/right-arrow.png' class='item_Icon'></image>
-      </view>
-      <view class='list_item' bindtap='goToBindPage'>
+    </view>
+    <view class='list_item' bindtap='goToBindPage'>
         <image src='/image/icon/identity_Icon.png' class='item_Icon'></image>
         <text class='item_name'>身份验证</text>
-        <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
-      </view>
-      <view class='list_item'>
+        <image src='/image/icon/right-arrow.png' class='item_Icon'></image>
+    </view>
+    <view class='list_item'>
         <image src='/image/icon/map_Icon.png' class='item_Icon'></image>
         <text class='item_name'>地图</text>
-        <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
-      </view>
-      <view class='list_item' bindtap='goToFeedback'>
+        <image src='/image/icon/right-arrow.png' class='item_Icon'></image>
+    </view>
+    <view class='list_item' bindtap='goToFeedback'>
         <image src='/image/icon/feed_back_Icon.png' class='item_Icon'></image>
         <text class='item_name'>反馈</text>
-        <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
-      </view>
-      <view class='list_item' bindtap='goToHelp'>
+        <image src='/image/icon/right-arrow.png' class='item_Icon'></image>
+    </view>
+    <view class='list_item' bindtap='goToHelp'>
         <image src='/image/icon/help_Icon.png' class='item_Icon'></image>
         <text class='item_name'>帮助</text>
-        <image src='/image/icon/right-arrow.png' class='item_Icon'></image> 
-      </view>
+        <image src='/image/icon/right-arrow.png' class='item_Icon'></image>
+    </view>
 
-    <button class='news_button'  bindtap='showNewsPage'>
-      <image class='news_button_img' src='/image/icon/news.png'></image>
+    <button class='news_button' bindtap='showNewsPage'>
+        <image class='news_button_img' src='/image/icon/news.png'></image>
     </button>
 </view>

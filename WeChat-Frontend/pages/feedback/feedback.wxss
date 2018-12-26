@@ -6,7 +6,7 @@
   padding: 0rpx 0;
   box-sizing: border-box;
   width: 100%;
-} 
+}
 
 .feedback_title {
   display: flex;
@@ -44,9 +44,9 @@
 .feedback__title{
   display: flex;
   flex-direction: row;
-  margin-top: 5%; 
+  margin-top: 5%;
   margin-left: 5%;
-  margin-right: 5%; 
+  margin-right: 5%;
 }
 
 .feedback_content{

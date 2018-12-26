@@ -9,7 +9,7 @@
   padding: 0rpx 0;
   box-sizing: border-box;
   width: 100%;
-} 
+}
 
 .order_title {
   display: flex;

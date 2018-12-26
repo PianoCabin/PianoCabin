@@ -1,79 +1,86 @@
 <!--index.wxml-->
 <import src="room_item.wxml"/>
 
-<view class='handle_masklayer'bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd"></view>
+<view class='handle_masklayer' bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd"></view>
 <view class='list_page' bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd">
     <view class="room_type">
-      <view class="edge_item"></view>
-      <view  wx:for="{{type_list}}" wx:key="" class='type_item piano' bindtap='pianoList' id='{{index}}'>
-        <view class="empty_item"></view>        
-        <view wx:if="{{index == type_id}}" class='select_type'>{{item}}</view>
-        <view wx:else class='unselect_type'>{{item}}</view>    
-        <view class="empty_item"></view>
-      </view> 
+        <view class="edge_item"></view>
+        <view wx:for="{{type_list}}" wx:key="" class='type_item piano' bindtap='pianoList' id='{{index}}'>
+            <view class="empty_item"></view>
+            <view wx:if="{{index == type_id}}" class='select_type'>{{item}}</view>
+            <view wx:else class='unselect_type'>{{item}}</view>
+            <view class="empty_item"></view>
+        </view>
     </view>
 
     <view class='container'>
-    <view class='date-set'>
-      <image src='/image/icon/left-arrow.png' class='icon' bindtap='dayBefore'></image>
-      <text class='date_shower'>{{cur_date_show}}</text>
-      <image src='/image/icon/right-arrow.png' class='icon'bindtap='dayAfter'></image>
-    </view>
+        <view class='date-set'>
+            <image src='/image/icon/left-arrow.png' class='icon' bindtap='dayBefore'></image>
+            <text class='date_shower'>{{cur_date_show}}</text>
+            <image src='/image/icon/right-arrow.png' class='icon' bindtap='dayAfter'></image>
+        </view>
     </view>
 
     <view class='room_list'>
-      <view wx:for="{{room_list}}" wx:key="" id="{{index}}" bindtap="selectRoom">
-        <template is="room_item" data="{{...item}}"/>
-      </view>
+        <view wx:for="{{room_list}}" wx:key="" id="{{index}}" bindtap="selectRoom">
+            <template is="room_item" data="{{...item}}"/>
+        </view>
     </view>
     <button class='search_button'>
-    <image class='search_button_img' src='/image/icon/search_Icon.png' bindtap='showSearchPage'></image>
+        <image class='search_button_img' src='/image/icon/search_Icon.png' bindtap='showSearchPage'></image>
     </button>
-    
-    
+
+
     <view class='container' wx:if="{{show_order_info}}">
-      <view class='masklayer' bindtap='hideOrderInfo'></view>
-      <view class='order_info' animation='{{animation_data}}' >
-      <image src='/image/icon/close_Icon.png' class='close_icon' bindtap='hideOrderInfo'></image>
-      <view class='order_name'>{{order_info.name}}</view>
-      <view class='order_room_num'>房间：<text class='grey'>{{order_info.room_num}}</text></view>
-      <view class='order_date'>日期：<text class='purple'>{{order_info.date}}</text></view>
-      <view class='order_time'>时间：
-        <picker class="time_picker" mode="selector"  range='{{starttime_list}}' bindchange='setOrderStart'>
-        {{order_info.order_start}}
-        </picker>
-        <text >~</text>
-        <picker class="time_picker" mode="selector"  range='{{endtime_list}}' bindchange='updateOrder'>
-        {{order_info.order_end}}
-        </picker>
-      </view>
-      <view class='order_price'>
-      价格：<text class='grey'>￥{{order_info.price}}</text>
-      </view>
-      <button class='order_complete' bindtap='orderComplete' disabled="{{completeable}}">完成</button>
-      </view>
+        <view class='masklayer' bindtap='hideOrderInfo'></view>
+        <view class='order_info' animation='{{animation_data}}'>
+            <image src='/image/icon/close_Icon.png' class='close_icon' bindtap='hideOrderInfo'></image>
+            <view class='order_name'>{{order_info.name}}</view>
+            <view class='order_room_num'>房间：
+                <text class='grey'>{{order_info.room_num}}</text>
+            </view>
+            <view class='order_date'>日期：
+                <text class='purple'>{{order_info.date}}</text>
+            </view>
+            <view class='order_time'>时间：
+                <picker class="time_picker" mode="selector" range='{{starttime_list}}' bindchange='setOrderStart'>
+                    {{order_info.order_start}}
+                </picker>
+                <text>~</text>
+                <picker class="time_picker" mode="selector" range='{{endtime_list}}' bindchange='updateOrder'>
+                    {{order_info.order_end}}
+                </picker>
+            </view>
+            <view class='order_price'>
+                价格：
+                <text class='grey'>￥{{order_info.price}}</text>
+            </view>
+            <button class='order_complete' bindtap='orderComplete' disabled="{{completeable}}">完成</button>
+        </view>
     </view>
 
     <view class='container' wx:if="{{show_search_page}}">
-      <view class='masklayer' bindtap='hideSearchPage'></view>
-      <view class='search_page' animation='{{animation_data}}' >
-        <image src='/image/icon/close_Icon.png' class='close_icon' bindtap='hideSearchPage'></image>
-        <view class='search_title'>搜索</view>
-        <view class='search_brand_input'>
-        <view>品牌名：</view>
-        <input class='text_input' type='text' confirm-type='search' bindinput='searchInputConfirm'></input>
+        <view class='masklayer' bindtap='hideSearchPage'></view>
+        <view class='search_page' animation='{{animation_data}}'>
+            <image src='/image/icon/close_Icon.png' class='close_icon' bindtap='hideSearchPage'></image>
+            <view class='search_title'>搜索</view>
+            <view class='search_brand_input'>
+                <view>品牌名：</view>
+                <input class='text_input' type='text' confirm-type='search' bindinput='searchInputConfirm'></input>
+            </view>
+            <view class="search_time_setter">
+                <view>时　间：</view>
+                <picker class="search_time_picker" mode="selector" range='{{search_start_list}}'
+                        bindchange='setSearchStart'>
+                    {{search_start}}
+                </picker>
+                <text>~</text>
+                <picker class="search_time_picker" mode="selector" range='{{search_end_list}}'
+                        bindchange='setSearchEnd'>
+                    {{search_end}}
+                </picker>
+            </view>
+            <button class="search_push" bindtap='search'>搜索</button>
         </view>
-        <view class="search_time_setter">
-          <view>时　间：</view>
-          <picker class="search_time_picker" mode="selector"  range='{{search_start_list}}' bindchange='setSearchStart'>
-            {{search_start}}
-            </picker>
-          <text>~</text>
-          <picker class="search_time_picker" mode="selector"  range='{{search_end_list}}' bindchange='setSearchEnd'>
-            {{search_end}}
-            </picker>
-        </view>
-        <button class="search_push" bindtap='search'>搜索</button>
-      </view>
     </view>
 </view>

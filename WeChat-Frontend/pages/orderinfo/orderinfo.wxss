@@ -8,7 +8,7 @@
   padding: 0rpx 0;
   box-sizing: border-box;
   width: 100%;
-} 
+}
 
 .order_title {
   display: flex;
@@ -65,7 +65,7 @@
   background-color: #940085;
   border-top-left-radius: 15rpx;
   border-top-right-radius: 15rpx;
-  
+
   color: white;
 }
 
@@ -73,7 +73,7 @@
   margin-left: 10%;
   height: 100%;
   width:60%;
-  
+
 }
 
 .info_piano_type{
@@ -137,11 +137,11 @@
   margin-left: 5%;
   font-size: 31rpx;
   display: flex;
-  flex-direction: row;  
+  flex-direction: row;
 }
 
 .info_date_input{
-  
+
   border:1rpx solid #AAAAAA;
   border-radius: 15rpx;
   width: 40%;

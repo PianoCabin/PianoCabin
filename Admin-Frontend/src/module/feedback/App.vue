@@ -88,7 +88,7 @@
                     <p>{{ scope.row.read_status | getStatus}}</p>
                   </template>
                 </el-table-column>
-                <el-table-column class-name="feedback-id" prop="feedback_id" width="0"></el-table-column>
+                <el-table-column hidden class-name="feedback-id" prop="feedback_id" width="0"></el-table-column>
               </el-table>
             </el-tab-pane>
           </el-tabs>
