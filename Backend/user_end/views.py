@@ -75,7 +75,7 @@ class Bind(APIView):
             url = 'https://id-tsinghua-test.iterator-traits.com/thuser/authapi/checkticket/'
             url = parse.urljoin(url, CONFIGS['THU_APP_ID']) + '/'
             url = parse.urljoin(url, ticket) + '/'
-            url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_')) + '/'
+            url = parse.urljoin(url, CONFIGS['IP'].replace('.', '_')) + '/'
             res = requests.get(url=url)
             try:
                 res = res.text.split(':')

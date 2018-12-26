@@ -8,7 +8,6 @@ import json
 import schedule
 import time
 
-
 # Create your models here.
 def get_or_none(model, *args, **kwargs):
     try:
@@ -175,6 +174,7 @@ def updateUnpaidOrders():
                                 room_order = room_orders[i]
                                 if room_order[2] == order.id:
                                     room_orders.pop(i)
+                                    break
                             room_orders = json.dumps(room_orders)
                             redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
                         redis_manage.redis_lock.release()
