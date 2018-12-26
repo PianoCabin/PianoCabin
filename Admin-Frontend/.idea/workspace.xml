@@ -10,6 +10,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="feedback.spec.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/unit/specs/feedback.spec.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="18" column="107" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="107" />
+              <folding>
+                <element signature="e#0#50#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="App.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/module/user/App.vue">
           <provider selected="true" editor-type-id="text-editor">
@@ -19,11 +31,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/unit/coverage/lcov-report/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="71" column="8" lean-forward="true" selection-start-line="71" selection-start-column="8" selection-end-line="71" selection-end-column="8" />
+            <state relative-caret-position="2250">
+              <caret line="75" column="9" lean-forward="true" selection-start-line="75" selection-start-column="9" selection-end-line="75" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -31,8 +43,20 @@
       <file leaf-file-name="user.spec.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/unit/specs/user.spec.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="17" column="27" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
+            <state relative-caret-position="388">
+              <caret line="26" column="107" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="107" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="feedback-detail.spec.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/unit/specs/feedback-detail.spec.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="31" column="46" selection-start-line="31" selection-start-column="46" selection-end-line="31" selection-end-column="46" />
+              <folding>
+                <element signature="e#0#57#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -40,8 +64,8 @@
       <file leaf-file-name="news.spec.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/unit/specs/news.spec.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="598">
-              <caret line="21" column="20" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
+            <state relative-caret-position="148">
+              <caret line="18" column="106" selection-start-line="18" selection-start-column="106" selection-end-line="18" selection-end-column="106" />
               <folding>
                 <element signature="e#0#46#0" expanded="true" />
               </folding>
@@ -52,8 +76,8 @@
       <file leaf-file-name="order.spec.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/unit/specs/order.spec.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1500">
-              <caret line="50" column="10" selection-start-line="50" selection-start-column="10" selection-end-line="50" selection-end-column="10" />
+            <state relative-caret-position="178">
+              <caret line="18" column="106" selection-start-line="18" selection-start-column="106" selection-end-line="18" selection-end-column="106" />
               <folding>
                 <element signature="e#0#47#0" expanded="true" />
               </folding>
@@ -61,7 +85,29 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="room.spec.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/unit/specs/room.spec.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="18" column="106" selection-start-line="18" selection-start-column="106" selection-end-line="18" selection-end-column="106" />
+              <folding>
+                <element signature="e#0#46#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/test/unit/specs/feedback.spec.js" />
+        <option value="$PROJECT_DIR$/test/unit/specs/news.spec.js" />
+        <option value="$PROJECT_DIR$/test/unit/specs/order.spec.js" />
+        <option value="$PROJECT_DIR$/test/unit/specs/room.spec.js" />
+      </list>
+    </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -77,6 +123,11 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="950" />
+    <option name="width" value="975" />
+    <option name="height" value="1050" />
+  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -90,6 +141,29 @@
             <path>
               <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
               <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="unit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Admin-Frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="unit" type="462c0819:PsiDirectoryNode" />
+              <item name="specs" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Admin-Frontend" type="b2602c69:ProjectViewProjectNode" />
@@ -179,7 +253,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.0" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32954547" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Terminal" order="10" />
@@ -280,6 +354,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1590">
           <caret line="57" column="61" selection-start-line="57" selection-start-column="61" selection-end-line="57" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -311,6 +388,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="900">
           <caret line="34" column="92" lean-forward="true" selection-start-line="34" selection-start-column="92" selection-end-line="34" selection-end-column="155" />
+          <folding>
+            <element signature="e#0#57#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -335,6 +415,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="960">
           <caret line="36" column="18" selection-start-line="36" selection-start-column="18" selection-end-line="36" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -342,6 +425,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6660">
           <caret line="222" column="20" lean-forward="true" selection-start-line="222" selection-start-column="20" selection-end-line="222" selection-end-column="20" />
+          <folding>
+            <element signature="n#style#0;n#el-table#0;n#el-tab-pane#0;n#el-tabs#0;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -379,6 +465,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6820">
           <caret line="314" column="17" selection-start-line="314" selection-start-column="17" selection-end-line="314" selection-end-column="17" />
+          <folding>
+            <element signature="n#style#0;n#el-select#0;n#div#0;n#el-row#1;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -434,6 +523,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6510">
           <caret line="222" column="20" selection-start-line="222" selection-start-column="20" selection-end-line="222" selection-end-column="20" />
+          <folding>
+            <element signature="n#style#0;n#el-table#0;n#el-tab-pane#0;n#el-tabs#0;n#div#0;n#el-main#0;n#el-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -468,31 +560,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/specs/room.spec.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="36" column="18" selection-start-line="36" selection-start-column="18" selection-end-line="36" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/unit/specs/news-create.spec.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="178">
           <caret line="27" column="33" lean-forward="true" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/specs/feedback-detail.spec.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="34" column="92" lean-forward="true" selection-start-line="34" selection-start-column="92" selection-end-line="34" selection-end-column="155" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/specs/feedback.spec.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-638">
-          <caret line="35" column="12" lean-forward="true" selection-start-line="35" selection-start-column="12" selection-end-line="35" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -506,37 +577,10 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/specs/order.spec.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1500">
-          <caret line="50" column="10" selection-start-line="50" selection-start-column="10" selection-end-line="50" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/module/user/App.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1350">
           <caret line="45" column="34" selection-start-line="45" selection-start-column="34" selection-end-line="45" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/specs/user.spec.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="17" column="27" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/specs/news.spec.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="21" column="20" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -549,8 +593,65 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/unit/coverage/lcov-report/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="71" column="8" lean-forward="true" selection-start-line="71" selection-start-column="8" selection-end-line="71" selection-end-column="8" />
+        <state relative-caret-position="2250">
+          <caret line="75" column="9" lean-forward="true" selection-start-line="75" selection-start-column="9" selection-end-line="75" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unit/specs/user.spec.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="26" column="107" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="107" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unit/specs/feedback-detail.spec.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="31" column="46" selection-start-line="31" selection-start-column="46" selection-end-line="31" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unit/specs/feedback.spec.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="18" column="107" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="107" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unit/specs/news.spec.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="18" column="106" selection-start-line="18" selection-start-column="106" selection-end-line="18" selection-end-column="106" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unit/specs/order.spec.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="18" column="106" selection-start-line="18" selection-start-column="106" selection-end-line="18" selection-end-column="106" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unit/specs/room.spec.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="18" column="106" selection-start-line="18" selection-start-column="106" selection-end-line="18" selection-end-column="106" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
