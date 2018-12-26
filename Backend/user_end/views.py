@@ -75,7 +75,7 @@ class Bind(APIView):
             url = 'https://id-tsinghua-test.iterator-traits.com/thuser/authapi/checkticket/'
             url = parse.urljoin(url, CONFIGS['THU_APP_ID']) + '/'
             url = parse.urljoin(url, ticket) + '/'
-            url = parse.urljoin(url, CONFIGS['DOMAIN'].replace('.', '_')) + '/'
+            url = parse.urljoin(url, CONFIGS['IP'].replace('.', '_')) + '/'
             res = requests.get(url=url)
             try:
                 res = res.text.split(':')
@@ -186,8 +186,6 @@ class OrderPay(APIView):
         order = Order.objects.get(order_id=self.msg.get('order_id'))
 
         #本机IP
-        #myname = socket.gethostname()
-        #myaddr = socket.gethostbyname(myname)
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
         sock.connect(('8.8.8.8', 80))
         myaddr = sock.getsockname()[0]
@@ -223,6 +221,9 @@ class OrderPay(APIView):
             msg_nd['paySign'] = sign
             return msg_nd
         else:
+            if res['err_code'] == 'ORDERPAID':
+                order.order_status = 2
+                order.save()
             raise MsgError(msg=res.get('return_msg') or res.get('err_code_des'))
 
 

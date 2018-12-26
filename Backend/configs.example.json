@@ -1,5 +1,6 @@
 {
   "DOMAIN": "0.0.0.0",
+  "IP": "0.0.0.0",
   "APP_ID": "appid here",
   "APP_SECRET": "app_secret here",
   "MCH_ID": "mch_id here",
