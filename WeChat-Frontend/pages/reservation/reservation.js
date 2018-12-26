@@ -52,6 +52,7 @@ let page = Page({
   },
   onShow:function(){
     this.initSearchPage();
+    this.getRoomList();
   },
 
   
@@ -439,7 +440,7 @@ let page = Page({
       let ss_list = [];
     let search_start_stamp = util.timeStringToTimestamp(this.data.cur_date,this.data.open_time[0].toString() + ":" + this.data.open_time[1].toString());
     let search_end_stamp = util.timeStringToTimestamp(this.data.cur_date,this.data.close_time[0].toString() + ":" + this.data.close_time[1].toString());
-      for (let i = search_start_stamp; i < search_end_stamp; i += this.data.min_interval) {
+      for (let i = search_start_stamp + this.data.min_order; i < search_end_stamp; i += this.data.min_interval) {
         ss_list.push(util.timestampToTimeString(i));
       }
       this.setData({ 

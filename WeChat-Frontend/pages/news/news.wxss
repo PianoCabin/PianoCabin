@@ -29,14 +29,14 @@
   font-size: 28rpx;
   color: #8E2782;
   /* font-weight: bold; */
-  margin:2%;
+  margin:3%;
 }
 .empty_item{
   width:8%;
 }
 
 .icon{
-  margin-top: 3%;
+  margin-top: 3.5%;
   margin-left: 2%;
   object-fit: cover;
   width: 5%;

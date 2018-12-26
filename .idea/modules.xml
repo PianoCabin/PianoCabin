@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Admin-Frontend.iml" filepath="$PROJECT_DIR$/.idea/Admin-Frontend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PianoCabin.iml" filepath="$PROJECT_DIR$/.idea/PianoCabin.iml" />
     </modules>
   </component>
 </project>

@@ -55,6 +55,13 @@
   padding-left: 4rpx;
   padding-right: 4rpx;
 }
+.unselect_type{
+  color: #8E2782;
+  box-sizing: content-boxs;
+  padding-bottom: 6rpx;
+  padding-left: 4rpx;
+  padding-right: 4rpx;
+}
 
 .date-set{
   display: flex;

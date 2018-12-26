@@ -85,22 +85,24 @@ class PianoRoomEdit(APIView):
         if not self.msg["usable"] and room[0].usable:
             try:
                 with transaction.atomic():
-                    order = Order.objects.select_for_update().get(piano_room=room[0], order_status=1)
-                    order.order_status = 0
-                    order.cancel_reason = 3
-                    order.save()
-                    if redis_manage.redis_lock.acquire():
-                        day = (order.date - datetime.now().date()).days
-                        room_orders = json.loads(
-                            redis_manage.order_list.lindex(order.piano_room.room_num, day).decode())
-                        for room_order in room_orders:
-                            if room_order[2] == order.id:
-                                room_orders.remove(room_order)
-                                break
-                        room_orders = json.dumps(room_orders)
-                        redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
-                        redis_manage.unpaid_orders.delete(order.id)
-                        redis_manage.redis_lock.release()
+                    orders = Order.objects.select_for_update().filter(piano_room=room[0], order_status=1)
+                    for order in orders:
+                        order.order_status = 0
+                        order.cancel_reason = 3
+                        order.save()
+                        if redis_manage.redis_lock.acquire():
+                            day = (order.date - datetime.datetime.now().date()).days
+                            room_orders = json.loads(
+                                redis_manage.order_list.lindex(order.piano_room.room_num, day).decode())
+                            length = len(room_orders)
+                            for i in range(length):
+                                if order.id == room_orders[i][2]:
+                                    room_orders.pop(i)
+                                    break
+                            room_orders = json.dumps(room_orders)
+                            redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
+                            redis_manage.unpaid_orders.delete(order.id)
+                            redis_manage.redis_lock.release()
             except:
                 try:
                     redis_manage.redis_lock.release()
@@ -156,7 +158,8 @@ class OrderList(APIView):
     def post(self):
         if not self.request.user.is_authenticated:
             raise MsgError(0, 'not login')
-        count = self.checkMsgMultiOption("order_status", "identity", "start_date", "end_date", "order_id", "room_num")
+        count = self.checkMsgMultiOption("order_status", "identity", "start_date", "end_date", "order_id", "room_num",
+                                         "user_id")
         try:
             if count:
                 query_str = ''
@@ -166,8 +169,8 @@ class OrderList(APIView):
                     query_str += 'Q(order_id=self.msg["order_id"])&'
                 if "identity" in self.msg:
                     query_str += 'Q(user=get_or_none(User, identity=self.msg["identity"]))&'
-                if "open_id" in self.msg:
-                    query_str += 'Q(user=get_or_none(User, open_id=self.msg["open_id"]))&'
+                if "user_id" in self.msg:
+                    query_str += 'Q(user=get_or_none(User, user_id=self.msg["user_id"]))&'
                 if "order_status" in self.msg:
                     query_str += 'Q(order_status=self.msg["order_status"])&'
                 if "start_date" in self.msg and "end_date" in self.msg:
@@ -187,7 +190,7 @@ class OrderList(APIView):
                 if user.identity:
                     item['user_id'] = user.identity
                 else:
-                    item['user_id'] = user.open_id
+                    item['user_id'] = user.user_id
                 item['start_time'] = item['start_time'].timestamp()
                 item['end_time'] = item['end_time'].timestamp()
                 item['create_time'] = item['create_time'].timestamp()
@@ -275,7 +278,7 @@ class FeedbackList(APIView):
                     if user.identity:
                         i["user_id"] = user.identity
                     else:
-                        i["user_id"] = user.open_id
+                        i["user_id"] = user.user_id
                 return {'feedback_list': a}
             else:
                 temp = Feedback.objects.all().values(
@@ -288,7 +291,7 @@ class FeedbackList(APIView):
                     if user.identity:
                         i["user_id"] = user.identity
                     else:
-                        i["user_id"] = user.open_id
+                        i["user_id"] = user.user_id
                 return {'feedback_list': a}
         except:
             raise MsgError(0, 'fail to list feedback')
@@ -312,7 +315,7 @@ class FeedbackDetail(APIView):
             if user.identity:
                 a["user_id"] = user.identity
             else:
-                a["user_id"] = user.open_id
+                a["user_id"] = user.user_id
             return a
         except:
             raise MsgError(0, 'cannot get the detail of this feedback')
@@ -330,8 +333,8 @@ class UserList(APIView):
     def post(self):
         if not self.request.user.is_authenticated:
             raise MsgError(0, 'not login')
-        options = self.getMultiOption('open_id', 'identity', 'permission', 'order_permission')
-        users = User.objects.filter(**options).values('open_id', 'identity', 'permission', 'order_permission')
+        options = self.getMultiOption('user_id', 'identity', 'permission', 'order_permission')
+        users = User.objects.filter(**options).values('user_id', 'identity', 'permission', 'order_permission')
         users = list(users)
         return {'user_list': users}
 
@@ -342,6 +345,6 @@ class UserEdit(APIView):
             raise MsgError(0, 'not login')
         self.checkMsg('user_list')
         for user_info in self.msg['user_list']:
-            user = User.objects.get(open_id=user_info['open_id'])
+            user = User.objects.get(user_id=user_info['user_id'])
             user.order_permission = user_info['order_permission']
             user.save()

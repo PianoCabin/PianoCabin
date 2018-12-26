@@ -26,7 +26,7 @@
             <div class="search-item fl">
               <el-select value="0" v-model="id_type_selected" style="width: 7rem">
                 <el-option key="0" value="0" label="学号工号："></el-option>
-                <el-option key="1" value="1" label="微信ID："></el-option>
+                <el-option key="1" value="1" label="用户ID："></el-option>
               </el-select>
               <el-input @blur="handleFilter" @keydown.enter.native="handleFilter" class="info" v-model="filter_info.user_id" placeholder="请输入订单编号"></el-input>
             </div>
@@ -323,7 +323,7 @@
               if (this.id_type_selected === '0')
                 data.identity = this.filter_info.user_id
               else
-                data.open_id = this.filter_info.user_id
+                data.user_id = this.filter_info.user_id
             }
             else
               data[key] = this.filter_info[key]

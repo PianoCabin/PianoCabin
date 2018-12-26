@@ -33,6 +33,7 @@ class PianoRoom(models.Model):
 
 class User(models.Model):
     open_id = models.CharField(default="", max_length=255, unique=True)
+    user_id = models.CharField(default=None, max_length=255, unique=True, null=True, blank=True)
     identity = models.CharField(default=None, max_length=255, unique=True, null=True, blank=True)
     permission = models.IntegerField(default=0)
     session = models.TextField(default='')
@@ -195,25 +196,3 @@ def runSchedule():
         if datetime.now().hour == 0 and datetime.now().minute == 1:
             updateOrderList()
         time.sleep(60)
-
-
-def setUpTestData():
-    PianoRoom.objects.create(
-        room_num='F2-203',
-        piano_type='钢琴房',
-        brand='星海立式钢琴',
-        price_0=15,
-        price_1=10,
-        price_2=5,
-        usable=True
-    )
-
-    PianoRoom.objects.create(
-        room_num='F2-205',
-        piano_type='钢琴房',
-        brand='星海立式钢琴',
-        price_0=15,
-        price_1=10,
-        price_2=5,
-        usable=True
-    )

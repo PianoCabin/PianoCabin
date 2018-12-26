@@ -23,25 +23,35 @@
       <view class='info_block3'>
         <view class='info_order_id'> 
           <view class='info_label'>订单编号：</view>
-          <view>{{info.order_id}}</view>
+          <textarea class="order_id_text" value='{{info.order_id}}' disabled='true'></textarea>
         </view>
-        <view class = 'info_order_time'>日期：　　
-        <!-- <picker class='info_date_input' wx:if="{{edit}}" range='date_list' bindchange='set_date'>{{info.date}}</picker> -->
-        <text class='info_date_text' wx:if="{{edit}}">{{info.date}}</text>        
-        <text class='info_date_text' wx:else>{{info.date}}</text>
-        </view> 
-        <view class='info_order_user'>预约人：　{{nickname}}</view>
-          
-          <view wx:if="{{edit}}" class='info_order_time'>预约时间：
-            <picker class='start_picker' mode="selector" range='{{starttime_list}}' bindchange='setOrderStart'>{{start_time}}</picker>
-            ~
-            <picker class='end_picker' mode="selector" range='{{endtime_list}}' bindchange='setOrderEnd'>{{end_time}}</picker>
-          </view>
-          <view wx:else class='info_order_time'>预约时间：
-            <text class='info_order_time_text'>{{start_time}}</text>
-            ~
-            <text class='info_order_time_text'>{{end_time}}</text>
-          </view>
+        
+        <view class='info_order_id'> 
+          <view class='info_label'>预约人：</view>
+          <textarea class="order_id_text" value='{{info.user_id}}' disabled='true'></textarea>
+        </view>
+        
+        <view class='info_order_id'> 
+          <view class='info_label'>日期：</view>
+          <textarea class="order_id_text" value='{{info.date}}' disabled='true'></textarea>
+        </view>
+
+        <!-- <view class = 'info_order_id'>
+        <view class='info_label'>日期：</view>　　
+        <view class='order_id_text' wx:if="{{edit}}">{{info.date}}</view>        
+        <view class='order_id_text' wx:else>{{info.date}}</view>
+        </view>  -->
+        
+        <view wx:if="{{edit}}" class='info_order_time'>预约时间：
+          <picker class='start_picker' mode="selector" range='{{starttime_list}}' bindchange='setOrderStart'>{{start_time}}</picker>
+          ~
+          <picker class='end_picker' mode="selector" range='{{endtime_list}}' bindchange='setOrderEnd'>{{end_time}}</picker>
+        </view>
+        <view wx:else class='info_order_time'>预约时间：
+          <text class='info_order_time_text'>{{start_time}}</text>
+          ~
+          <text class='info_order_time_text'>{{end_time}}</text>
+        </view>
         
         <view class='info_order_op'>
           <view class='info_cancel' wx:if="{{info.status  == 1}}" bindtap='checkCancelOrder'>退订</view>
