@@ -17,7 +17,7 @@ Page({
             util.msgPrompt("绑定失败", false);
             return;
         }
-        this.bindConfirm(msg["data"])
+        this.bindConfirm({'user_info':msg["data"]})
     },
     bindConfirm(data) {
         app.bindConfirm(data, (res) => {

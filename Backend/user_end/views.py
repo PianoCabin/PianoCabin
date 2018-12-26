@@ -82,8 +82,11 @@ class Bind(APIView):
                 info = {}
                 for text in res:
                     text = text.split('=')
-                    info[text[0]] = text[1]
-                if info.get('code') != 0:
+                    if len(text) == 2:
+                        info[text[0]] = text[1]
+                    elif len(text) == 1:
+                        info[text[0]] = None
+                if info.get('code') != '0':
                     raise MsgError
                 else:
                     data['identity'] = info.get('zjh')
