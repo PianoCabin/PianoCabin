@@ -16,6 +16,7 @@ describe('反馈信息列表界面', () => {
   const vm = new Vue(App).$mount()
 
   it('检查内容为空时页面元素', () => {
+    expect(vm.$el.querySelector(".el-menu-item.menu-item.is-active span").textContent).to.be.equal("反馈管理");
     expect(vm.$el.querySelectorAll(".side-bar").length > 0).to.be.equal(true);
     expect(vm.$el.querySelectorAll(".select-panel").length > 0).to.be.equal(true);
     expect(vm.$el.querySelectorAll(".pagaination-div").length === 0).to.be.equal(true);

@@ -186,8 +186,11 @@ class OrderPay(APIView):
         order = Order.objects.get(order_id=self.msg.get('order_id'))
 
         #本机IP
-        myname = socket.gethostname()
-        myaddr = socket.gethostbyname(myname)
+        #myname = socket.gethostname()
+        #myaddr = socket.gethostbyname(myname)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
+        sock.connect(('8.8.8.8', 80))
+        myaddr = sock.getsockname()[0]
 
         nonce_str = ''.join(random.sample(string.ascii_letters + string.digits, 32))
         msg = {
@@ -363,7 +366,7 @@ class OrderNormal(APIView):
                     create_time=datetime.now(),
                     price=self.msg.get('price'),
                 )
-                order.order_id = ''.join(str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id))).split('-'))
+                order.order_id = ''.join(str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id)+str(datetime.now().timestamp()))).split('-'))
                 order.save()
                 day = (order.date - datetime.now().date()).days
                 if day >= CONFIGS['MAX_ORDER_DAYS'] or day < 0:
