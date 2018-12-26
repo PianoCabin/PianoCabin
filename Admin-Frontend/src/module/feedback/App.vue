@@ -17,8 +17,8 @@
                 highlight-current-row
                 @row-click="getDetail"
               >
-                <el-table-column prop="user_id" label="反馈人" width="300"></el-table-column>
-                <el-table-column prop="feedback_title" label="标题" width="250"></el-table-column>
+                <el-table-column prop="user_id" label="反馈人" width="320"></el-table-column>
+                <el-table-column prop="feedback_title" label="标题" width="230"></el-table-column>
                 <el-table-column label="内容" width="600">
                   <template slot-scope="scope">
                     <p class="feedback-content">{{ scope.row.feedback_content }}</p>
@@ -48,8 +48,8 @@
                 highlight-current-row
                 @row-click="getDetail"
               >
-                <el-table-column prop="user_id" label="反馈人" width="300"></el-table-column>
-                <el-table-column prop="feedback_title" label="标题" width="250"></el-table-column>
+                <el-table-column prop="user_id" label="反馈人" width="320"></el-table-column>
+                <el-table-column prop="feedback_title" label="标题" width="230"></el-table-column>
                 <el-table-column label="内容" width="600">
                   <template slot-scope="scope">
                     <p class="feedback-content">{{ scope.row.feedback_content }}</p>
@@ -79,8 +79,8 @@
                 highlight-current-row
                 @row-click="getDetail"
               >
-                <el-table-column prop="user_id" label="反馈人" width="300"></el-table-column>
-                <el-table-column prop="feedback_title" label="标题" width="250"></el-table-column>
+                <el-table-column prop="user_id" label="反馈人" width="320"></el-table-column>
+                <el-table-column prop="feedback_title" label="标题" width="230"></el-table-column>
                 <el-table-column label="内容" width="600">
                   <template slot-scope="scope">
                     <p class="feedback-content">{{ scope.row.feedback_content }}</p>
