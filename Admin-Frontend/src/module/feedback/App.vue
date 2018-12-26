@@ -281,4 +281,8 @@ export default {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
+
+.feedback-id {
+  display: none;
+}
 </style>
