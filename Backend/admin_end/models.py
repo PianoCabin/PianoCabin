@@ -8,7 +8,6 @@ import json
 import schedule
 import time
 
-
 # Create your models here.
 def get_or_none(model, *args, **kwargs):
     try:
