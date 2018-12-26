@@ -34,7 +34,11 @@
                     <p>{{ scope.row.read_status | getStatus}}</p>
                   </template>
                 </el-table-column>
-                <el-table-column hidden class-name="feedback-id" prop="feedback_id" width="0"></el-table-column>
+                <el-table-column width="0">
+                  <template slot-scope="scope">
+                    <p class="feedback-id">{{ scope.row.feedback_id}}</p>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane label="已读" name="1">
@@ -61,7 +65,11 @@
                     <p>{{ scope.row.read_status | getStatus}}</p>
                   </template>
                 </el-table-column>
-                <el-table-column hidden class-name="feedback-id" prop="feedback_id" width="0"></el-table-column>
+                <el-table-column width="0">
+                  <template slot-scope="scope">
+                    <p class="feedback-id">{{ scope.row.feedback_id}}</p>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane label="未读" name="2">
@@ -88,7 +96,11 @@
                     <p>{{ scope.row.read_status | getStatus}}</p>
                   </template>
                 </el-table-column>
-                <el-table-column hidden class-name="feedback-id" prop="feedback_id" width="0"></el-table-column>
+                <el-table-column width="0">
+                  <template slot-scope="scope">
+                    <p class="feedback-id">{{ scope.row.feedback_id}}</p>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-tab-pane>
           </el-tabs>
@@ -283,6 +295,6 @@ export default {
 }
 
 .feedback-id {
-  display: none;
+  display: none !important;
 }
 </style>
