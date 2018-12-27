@@ -81,7 +81,7 @@ class PianoListTest(TestCase):
 
         # 正确输入2
         response = self.client.post('/u/order/piano-rooms-list/', {
-            'date': (datetime.now()+timedelta(days=1)).timestamp(),
+            'date': (datetime.now() + timedelta(days=1)).timestamp(),
             'type': '钢琴房',
             'authorization': self.user.session
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
@@ -181,23 +181,23 @@ class PianoListTest(TestCase):
         now = datetime.now()
         self.client.post('/u/order/normal/', {
             'room_num': 'F2-205',
-            'start_time': datetime(now.year, now.month, now.day + 1, 12).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 13).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 12)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 13)+timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 13).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 14).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 13)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 14)+timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         response = self.client.post('/u/order/piano-rooms-list/', {
-            'date': datetime(now.year, now.month, now.day + 1).timestamp(),
+            'date': (datetime(now.year, now.month, now.day) + timedelta(days=1)).timestamp(),
             'type': '钢琴房',
-            'start_time': datetime(now.year, now.month, now.day + 1, 12).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 13 ).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 12)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 13)+timedelta(days=1)).timestamp(),
             'authorization': self.user.session
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -207,23 +207,23 @@ class PianoListTest(TestCase):
         now = datetime.now()
         self.client.post('/u/order/normal/', {
             'room_num': 'F2-205',
-            'start_time': datetime(now.year, now.month, now.day + 1, 12).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 12)+timedelta(days=1)).timestamp(),
             'end_time': datetime(now.year, now.month, now.day + 1, 13, 20).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 12).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 13).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 12)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 13)+timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         response = self.client.post('/u/order/piano-rooms-list/', {
-            'date': datetime(now.year, now.month, now.day + 1).timestamp(),
+            'date': (datetime(now.year, now.month, now.day) + timedelta(days=1)).timestamp(),
             'type': '钢琴房',
-            'start_time': datetime(now.year, now.month, now.day + 1, 12).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 14).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 12)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 14)+timedelta(days=1)).timestamp(),
             'authorization': self.user.session
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -277,11 +277,21 @@ class OrderNormalTest(TestCase):
 
     def test_post(self):
         now = datetime.now()
-        # 正确预约
+        # 正确预约1
         response = self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 15).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 16).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16)+timedelta(days=1)).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 1)
+
+        # 正确预约2
+        response = self.client.post('/u/order/normal/', {
+            'room_num': 'F2-203',
+            'start_time': (datetime(now.year, now.month, now.day, 13)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 14)+timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -290,8 +300,17 @@ class OrderNormalTest(TestCase):
         # 错误房间号
         response = self.client.post('/u/order/normal/', {
             'room_num': 'F2-200',
-            'start_time': datetime(now.year, now.month, now.day + 1, 15).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 16).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16)+timedelta(days=1)).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 无房间号
+        response = self.client.post('/u/order/normal/', {
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16)+timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -300,9 +319,28 @@ class OrderNormalTest(TestCase):
         # 错误价格
         response = self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 15).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 16).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16)+timedelta(days=1)).timestamp(),
             'price': 10,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 错误价格
+        response = self.client.post('/u/order/normal/', {
+            'room_num': 'F2-203',
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16)+timedelta(days=1)).timestamp(),
+            'price': '10',
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 无价格
+        response = self.client.post('/u/order/normal/', {
+            'room_num': 'F2-203',
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16)+timedelta(days=1)).timestamp(),
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         self.assertEqual(response.json()['code'], 0)
@@ -310,8 +348,18 @@ class OrderNormalTest(TestCase):
         # 错误时间（重复预约）
         response = self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 15).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 16).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16)+timedelta(days=1)).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 错误时间（部分重复预约）
+        response = self.client.post('/u/order/normal/', {
+            'room_num': 'F2-203',
+            'start_time': datetime(now.year, now.month, now.day + 1, 15, 20).timestamp(),
+            'end_time': datetime(now.year, now.month, now.day + 1, 16, 20).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -330,7 +378,51 @@ class OrderNormalTest(TestCase):
         response = self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
             'start_time': datetime(now.year, now.month, now.day, 23).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 0).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 0)+timedelta(days=1)).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 错误时间（开始结束不在同一天）
+        response = self.client.post('/u/order/normal/', {
+            'room_num': 'F2-203',
+            'start_time': datetime(now.year, now.month, now.day + 1, 15, 20).timestamp(),
+            'end_time': datetime(now.year, now.month, now.day + 2, 16, 20).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 错误时间（开始晚于结束）
+        response = self.client.post('/u/order/normal/', {
+            'room_num': 'F2-203',
+            'start_time': datetime(now.year, now.month, now.day + 2, 15, 20).timestamp(),
+            'end_time': datetime(now.year, now.month, now.day + 1, 16, 20).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        # 无时间
+        response = self.client.post('/u/order/normal/', {
+            'room_num': 'F2-203',
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 无开始时间
+        response = self.client.post('/u/order/normal/', {
+            'room_num': 'F2-203',
+            'end_time': datetime(now.year, now.month, now.day + 1, 16, 20).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 无结束时间
+        response = self.client.post('/u/order/normal/', {
+            'room_num': 'F2-203',
+            'start_time': datetime(now.year, now.month, now.day + 1, 16, 20).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -338,7 +430,7 @@ class OrderNormalTest(TestCase):
 
 
 class OrderChangeTest(TestCase):
-    
+
     # 测试OrderChange API
     @classmethod
     def setUpTestData(cls):
@@ -384,15 +476,15 @@ class OrderChangeTest(TestCase):
         now = datetime.now()
         response = self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 15).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 16).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16)+timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 19).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 20).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 19)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 20)+timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -400,23 +492,55 @@ class OrderChangeTest(TestCase):
 
     def test_post(self):
         now = datetime.now()
-        # 正确提交
+        # 正确提交1
         response = self.client.post('/u/order/change/', {
             'order_id': self.order_id,
-            'date': datetime(now.year, now.month, now.day + 1, 17).timestamp(),
-            'start_time': datetime(now.year, now.month, now.day + 1, 17).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 18).timestamp(),
+            'date': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 18)+timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         self.assertEqual(response.json()['code'], 1)
-        
+
+        # 正确提交2
+        response = self.client.post('/u/order/change/', {
+            'order_id': self.order_id,
+            'date': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 13)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 14)+timedelta(days=1)).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 1)
+
+        # 正确提交3（不变）
+        response = self.client.post('/u/order/change/', {
+            'order_id': self.order_id,
+            'date': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16)+timedelta(days=1)).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 1)
+
         # 错误id
         response = self.client.post('/u/order/change/', {
             'order_id': 'test',
-            'date': datetime(now.year, now.month, now.day + 1, 17).timestamp(),
-            'start_time': datetime(now.year, now.month, now.day + 1, 17).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 18).timestamp(),
+            'date': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 18)+timedelta(days=1)).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 无id
+        response = self.client.post('/u/order/change/', {
+            'date': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 18)+timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -425,10 +549,31 @@ class OrderChangeTest(TestCase):
         # 错误价格
         response = self.client.post('/u/order/change/', {
             'order_id': self.order_id,
-            'date': datetime(now.year, now.month, now.day + 1, 17).timestamp(),
-            'start_time': datetime(now.year, now.month, now.day + 1, 17).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 18).timestamp(),
+            'date': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 18)+timedelta(days=1)).timestamp(),
             'price': 10,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 错误价格
+        response = self.client.post('/u/order/change/', {
+            'order_id': self.order_id,
+            'date': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 18)+timedelta(days=1)).timestamp(),
+            'price': '10',
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 无价格
+        response = self.client.post('/u/order/change/', {
+            'order_id': self.order_id,
+            'date': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 18)+timedelta(days=1)).timestamp(),
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         self.assertEqual(response.json()['code'], 0)
@@ -436,9 +581,20 @@ class OrderChangeTest(TestCase):
         # 错误时间（重复预约）
         response = self.client.post('/u/order/change/', {
             'order_id': self.order_id,
-            'date': datetime(now.year, now.month, now.day + 1, 17).timestamp(),
-            'start_time': datetime(now.year, now.month, now.day + 1, 18).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 20).timestamp(),
+            'date': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 18)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 20)+timedelta(days=1)).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 错误时间（部分重复预约）
+        response = self.client.post('/u/order/change/', {
+            'order_id': self.order_id,
+            'date': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
+            'start_time': datetime(now.year, now.month, now.day + 1, 18, 20).timestamp(),
+            'end_time': datetime(now.year, now.month, now.day + 1, 20, 20).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -447,7 +603,7 @@ class OrderChangeTest(TestCase):
         # 错误时间（在开放时间之前或关门时间之后）
         response = self.client.post('/u/order/change/', {
             'order_id': self.order_id,
-            'date': datetime(now.year, now.month, now.day + 1, 17).timestamp(),
+            'date': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
             'start_time': datetime(now.year, now.month, now.day, 9).timestamp(),
             'end_time': datetime(now.year, now.month, now.day, 10).timestamp(),
             'price': 15,
@@ -457,9 +613,9 @@ class OrderChangeTest(TestCase):
 
         response = self.client.post('/u/order/change/', {
             'order_id': self.order_id,
-            'date': datetime(now.year, now.month, now.day + 1, 17).timestamp(),
+            'date': (datetime(now.year, now.month, now.day, 17)+timedelta(days=1)).timestamp(),
             'start_time': datetime(now.year, now.month, now.day, 23).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 0).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 0)+timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -470,7 +626,77 @@ class OrderChangeTest(TestCase):
             'order_id': self.order_id,
             'date': datetime(now.year, now.month, now.day, 17).timestamp(),
             'start_time': datetime(now.year, now.month, now.day, 23).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 0).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 0)+timedelta(days=1)).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 错误日期（超出预约最长日期）
+        response = self.client.post('/u/order/change/', {
+            'order_id': self.order_id,
+            'date': datetime(now.year, now.month, now.day, 17).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15) + timedelta(
+                days=CONFIGS['MAX_ORDER_DAYS'])).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 17) + timedelta(
+                days=CONFIGS['MAX_ORDER_DAYS'])).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 错误日期（开始结束不在同一日期）
+        response = self.client.post('/u/order/change/', {
+            'order_id': self.order_id,
+            'date': datetime(now.year, now.month, now.day, 17).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=CONFIGS['MAX_ORDER_DAYS'] - 1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 17)+timedelta(days=CONFIGS['MAX_ORDER_DAYS'])).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        # 错误时间（开始晚于结束）
+        response = self.client.post('/u/order/change/', {
+            'order_id': self.order_id,
+            'date': datetime(now.year, now.month, now.day, 17).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=CONFIGS['MAX_ORDER_DAYS'] - 1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 17)+timedelta(days=CONFIGS['MAX_ORDER_DAYS'] - 2)).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 无日期
+        response = self.client.post('/u/order/change/', {
+            'order_id': self.order_id,
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=CONFIGS['MAX_ORDER_DAYS'] - 1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 17)+timedelta(days=CONFIGS['MAX_ORDER_DAYS'] - 2)).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 无时间
+        response = self.client.post('/u/order/change/', {
+            'order_id': self.order_id,
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 无开始时间
+        response = self.client.post('/u/order/change/', {
+            'order_id': self.order_id,
+            'end_time': (datetime(now.year, now.month, now.day, 17)+timedelta(days=CONFIGS['MAX_ORDER_DAYS'] - 2)).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 无结束时间
+        response = self.client.post('/u/order/change/', {
+            'order_id': self.order_id,
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=CONFIGS['MAX_ORDER_DAYS'] - 1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 17)+timedelta(days=CONFIGS['MAX_ORDER_DAYS'] - 2)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -524,28 +750,21 @@ class OrderCancelTest(TestCase):
         now = datetime.now()
         response = self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 15).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 16).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16)+timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 19).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 20).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 19)+timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 20)+timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         self.order_id = response.json()['data']['order_id']
 
     def test_post(self):
-        # 错误取消
-        response = self.client.post('/u/order/cancel/', {
-            'order_id': 'test'
-        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
-
-        self.assertEqual(response.json()['code'], 0)
-
         # 正确取消
         response = self.client.post('/u/order/cancel/', {
             'order_id': self.order_id
@@ -554,3 +773,98 @@ class OrderCancelTest(TestCase):
         self.assertEqual(response.json()['code'], 1)
 
         self.assertEqual(get_or_none(Order, order_id=self.order_id).order_status, 0)
+        self.assertEqual(get_or_none(Order, order_id=self.order_id).cancel_reason, 2)
+
+        # id错误
+        response = self.client.post('/u/order/cancel/', {
+            'order_id': 'test'
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        self.assertEqual(get_or_none(Order, order_id=self.order_id).order_status, 0)
+
+        # 无id
+        response = self.client.post('/u/order/cancel/', {
+            'order_id': 'test'
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        self.assertEqual(get_or_none(Order, order_id=self.order_id).order_status, 0)
+
+        # 重复取消
+        response = self.client.post('/u/order/cancel/', {
+            'order_id': self.order_id
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        self.assertEqual(get_or_none(Order, order_id=self.order_id).order_status, 0)
+
+        # 取消已支付订单
+        order = Order.objects.get(order_id=self.order_id)
+        order.order_status = 2
+        order.save()
+
+        response = self.client.post('/u/order/cancel/', {
+            'order_id': self.order_id
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        self.assertEqual(get_or_none(Order, order_id=self.order_id).order_status, 2)
+
+        order = Order.objects.get(order_id=self.order_id)
+        order.order_status = 1
+        order.save()
+
+
+class BindTest(TestCase):
+    # 测试Bind API
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create(
+            open_id='xxxxxxxxxxxxxxxxx',
+            session='aaaaaaaaaaaaaaaaa'
+        )
+
+        redis_manage.initDatabase()
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_post(self):
+
+        # sign错误
+        response = self.client.post('/u/bind/confirmed/', {
+            'user_info': {
+                'identity': '12321321',
+                'permission': 1,
+                'sign': 'test'
+            }
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 无sign
+        response = self.client.post('/u/bind/confirmed/', {
+            'user_info': {
+                'identity': '12321321',
+                'permission': 1,
+            }
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 无session
+        response = self.client.post('/u/bind/confirmed/', {
+            'user_info': {
+                'identity': '12321321',
+                'permission': 1,
+                'sign': 'test'
+            }
+        }, content_type='application/json')
+
+        self.assertEqual(response.json()['code'], 0)

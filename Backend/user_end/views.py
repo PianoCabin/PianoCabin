@@ -351,7 +351,7 @@ class OrderNormal(APIView):
                 end_time = datetime.fromtimestamp(self.msg.get('end_time'))
                 open_time = datetime(start_time.year, start_time.month, start_time.day, CONFIGS['OPEN_TIME'])
                 close_time = datetime(start_time.year, start_time.month, start_time.day, CONFIGS['CLOSE_TIME'])
-                if start_time < datetime.now() or start_time < open_time or end_time > close_time:
+                if start_time < datetime.now() or start_time < open_time or end_time > close_time or start_time.date() != end_time.date() or start_time > end_time:
                     raise django.db.IntegrityError
 
                 # 计算价格是否正确
@@ -451,7 +451,7 @@ class OrderChange(APIView):
                 end_time = datetime.fromtimestamp(self.msg.get('end_time'))
                 open_time = datetime(start_time.year, start_time.month, start_time.day, CONFIGS['OPEN_TIME'])
                 close_time = datetime(start_time.year, start_time.month, start_time.day, CONFIGS['CLOSE_TIME'])
-                if start_time < datetime.now() or start_time < open_time or end_time > close_time:
+                if start_time < datetime.now() or start_time < open_time or end_time > close_time or start_time.date() != end_time.date() or start_time > end_time:
                     raise django.db.IntegrityError
 
                 # 计算价格是否正确
@@ -513,7 +513,7 @@ class OrderCancel(APIView):
         self.checkMsg('order_id', 'authorization')
         try:
             with transaction.atomic():
-                order = Order.objects.select_for_update().get(order_id=self.msg.get('order_id'))
+                order = Order.objects.select_for_update().get(order_id=self.msg.get('order_id'), order_status=1)
                 order.order_status = 0
                 order.cancel_reason = 2
                 order.save()
