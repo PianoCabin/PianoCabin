@@ -42,6 +42,9 @@ Page({
             })
         }
     },
+    onShow(){
+      this.getBindInfo();
+    },
     getBindInfo(){
       let _this = this;
       app.getBindInfo({}, (res) => {
@@ -61,6 +64,7 @@ Page({
             userInfo: e.detail.userInfo,
             hasUserInfo: true
         })
+        this.getBindInfo();
     },
     goToOrderPage() {
         wx.navigateTo({
