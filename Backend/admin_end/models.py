@@ -36,6 +36,7 @@ class User(models.Model):
     identity = models.CharField(default=None, max_length=255, unique=True, null=True, blank=True)
     permission = models.IntegerField(default=0)
     session = models.TextField(default='')
+    name = models.TextField(default='')
     order_permission = models.BooleanField(default=True)
 
     def __str__(self):

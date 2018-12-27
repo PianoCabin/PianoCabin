@@ -90,6 +90,7 @@ class Bind(APIView):
                     raise MsgError
                 else:
                     data['identity'] = info.get('zjh')
+                    data['name'] = info.get('xm')
                     if info.get('yhlb') in ['J0000', 'H0000', 'J0054']:
                         data['permission'] = 1
                     elif info.get('yhlb') in ['X0011', 'X0021', 'X0031']:
@@ -112,6 +113,7 @@ class Bind(APIView):
             raise MsgError(msg='Invalid sign')
         user.identity = info.get('identity')
         user.permission = info.get('permission')
+        user.name = info.get('name')
         user.save()
 
 
@@ -119,7 +121,7 @@ class BindInfo(APIView):
     def get(self):
         self.checkMsg('authorization')
         user = self.getUserBySession()
-        return {'identity': user.identity, 'permission': user.permission}
+        return {'identity': user.identity, 'name': user.name, 'permission': user.permission}
 
 
 class OrderList(APIView):
