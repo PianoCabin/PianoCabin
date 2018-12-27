@@ -17,6 +17,9 @@ class LoginTest(TestCase):
         })
         self.assertEqual(response.json()['code'], 0)
 
+        response = self.client.post('/u/login/', None)
+        self.assertEqual(response.json()['code'], 0)
+
 
 class PianoListTest(TestCase):
 
@@ -64,9 +67,21 @@ class PianoListTest(TestCase):
         self.client = Client()
 
     def test_post(self):
-        # 正确输入
+        # 正确输入1
         response = self.client.post('/u/order/piano-rooms-list/', {
             'date': datetime.now().timestamp(),
+            'type': '钢琴房',
+            'authorization': self.user.session
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertDictEqual({'room_list': [
+            {'brand': '星海立式钢琴', 'room_num': 'F2-203', 'unit_price': 15, 'occupied_time': []},
+            {'brand': '星海立式钢琴', 'room_num': 'F2-205', 'unit_price': 15, 'occupied_time': []}]
+        }, response.json()['data'])
+
+        # 正确输入2
+        response = self.client.post('/u/order/piano-rooms-list/', {
+            'date': (datetime.now()+timedelta(days=1)).timestamp(),
             'type': '钢琴房',
             'authorization': self.user.session
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
@@ -85,6 +100,15 @@ class PianoListTest(TestCase):
 
         self.assertEqual(response.json()['code'], 0)
 
+        # 不存在用户(无请求头)
+        response = self.client.post('/u/order/piano-rooms-list/', {
+            'date': datetime.now().timestamp(),
+            'type': '钢琴房',
+            'authorization': self.user.session
+        }, content_type='application/json')
+
+        self.assertEqual(response.json()['code'], 0)
+
         # 不存在琴房类型
         response = self.client.post('/u/order/piano-rooms-list/', {
             'date': datetime.now().timestamp(),
@@ -97,7 +121,16 @@ class PianoListTest(TestCase):
         # 提交日期不正确
         response = self.client.post('/u/order/piano-rooms-list/', {
             'date': (datetime.now() - timedelta(days=1)).timestamp(),
-            'type': 'test',
+            'type': '钢琴房',
+            'authorization': self.user.session
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['code'], 0)
+
+        # 提交日期不正确
+        response = self.client.post('/u/order/piano-rooms-list/', {
+            'date': (datetime.now() + timedelta(days=CONFIGS['MAX_ORDER_DAYS'])).timestamp(),
+            'type': '钢琴房',
             'authorization': self.user.session
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -115,6 +148,34 @@ class PianoListTest(TestCase):
             {'brand': '星海立式钢琴', 'room_num': 'F2-203', 'unit_price': 15, 'occupied_time': []},
             {'brand': '星海立式钢琴', 'room_num': 'F2-205', 'unit_price': 15, 'occupied_time': []}]
         }, response.json()['data'])
+
+        # 测试搜索品牌
+        self.room_3.usable = True
+        self.room_3.save()
+
+        response = self.client.post('/u/order/piano-rooms-list/', {
+            'date': datetime.now().timestamp(),
+            'type': '钢琴房',
+            'brand': '卡瓦伊立式钢琴',
+            'authorization': self.user.session
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertDictEqual({'room_list': [
+            {'brand': '卡瓦伊立式钢琴', 'room_num': 'F2-207', 'unit_price': 15, 'occupied_time': []}]
+        }, response.json()['data'])
+
+        self.room_3.usable = False
+        self.room_3.save()
+
+        # 测试搜索品牌
+        response = self.client.post('/u/order/piano-rooms-list/', {
+            'date': datetime.now().timestamp(),
+            'type': '钢琴房',
+            'brand': '卡瓦伊立式钢琴',
+            'authorization': self.user.session
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertDictEqual({'room_list': []}, response.json()['data'])
 
         # 测试搜索时间
         now = datetime.now()
@@ -141,6 +202,32 @@ class PianoListTest(TestCase):
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
         self.assertEqual(response.json()['data']['room_list'][0]['room_num'], 'F2-203')
+
+        # 测试搜索时间
+        now = datetime.now()
+        self.client.post('/u/order/normal/', {
+            'room_num': 'F2-205',
+            'start_time': datetime(now.year, now.month, now.day + 1, 12).timestamp(),
+            'end_time': datetime(now.year, now.month, now.day + 1, 13, 20).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.client.post('/u/order/normal/', {
+            'room_num': 'F2-203',
+            'start_time': datetime(now.year, now.month, now.day + 1, 12).timestamp(),
+            'end_time': datetime(now.year, now.month, now.day + 1, 13).timestamp(),
+            'price': 15,
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        response = self.client.post('/u/order/piano-rooms-list/', {
+            'date': datetime(now.year, now.month, now.day + 1).timestamp(),
+            'type': '钢琴房',
+            'start_time': datetime(now.year, now.month, now.day + 1, 12).timestamp(),
+            'end_time': datetime(now.year, now.month, now.day + 1, 14).timestamp(),
+            'authorization': self.user.session
+        }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
+
+        self.assertEqual(response.json()['data']['room_list'][0]['room_num'], 'F2-205')
 
 
 class OrderNormalTest(TestCase):

@@ -189,6 +189,8 @@ class OrderPay(APIView):
         self.checkMsg('order_id')
         user = self.getUserBySession()
         order = Order.objects.get(order_id=self.msg.get('order_id'))
+        order.form_id = self.msg.get('form_id')
+        order.save()
 
         # 本机IP
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -224,10 +226,6 @@ class OrderPay(APIView):
             }
             sign = self.getSign(msg_nd)
             msg_nd['paySign'] = sign
-            access_token = tokenTest()
-            print("access_token:"+access_token)
-            print('form_id:'+ self.msg.get('form_id'))
-            testTemplate(user.open_id, self.msg.get('form_id'), access_token)
             return msg_nd
         else:
             if res['err_code'] == 'ORDERPAID':
@@ -401,7 +399,8 @@ class OrderNormal(APIView):
                             break
                     orders = json.dumps(orders)
                     redis_manage.order_list.lset(piano_room.room_num, day, orders)
-                    redis_manage.unpaid_orders.set(order.id, order.create_time.timestamp())
+                    redis_manage.unpaid_orders.rpush(order.id, order.create_time.timestamp())
+                    redis_manage.unpaid_orders.rpush(order.id, order.start_time.timestamp())
                     redis_manage.redis_lock.release()
                 id = order.order_id
         except django.db.IntegrityError:
@@ -497,6 +496,7 @@ class OrderChange(APIView):
                             break
                     room_orders = json.dumps(room_orders)
                     redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
+                    redis_manage.unpaid_orders.lset(order.id, 1, order.start_time)
                     redis_manage.redis_lock.release()
         except:
             try:
@@ -535,38 +535,3 @@ class OrderCancel(APIView):
             except:
                 pass
             raise MsgError(msg='Unable to cancel order')
-
-
-def tokenTest():
-    data = {
-        'grant_type': 'client_credential',
-        'appid': CONFIGS['APP_ID'],
-        'secret': CONFIGS['APP_SECRET'],
-    }
-    res = requests.get(url='https://api.weixin.qq.com/cgi-bin/token', params=data).json()
-    return res["access_token"]
-
-
-def testTemplate(open_id, prepare_id, access_token):
-    data = {
-        "touser": open_id,
-        "template_id": "ki8_cVjacJyR5FsfcJCOjW-kcYMtcYkAi1vIuIktVrk",
-        "form_id": prepare_id,
-        "data": {
-            "keyword1": {
-                "value": "339208499"
-            },
-            "keyword2": {
-                "value": "2015年01月05日 12:30"
-            },
-            "keyword3": {
-                "value": "腾讯微信总部"
-            },
-            "keyword4": {
-                "value": "广州市海珠区新港中路397号"
-            }
-        }
-    }
-    res = requests.post(url="https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + access_token,
-                   data=json.dumps(data)).json()
-    print(res)

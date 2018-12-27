@@ -5,8 +5,9 @@ from django.db import transaction
 import redis
 import threading
 import json
-import schedule
+import requests
 import time
+
 
 # Create your models here.
 def get_or_none(model, *args, **kwargs):
@@ -54,6 +55,7 @@ class Order(models.Model):
     price = models.IntegerField(default=0)
     order_status = models.IntegerField(default=1)
     cancel_reason = models.IntegerField(default=0)
+    form_id = models.TextField(default='')
 
     def __str__(self):
         return self.id
@@ -127,7 +129,8 @@ class RedisManage:
     def initUnpaidOrders(self):
         orders = Order.objects.filter(order_status=1)
         for order in orders:
-            self.unpaid_orders.set(order.id, order.create_time.timestamp())
+            self.unpaid_orders.rpush(order.id, order.create_time.timestamp())
+            self.unpaid_orders.rpush(order.id, order.start_time.timestamp())
 
     def initSessionUser(self):
         users = User.objects.all()
@@ -155,12 +158,14 @@ def updateOrderList():
 def updateUnpaidOrders():
     ids = redis_manage.unpaid_orders.keys()
     for id in ids:
-        create_time = float(redis_manage.unpaid_orders.get(id).decode())
-        if (datetime.now().timestamp() - create_time) > CONFIGS['MAX_UNPAID_TIME'] * 60:
+        create_time = float(redis_manage.unpaid_orders.lindex(id, 0).decode())
+        start_time = float(redis_manage.unpaid_orders.lindex(id, 1).decode())
+        if (datetime.now().timestamp() - create_time) > CONFIGS['MAX_UNPAID_TIME'] * 60 or (
+                start_time <= datetime.now().timestamp()):
             print('execute')
             try:
                 with transaction.atomic():
-                    order = Order.objects.get(id=int(id.decode()))
+                    order = Order.objects.select_for_update().get(id=int(id.decode()))
                     order.order_status = 0
                     order.cancel_reason = 1
                     order.save()
@@ -187,6 +192,55 @@ def updateUnpaidOrders():
                 print('Unable to update order list')
 
 
+def imminentOrderAlert():
+    ids = redis_manage.order_list.keys()
+    for id in ids:
+        room_orders = redis_manage.order_list.lindex(id, 0).decode()
+        room_orders = json.loads(room_orders)
+        for room_order in room_orders:
+            if datetime.now().timestamp() - room_order[0] < CONFIGS['ALERT_TIME'] * 60:
+                order = Order.objects.get(id=room_order[2])
+                if order.order_status == 2 and order.form_id != '':
+                    sendAlert(order)
+
+
+def sendAlert(order):
+    data = {
+        'grant_type': 'client_credential',
+        'appid': CONFIGS['APP_ID'],
+        'secret': CONFIGS['APP_SECRET'],
+    }
+    res = requests.get(url='https://api.weixin.qq.com/cgi-bin/token', params=data).json()
+    access_token = res["access_token"]
+
+    data = {
+        "touser": order.user.open_id,
+        "template_id": "ki8_cVjacJyR5FsfcJCOjW-kcYMtcYkAi1vIuIktVrk",
+        "form_id": order.form_id,
+        "data": {
+            "keyword1": {
+                "value": "您预约的琴房还有"+str(CONFIGS['ALERT_TIME'])+"分钟开始"
+            },
+            "keyword2": {
+                "value": order.start_time.strftime('%Y-%m-%d %X')
+            },
+            "keyword3": {
+                "value": order.piano_room.room_num
+            },
+            "keyword4": {
+                "value": "琴屋"
+            }
+        }
+    }
+    res = requests.post(
+        url="https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + access_token,
+        data=json.dumps(data)).json()
+    print(order.form_id)
+    order.form_id = ''
+    order.save()
+    print(res)
+
+
 def scheduledUpdate():
     threading.Thread(target=runSchedule).start()
 
@@ -194,6 +248,7 @@ def scheduledUpdate():
 def runSchedule():
     while True:
         updateUnpaidOrders()
+        imminentOrderAlert()
         if datetime.now().hour == 0 and datetime.now().minute == 1:
             updateOrderList()
-        time.sleep(60)
+        time.sleep(1)
