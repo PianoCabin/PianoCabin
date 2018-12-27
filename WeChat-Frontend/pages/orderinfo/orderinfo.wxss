@@ -302,3 +302,8 @@
   height: 72rpx;
   margin-right: 5%;
 }
+
+.pay_button{
+  border:0rpx;
+  
+}

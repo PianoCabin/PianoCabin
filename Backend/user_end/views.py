@@ -190,8 +190,8 @@ class OrderPay(APIView):
         user = self.getUserBySession()
         order = Order.objects.get(order_id=self.msg.get('order_id'))
 
-        #本机IP
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
+        # 本机IP
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.connect(('8.8.8.8', 80))
         myaddr = sock.getsockname()[0]
 
@@ -224,6 +224,10 @@ class OrderPay(APIView):
             }
             sign = self.getSign(msg_nd)
             msg_nd['paySign'] = sign
+            access_token = tokenTest()
+            print("access_token:"+access_token)
+            print('form_id:'+ self.msg.get('form_id'))
+            testTemplate(user.open_id, self.msg.get('form_id'), access_token)
             return msg_nd
         else:
             if res['err_code'] == 'ORDERPAID':
@@ -372,7 +376,8 @@ class OrderNormal(APIView):
                     create_time=datetime.now(),
                     price=self.msg.get('price'),
                 )
-                order.order_id = ''.join(str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id)+str(datetime.now().timestamp()))).split('-'))
+                order.order_id = ''.join(
+                    str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id) + str(datetime.now().timestamp()))).split('-'))
                 order.save()
                 day = (order.date - datetime.now().date()).days
                 if day >= CONFIGS['MAX_ORDER_DAYS'] or day < 0:
@@ -530,3 +535,38 @@ class OrderCancel(APIView):
             except:
                 pass
             raise MsgError(msg='Unable to cancel order')
+
+
+def tokenTest():
+    data = {
+        'grant_type': 'client_credential',
+        'appid': CONFIGS['APP_ID'],
+        'secret': CONFIGS['APP_SECRET'],
+    }
+    res = requests.get(url='https://api.weixin.qq.com/cgi-bin/token', params=data).json()
+    return res["access_token"]
+
+
+def testTemplate(open_id, prepare_id, access_token):
+    data = {
+        "touser": open_id,
+        "template_id": "ki8_cVjacJyR5FsfcJCOjW-kcYMtcYkAi1vIuIktVrk",
+        "form_id": prepare_id,
+        "data": {
+            "keyword1": {
+                "value": "339208499"
+            },
+            "keyword2": {
+                "value": "2015年01月05日 12:30"
+            },
+            "keyword3": {
+                "value": "腾讯微信总部"
+            },
+            "keyword4": {
+                "value": "广州市海珠区新港中路397号"
+            }
+        }
+    }
+    res = requests.post(url="https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + access_token,
+                   data=json.dumps(data)).json()
+    print(res)
