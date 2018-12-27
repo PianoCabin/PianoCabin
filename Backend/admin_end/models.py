@@ -146,7 +146,7 @@ def updateOrderList():
             'start_time')
         orders_data = []
         for order in orders:
-            orders_data.append([order.start_time, order.end_time, order.id])
+            orders_data.append([order.start_time.timestamp(), order.end_time.timestamp(), order.id])
         orders_data = json.dumps(orders_data)
         redis_manage.order_list.lpop(room.room_num)
         redis_manage.order_list.lpush(room.room_num, orders_data)
