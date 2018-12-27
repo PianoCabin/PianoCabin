@@ -15,7 +15,10 @@ Page({
         select_order_list: [],
         select_status: 1,
         animation_data: null,
+        identitiy:"",
+        name:""
     },
+    
     onReady() {
         this.getOrderList();
     },
@@ -54,6 +57,9 @@ Page({
             new_list.push(order);
             new_classified[order["status"]].push(order)
         }
+      for (let i = 0; i < this.data.order_status_list.length;i++){
+        new_classified[i].reverse();
+      }
         this.setData({
             order_list: new_list,
             cancel_list: new_cancel_list,

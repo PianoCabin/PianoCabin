@@ -79,7 +79,7 @@ Page({
             this.getRoomInfo(data["room_num"]);
     },
     getRoomInfo(room_num) {
-        let today = new Date()
+      let today = new Date(this.data.info["date"])
         today.setHours(12, 0, 0, 0);
         app.getRoomList({
                 room_num: room_num,
@@ -96,7 +96,7 @@ Page({
         })
     },
     setStartList(room_info) {
-        let transer = new Date()
+        let transer = new Date(this.data.info["date"])
         transer.setHours(this.data.open_time[0], this.data.open_time[1], 0, 0)
         let start = transer.getTime();
         transer.setHours(this.data.close_time[0], this.data.close_time[1], 0, 0);
@@ -104,12 +104,15 @@ Page({
         let start_list = [];
 
         let orders = room_info["occupied_time"];
+        console.log("here");
+        console.log(orders);
 
         for (let i = 0; i < orders.length; i++) {
             orders[i][0] *= 1000;
             orders[i][1] *= 1000;
             if (orders[i][0] == this.data.info["start_time"] && orders[i][1] == this.data.info["end_time"]) {
                 orders.splice(i, 1);
+                i--;
             }
         }
 
@@ -119,8 +122,13 @@ Page({
         now.setMinutes(mim * 10, 0, 0);
         now = now.getTime();
 
-
+        console.log("2");
+        console.log(orders)
+        console.log(start)
+        console.log(now)
         for (let i = 0; i < orders.length; i++) {
+          console.log(orders[i][0] - start >= this.data.min_order)
+          console.log(orders[i][0] > now)
             //查找每一段时长大于min_order的空闲时间
             if (orders[i][0] - start >= this.data.min_order && orders[i][0] > now) {
                 let ss = orders[i][0];
@@ -153,7 +161,7 @@ Page({
     },
     initEndList(room_info) {
         let end_list = [];
-        let transer = new Date()
+      let transer = new Date(this.data.info["date"])
         transer.setHours(this.data.close_time[0], this.data.close_time[1], 0, 0)
         let start = new Date(this.data.info["start_time"]);
         let max_end = transer.getTime();
@@ -182,7 +190,7 @@ Page({
         let room_info = this.data.roominfo;
 
         let list = this.data.starttime_list[index].split(":");
-        let transer = new Date()
+      let transer = new Date(this.data.info["date"])
         transer.setHours(this.data.close_time[0], this.data.close_time[1], 0, 0)
         let start = new Date(util.timeStringToTimestamp(this.data.cur_date, this.data.starttime_list[index]));
 
@@ -274,7 +282,7 @@ Page({
     },
     getInfoObject() {
         let info = {};
-        let transer = new Date();
+      let transer = new Date(this.data.info["date"]);
         transer.setHours(12, 0, 0, 0);
         info["room_num"] = this.data.info["room_num"];
         info["start_time"] = util.timeStringToTimestamp(this.data.info["date"], this.data.info["order_start"]) / 1000;

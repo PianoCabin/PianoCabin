@@ -230,7 +230,8 @@ let app = App({
         // backend: `http://127.0.0.1:80`,
         // backend: `https://0a8bba0a.ngrok.io`,
         user_session: null,
-        network_waiting: 0
+        network_waiting: 0,
+        user_bind:null
     }
 })
 
