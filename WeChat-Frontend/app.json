@@ -1,13 +1,13 @@
 {
   "pages": [
-    "pages/help/help",
     "pages/reservation/reservation",
     "pages/userpage/userpage",
-    "pages/orderpage/orderpage",
     "pages/orderinfo/orderinfo",
+    "pages/orderpage/orderpage",
     "pages/index/index",
     "pages/feedback/feedback",
     "pages/news/news",
+    "pages/help/help",
     "pages/out/out"
   ],
   "window": {

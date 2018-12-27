@@ -216,6 +216,7 @@
 .text_input{
   border: 1rpx solid #AAAAAA;
   width: 58%;
+  color: #AAAAAA;
   border-radius: 20rpx;
 }
 

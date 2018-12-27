@@ -90,6 +90,7 @@ class Bind(APIView):
                     raise MsgError
                 else:
                     data['identity'] = info.get('zjh')
+                    data['name'] = info.get('xm')
                     if info.get('yhlb') in ['J0000', 'H0000', 'J0054']:
                         data['permission'] = 1
                     elif info.get('yhlb') in ['X0011', 'X0021', 'X0031']:
@@ -112,6 +113,7 @@ class Bind(APIView):
             raise MsgError(msg='Invalid sign')
         user.identity = info.get('identity')
         user.permission = info.get('permission')
+        user.name = info.get('name')
         user.save()
 
 
@@ -119,7 +121,7 @@ class BindInfo(APIView):
     def get(self):
         self.checkMsg('authorization')
         user = self.getUserBySession()
-        return {'identity': user.identity, 'permission': user.permission}
+        return {'identity': user.identity, 'name': user.name, 'permission': user.permission}
 
 
 class OrderList(APIView):
@@ -187,9 +189,11 @@ class OrderPay(APIView):
         self.checkMsg('order_id')
         user = self.getUserBySession()
         order = Order.objects.get(order_id=self.msg.get('order_id'))
+        order.form_id = self.msg.get('form_id')
+        order.save()
 
-        #本机IP
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
+        # 本机IP
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.connect(('8.8.8.8', 80))
         myaddr = sock.getsockname()[0]
 
@@ -370,7 +374,8 @@ class OrderNormal(APIView):
                     create_time=datetime.now(),
                     price=self.msg.get('price'),
                 )
-                order.order_id = ''.join(str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id)+str(datetime.now().timestamp()))).split('-'))
+                order.order_id = ''.join(
+                    str(uuid.uuid3(uuid.NAMESPACE_DNS, str(order.id) + str(datetime.now().timestamp()))).split('-'))
                 order.save()
                 day = (order.date - datetime.now().date()).days
                 if day >= CONFIGS['MAX_ORDER_DAYS'] or day < 0:
@@ -394,7 +399,8 @@ class OrderNormal(APIView):
                             break
                     orders = json.dumps(orders)
                     redis_manage.order_list.lset(piano_room.room_num, day, orders)
-                    redis_manage.unpaid_orders.set(order.id, order.create_time.timestamp())
+                    redis_manage.unpaid_orders.rpush(order.id, order.create_time.timestamp())
+                    redis_manage.unpaid_orders.rpush(order.id, order.start_time.timestamp())
                     redis_manage.redis_lock.release()
                 id = order.order_id
         except django.db.IntegrityError:
@@ -490,6 +496,7 @@ class OrderChange(APIView):
                             break
                     room_orders = json.dumps(room_orders)
                     redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
+                    redis_manage.unpaid_orders.lset(order.id, 1, order.start_time)
                     redis_manage.redis_lock.release()
         except:
             try:

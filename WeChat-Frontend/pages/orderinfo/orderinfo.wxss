@@ -44,7 +44,7 @@
 }
 
 .order_info{
-  height: 1200rpx;
+  height: 1300rpx;
   width: 84%;
   border:1rpx solid #AAAAAA;
   margin-left: 8%;
@@ -111,7 +111,7 @@
 }
 
 .info_block2{
-  height: 30%;
+  height: 300rpx;
   border-bottom: 1rpx solid #AAAAAA;
 }
 
@@ -243,10 +243,10 @@
 .cancel_view{
   height: 25%;
   width: 70%;
-  position: fixed;
-  top:35%;
+  position: absolute;
+  top:30%;
   left: 15%;
-  z-index: 1;
+  z-index:99;
   background-color: white;
   border-radius: 10rpx;
   box-shadow:0px 0px 8px #C7C7C7;
@@ -295,10 +295,43 @@
 }
 
 .info_label{
-  width: 200rpx;
+  width: 250rpx;
 }
 
 .order_id_text {
   height: 72rpx;
   margin-right: 5%;
+}
+
+.pay_button{
+  /* border:0rpx; */
+  width: 100%;
+  background-color: transparent;
+  padding-bottom: 0rpx;
+  margin-right:9%;
+  padding:0%; 
+  position: fixed;
+  bottom: 0;
+  z-index: 999;
+}
+
+.confirm{
+  color: white;
+  background-color: #8E2782; 
+}
+
+.pay_view_buttons{
+  margin-top: 11%;
+}
+
+.close_icon{
+  margin-top: 5rpx;
+  margin-left: 80rpx;
+  margin-right: 80rpx;
+  object-fit: cover;
+  height: 30rpx;
+  width: 30rpx;
+  position: fixed;
+  left: 75%;
+  top:5%;
 }

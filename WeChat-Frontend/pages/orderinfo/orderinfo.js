@@ -14,6 +14,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        order_id:"",
         info: {},
         edit: false,
         min_order: 60 * 60 * 1000,
@@ -28,7 +29,11 @@ Page({
         close_time: [22, 30],
         nickname: "默认用户",
         saved: true,
-        valid: true
+        valid: true,
+        pay_view:false,
+        downcount:0,
+        first_rend:true,
+        last_pay_time:"00:00"
     },
 
     /**
@@ -36,6 +41,7 @@ Page({
      */
     onLoad: function (options) {
         let order_id = options.order_id;
+        this.setData({order_id:order_id});
         this.getOrderInfo(order_id);
 
         // this.setData({
@@ -68,6 +74,7 @@ Page({
         info["order_end"] = util.timestampToTimeString(data['end_time'] * 1000);
         info["user_id"] = data["user_id"];
         info["qrcode"] = data["qrcode"];
+        info["create_time"] = data["create_time"]*1000;
 
         this.setData({
             info: info,
@@ -75,11 +82,16 @@ Page({
             end_time: util.timestampToTimeString(data["end_time"] * 1000),
             cur_date: (new Date(data["start_time"] * 1000)).toLocaleDateString()
         })
+        if(this.data.first_rend && this.data.info["status"] == 1)
+        {
+          this.updateCountDown();
+          this.setData({first_rend:false});
+        }
         if (data["order_status"] == 1)
             this.getRoomInfo(data["room_num"]);
     },
     getRoomInfo(room_num) {
-        let today = new Date()
+      let today = new Date(this.data.info["date"])
         today.setHours(12, 0, 0, 0);
         app.getRoomList({
                 room_num: room_num,
@@ -95,8 +107,29 @@ Page({
             roominfo: res.data['data']["room_list"][0]
         })
     },
+    updateCountDown(){
+      console.log("countdown");
+      let count = setInterval(this.showCountDown,1000);
+      this.setData({downcount:count});
+    },
+    showCountDown(){
+      let now = new Date();
+      let create_time = new Date(this.data.info["create_time"]);
+      let end_time = new Date(Math.min(create_time.getTime() + 15 * 60 * 1000, this.data.info["start_time"]));
+
+      let delta_time = new Date(end_time.getTime()-now.getTime());
+      
+      let delta_time_str = delta_time.getMinutes().toString() + ':' + delta_time.getSeconds();
+      console.log(delta_time_str);
+      this.setData({last_pay_time:delta_time_str});
+      if(delta_time.getTime()<=0)
+      {
+        // this.getOrderInfo(this.data.order_id);
+        clearInterval(this.data.downcount);
+      }
+    },
     setStartList(room_info) {
-        let transer = new Date()
+        let transer = new Date(this.data.info["date"])
         transer.setHours(this.data.open_time[0], this.data.open_time[1], 0, 0)
         let start = transer.getTime();
         transer.setHours(this.data.close_time[0], this.data.close_time[1], 0, 0);
@@ -104,12 +137,15 @@ Page({
         let start_list = [];
 
         let orders = room_info["occupied_time"];
+        console.log("here");
+        console.log(orders);
 
         for (let i = 0; i < orders.length; i++) {
             orders[i][0] *= 1000;
             orders[i][1] *= 1000;
             if (orders[i][0] == this.data.info["start_time"] && orders[i][1] == this.data.info["end_time"]) {
                 orders.splice(i, 1);
+                i--;
             }
         }
 
@@ -119,8 +155,13 @@ Page({
         now.setMinutes(mim * 10, 0, 0);
         now = now.getTime();
 
-
+        console.log("2");
+        console.log(orders)
+        console.log(start)
+        console.log(now)
         for (let i = 0; i < orders.length; i++) {
+          console.log(orders[i][0] - start >= this.data.min_order)
+          console.log(orders[i][0] > now)
             //查找每一段时长大于min_order的空闲时间
             if (orders[i][0] - start >= this.data.min_order && orders[i][0] > now) {
                 let ss = orders[i][0];
@@ -153,7 +194,7 @@ Page({
     },
     initEndList(room_info) {
         let end_list = [];
-        let transer = new Date()
+      let transer = new Date(this.data.info["date"])
         transer.setHours(this.data.close_time[0], this.data.close_time[1], 0, 0)
         let start = new Date(this.data.info["start_time"]);
         let max_end = transer.getTime();
@@ -182,7 +223,7 @@ Page({
         let room_info = this.data.roominfo;
 
         let list = this.data.starttime_list[index].split(":");
-        let transer = new Date()
+      let transer = new Date(this.data.info["date"])
         transer.setHours(this.data.close_time[0], this.data.close_time[1], 0, 0)
         let start = new Date(util.timeStringToTimestamp(this.data.cur_date, this.data.starttime_list[index]));
 
@@ -274,7 +315,7 @@ Page({
     },
     getInfoObject() {
         let info = {};
-        let transer = new Date();
+      let transer = new Date(this.data.info["date"]);
         transer.setHours(12, 0, 0, 0);
         info["room_num"] = this.data.info["room_num"];
         info["start_time"] = util.timeStringToTimestamp(this.data.info["date"], this.data.info["order_start"]) / 1000;
@@ -329,9 +370,56 @@ Page({
             })
         }.bind(this), 100)
     },
-    payOrder() {
-        app.getPayMsg({"order_id": this.data.info["order_id"]}, (res) => {
 
+  showPayView() {
+    var animation = wx.createAnimation({
+      duration: 250,
+      timingFunction: "linear",
+      delay: 0
+    });
+
+    this.animation = animation;
+
+    animation.opacity(0).rotateX(-100).step();
+
+    this.setData({
+      animation_data: animation.export(),
+    })
+    setTimeout(function () {
+      animation.opacity(1).rotateX(0).step();
+      this.setData({
+        animation_data: animation,
+      })
+    }.bind(this), 100)
+    this.setData({ pay_view: true });
+  },
+  hidePayView() {
+    var animation = wx.createAnimation({
+      duration: 250,
+      timingFunction: "linear",
+      delay: 0
+    });
+
+    this.animation = animation;
+
+    animation.opacity(0).rotateX(-100).step();
+
+    this.setData({
+      animation_data: animation.export(),
+    })
+    setTimeout(function () {
+      animation.opacity(1).rotateX(0).step();
+      this.setData({
+        animation_data: animation,
+        pay_view: false
+      })
+    }.bind(this), 100)
+  },
+  prepareToPay(){
+    this.showPayView();
+  },
+    payOrder(e) {
+      app.getPayMsg({ "order_id": this.data.info["order_id"], "form_id": e.detail.formId}, (res) => {
             app.payForOrder(res.data["data"]['timeStamp'], res.data["data"]['nonceStr'], res.data["data"]['package'], res.data["data"]['paySign']);
         });
     }

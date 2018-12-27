@@ -155,7 +155,7 @@ let app = App({
                 url: this.globalData.backend + url,
                 data: data,
                 header: {
-                    "Authorization": this.globalData.user_session
+                    "authorization": this.globalData.user_session
                 },
                 method: "POST",
                 success: res => {
@@ -199,7 +199,7 @@ let app = App({
                 url: this.globalData.backend + url,
                 data: data,
                 header: {
-                    "Authorization": this.globalData.user_session
+                    "authorization": this.globalData.user_session
                 },
                 method: "GET",
                 success: res => {
@@ -228,9 +228,10 @@ let app = App({
         user_nickname: "默认用户",
         backend: `https://711602.iterator-traits.com`,
         // backend: `http://127.0.0.1:80`,
-        // backend: `https://0a8bba0a.ngrok.io`,
+        // backend: `https://1a3ca98f.ngrok.io`,
         user_session: null,
-        network_waiting: 0
+        network_waiting: 0,
+        user_bind: null
     }
 })
 

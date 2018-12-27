@@ -21,9 +21,8 @@
   display: flex;
   flex-direction: column;
   text-align: center;
-  margin-left: 40%;
-  margin-right: 40%;
-  height: 100%;
+  width: 100%;
+  /* height: 100%; */
   position:absolute;
   top:162rpx;
   z-index:1;
@@ -33,19 +32,21 @@
   width: 128rpx;
   height: 128rpx;
   margin: 20rpx;
+  margin-left: auto;
+  margin-right: auto;
   border-radius: 50%;
 }
 
 .userinfo-nickname {
   color: #606060;
+  text-align: center;
 }
 
 .getUserInfo{
   font-size: 30rpx;
   background-color: transparent;
   outline:none !important;
-  width:110%;
-  left: -5%;
+  left: 0%;
 }
 
 .list_item{
