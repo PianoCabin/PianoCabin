@@ -200,7 +200,7 @@ def imminentOrderAlert():
         for room_order in room_orders:
             if datetime.now().timestamp() - room_order[0] < CONFIGS['ALERT_TIME'] * 60:
                 order = Order.objects.get(id=room_order[2])
-                if order.order_status == 2:
+                if order.order_status == 2 and order.form_id != '':
                     sendAlert(order)
 
 
@@ -235,6 +235,8 @@ def sendAlert(order):
     res = requests.post(
         url="https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + access_token,
         data=json.dumps(data)).json()
+    order.form_id = ''
+    order.save()
     print(res)
 
 
