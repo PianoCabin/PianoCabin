@@ -235,6 +235,7 @@ def sendAlert(order):
     res = requests.post(
         url="https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + access_token,
         data=json.dumps(data)).json()
+    print(order.form_id)
     order.form_id = ''
     order.save()
     print(res)
