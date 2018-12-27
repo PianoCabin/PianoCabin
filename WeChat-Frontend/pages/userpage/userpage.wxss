@@ -46,8 +46,7 @@
   font-size: 30rpx;
   background-color: transparent;
   outline:none !important;
-  width:110%;
-  left: -5%;
+  left: 0%;
 }
 
 .list_item{
