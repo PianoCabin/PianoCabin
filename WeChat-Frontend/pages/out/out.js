@@ -37,8 +37,6 @@ Page({
                     wx.navigateBack()
                     util.msgPrompt('已绑定', false)
                 }, 500)
-
-
             }
         })
     },

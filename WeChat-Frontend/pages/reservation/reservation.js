@@ -36,7 +36,10 @@ let page = Page({
         touch_dot: 0,                                            //开始点击屏幕的横坐标
         interval: null,                                          //计时器
         timeout: false,                                          //是否处于手势停用期
-        hand_dir: 0                                              //手势方向
+        hand_dir: 0,                                             //手势方向
+        brand_list:[],
+        brand_index:0,
+        default_brand_input_content:"点击选择品牌"
     },
 
     //初始化页面，默认显示钢琴页面
@@ -287,20 +290,22 @@ let page = Page({
             data["start_time"] = util.timeStringToTimestamp(this.data.cur_date, this.data.search_start) / 1000;
         if (this.data.search_end != null)
             data["end_time"] = util.timeStringToTimestamp(this.data.cur_date, this.data.search_end) / 1000;
-        if (this.data.search_room_num != "")
+        if (this.data.search_room_num != this.data.default_brand_input_content)
             data["brand"] = this.data.search_room_num;
         return data;
     },
 
     //根据传入的房间列表（服务器端）数据，更新琴房列表数据
     updateList(data_list) {
+        let new_brand = []
         let new_list = []
         let start_time = util.timeStringToTimestamp(this.data.cur_date, this.data.open_time[0].toString() + ':' + '00');
         let end_time = util.timeStringToTimestamp(this.data.cur_date, (this.data.close_time[0] + (this.data.close_time[1] > 0)).toString() + ':' + "00");
 
         //每个房间更新数据
         for (let i = 0; i < data_list.length; i++) {
-
+          if (new_brand.indexOf(data_list[i]["brand"]) == -1)
+            new_brand.push(data_list[i]["brand"]);
             let element = {}
             element["name"] = data_list[i]["brand"];
             element["room_num"] = data_list[i]["room_num"];
@@ -371,7 +376,7 @@ let page = Page({
             element["time"] = hour_list;
             new_list.push(element);
         }
-        this.setData({room_list: new_list});
+        this.setData({room_list: new_list,brand_list:new_brand});
         return new_list;
     },
 
@@ -458,7 +463,7 @@ let page = Page({
             search_end_list: ss_list,
             search_start: util.formatNumber(this.data.open_time[0]) + ':' + util.formatNumber(this.data.open_time[1]),
             search_end: util.formatNumber(this.data.close_time[0]) + ':' + util.formatNumber(this.data.close_time[1]),
-            search_room_num: ""
+            search_room_num: this.data.default_brand_input_content
         });
     },
     setSearchStart(event) {
@@ -485,8 +490,7 @@ let page = Page({
         });
     },
     searchInputConfirm(event) {
-
-        this.setData({search_room_num: event.detail.value});
+        this.setData({search_room_num: this.data.brand_list[event.detail.value]});
     },
     checkOrderInfo() {
         if (this.data.order_info["order_start"] != "开始" && this.data.order_info["order_end"] != "结束" && this.data.order_info["price"] != "") {
@@ -523,7 +527,7 @@ let page = Page({
         this.setData({
             search_start: null,
             search_end: null,
-            search_room_num: ""
+            search_room_num: this.data.default_brand_input_content
         })
     },
     // 触摸开始事件

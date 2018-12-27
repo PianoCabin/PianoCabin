@@ -66,7 +66,10 @@
             <view class='search_title'>搜索</view>
             <view class='search_brand_input'>
                 <view>品牌名：</view>
-                <input class='text_input' type='text' confirm-type='search' bindinput='searchInputConfirm'></input>
+                <!-- <input class='text_input' type='text' confirm-type='search' bindinput='searchInputConfirm'></input> -->
+                <picker class='text_input' bindchange="searchInputConfirm" value="{{ii}}" range="{{brand_list}}">
+    <view class="picker">{{search_room_num}}</view>
+                </picker>
             </view>
             <view class="search_time_setter">
                 <view>时　间：</view>
