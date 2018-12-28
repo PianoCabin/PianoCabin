@@ -108,6 +108,8 @@ class Bind(APIView):
         self.checkMsg('user_info', 'authorization')
         info = self.msg.get('user_info')
         user = self.getUserBySession()
+        if user.permission != 0 or user.identity is not None:
+            raise MsgError('用户已绑定')
         sign = info.pop('sign')
         if sign != self.getSign(info):
             raise MsgError(msg='Invalid sign')
