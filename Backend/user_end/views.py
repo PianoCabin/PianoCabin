@@ -188,7 +188,9 @@ class OrderPay(APIView):
     def post(self):
         self.checkMsg('order_id')
         user = self.getUserBySession()
-        order = Order.objects.get(order_id=self.msg.get('order_id'))
+        order = get_or_none(Order, order_id=self.msg.get('order_id'), order_status=1)
+        if order is None:
+            raise MsgError(msg="订单不存在")
         order.form_id = self.msg.get('form_id')
         order.save()
 
