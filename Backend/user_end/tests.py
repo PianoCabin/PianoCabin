@@ -1200,6 +1200,7 @@ class OrderListTest(TestCase):
 
     def test_get(self):
         # 正确提交(无order_id)
+        print(len(Order.objects.all()))
         response = self.client.get('/u/order/list/', None, HTTP_AUTHORIZATION=self.user.session)
         self.assertEqual(len(response.json()['data']['order_list']), 2)
         self.assertEqual(response.json()['data']['order_list'][0]['room_num'], 'F2-203')
