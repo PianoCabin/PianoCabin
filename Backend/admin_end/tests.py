@@ -278,7 +278,7 @@ class NewsCreateTest(MyTest):
         self.assertEqual(response.json()['code'], 1)
         response = self.login_client.post('/a/news/create/', self.news_dict_attribute_miss)
         self.assertEqual(response.json()['code'], 0)
-        self.assertEqual(response.json()['msg'], 'API requires field "news_content"')
+        self.assertEqual(response.json()['msg'], '需要提交"news_content"')
 
 
 

@@ -295,10 +295,12 @@ Page({
     },
     changeOrder() {
         let info = this.getInfoObject();
-
         app.changeOrder(info, res => {
             this.onLoad({order_id: info["order_id"]});
             this.setData({saved: true});
+        },(res)=>{
+            util.msgPrompt("订单修改失败",false);
+            this.onLoad({ order_id: info["order_id"] });            
         });
 
     },

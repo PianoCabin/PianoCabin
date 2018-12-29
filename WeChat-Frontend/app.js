@@ -81,8 +81,8 @@ let app = App({
     getOrderList(data, successFunc) {
         this._get(`/u/order/list`, data, successFunc)
     },
-    changeOrder(data, successFunc) {
-        this._post(`/u/order/change/`, data, successFunc)
+    changeOrder(data, successFunc,failFunc = res => {}) {
+        this._post(`/u/order/change/`, data, successFunc,failFunc)
     },
     cancelOrder(data, successFunc) {
         this._post(`/u/order/cancel/`, data, successFunc)

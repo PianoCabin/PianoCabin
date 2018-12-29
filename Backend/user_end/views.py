@@ -36,7 +36,7 @@ class Login(APIView):
         res = requests.get(url='https://api.weixin.qq.com/sns/jscode2session', params=data)
         res = json.loads(res.text)
         if 'openid' not in res:
-            raise MsgError(msg='Invalid code')
+            raise MsgError(msg='微信code无效')
         else:
             open_id = res['openid']
             user = get_or_none(User, open_id=res['openid'])
@@ -50,7 +50,7 @@ class Login(APIView):
                 user_id = ''.join(str(uuid.uuid3(uuid.NAMESPACE_DNS, open_id)).split('-'))
                 user = User.objects.create(open_id=open_id, session=session, user_id=user_id)
                 if user is None:
-                    raise MsgError(msg='Creating user fails')
+                    raise MsgError(msg='创建用户失败')
                 redis_manage.session_user.set(session, user.id)
             return {'session': user.session}
 
@@ -87,7 +87,7 @@ class Bind(APIView):
                     elif len(text) == 1:
                         info[text[0]] = None
                 if info.get('code') != '0':
-                    raise MsgError
+                    raise MsgError(msg='获取用户信息失败')
                 else:
                     data['identity'] = info.get('zjh')
                     data['name'] = info.get('xm')
@@ -108,9 +108,11 @@ class Bind(APIView):
         self.checkMsg('user_info', 'authorization')
         info = self.msg.get('user_info')
         user = self.getUserBySession()
+        if user.permission != 0 or user.identity is not None:
+            raise MsgError(msg='用户已绑定')
         sign = info.pop('sign')
         if sign != self.getSign(info):
-            raise MsgError(msg='Invalid sign')
+            raise MsgError(msg='验证信息无效')
         user.identity = info.get('identity')
         user.permission = info.get('permission')
         user.name = info.get('name')
@@ -178,24 +180,26 @@ class CreateFeedBack(APIView):
             )
             feedback.save()
             if feedback is None:
-                raise MsgError
+                raise MsgError(msg='创建反馈失败')
             feedback.save()
         except:
-            raise MsgError(msg='Submitting feedback fails')
+            raise MsgError(msg='提交反馈失败')
 
 
 class OrderPay(APIView):
     def post(self):
-        self.checkMsg('order_id')
+        self.checkMsg('order_id', 'form_id')
         user = self.getUserBySession()
-        order = Order.objects.get(order_id=self.msg.get('order_id'))
+        order = get_or_none(Order, order_id=self.msg.get('order_id'), order_status=1)
+        if order is None:
+            raise MsgError(msg="订单不存在")
         order.form_id = self.msg.get('form_id')
         order.save()
 
         # 本机IP
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.connect(('8.8.8.8', 80))
-        myaddr = sock.getsockname()[0]
+        my_addr = sock.getsockname()[0]
 
         nonce_str = ''.join(random.sample(string.ascii_letters + string.digits, 32))
         msg = {
@@ -206,7 +210,7 @@ class OrderPay(APIView):
             'notify_url': CONFIGS['DOMAIN'] + '/u/order/paid/',
             'openid': user.open_id,
             'out_trade_no': order.order_id,
-            'spbill_create_ip': myaddr,
+            'spbill_create_ip': my_addr,
             'total_fee': order.price * 100,
             'trade_type': 'JSAPI',
         }
@@ -241,9 +245,9 @@ class OrderPaid(APIView):
         if result.get('return_code') == 'SUCCESS' and result.get('result_code') == 'SUCCESS':
             sign = result.pop('sign')
             if sign != self.getSign(result):
-                raise MsgError(msg='Invalid Sign')
+                raise MsgError(msg='验证信息无效')
             order_id = result.get('out_trade_no')
-            order = Order.objects.get(order_id=order_id)
+            order = Order.objects.get(order_id=order_id, order_status=1)
             order.order_status = 2
             order.save()
 
@@ -252,8 +256,10 @@ class NewsList(APIView):
     # feedback/list API
 
     def post(self):
+        self.checkMsg('authorization')
+        self.getUserBySession()
         if 'news_id' in self.msg:
-            news_list = News.objects.filter(id=self.msg['feedback_id'])
+            news_list = News.objects.filter(id=self.msg['news_id'])
         else:
             news_list = News.objects.all()
         news_list = list(news_list.values())
@@ -283,7 +289,7 @@ class PianoRoomList(APIView):
         day = (date - datetime.now().date()).days
         sum_times = []
         if day >= CONFIGS['MAX_ORDER_DAYS'] or day < 0:
-            raise MsgError(msg='Illegal date')
+            raise MsgError(msg='非法预约日期')
         orders_rooms = {}
         for room in rooms:
             orders_rooms[room.room_num] = json.loads(redis_manage.order_list.lindex(room.room_num, day).decode())
@@ -408,7 +414,7 @@ class OrderNormal(APIView):
                 redis_manage.redis_lock.release()
             except:
                 pass
-            raise MsgError(msg='Unable to order')
+            raise MsgError(msg='无法预约，请重试')
         return {'order_id': id}
 
 
@@ -503,7 +509,7 @@ class OrderChange(APIView):
                 redis_manage.redis_lock.release()
             except:
                 pass
-            raise MsgError(msg='Unable to change order')
+            raise MsgError(msg='无法修改订单，请重试')
 
 
 class OrderCancel(APIView):
@@ -534,4 +540,4 @@ class OrderCancel(APIView):
                 redis_manage.redis_lock.release()
             except:
                 pass
-            raise MsgError(msg='Unable to cancel order')
+            raise MsgError(msg='无法取消订单，请重试')
