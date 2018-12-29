@@ -494,6 +494,12 @@ let page = Page({
     },
     checkOrderInfo() {
         if (this.data.order_info["order_start"] != "开始" && this.data.order_info["order_end"] != "结束" && this.data.order_info["price"] != "") {
+          let now = (new Date()).getTime();
+          let start_time = util.timeStringToTimestamp(this.data.cur_date,this.data.order_info["order_start"]);
+          if(start_time<=now){
+            util.msgPrompt("请重新选择预约时间",false);
+            return false;
+          }
             return true;
         }
         return false;
