@@ -421,8 +421,8 @@ class OrderNormalTest(TestCase):
         # 错误时间（部分重复预约）
         response = self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 15, 20).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 16, 20).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15, 20) + timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16, 20) + timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -456,8 +456,8 @@ class OrderNormalTest(TestCase):
         # 错误时间（开始结束不在同一天）
         response = self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 15, 20).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 2, 16, 20).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15, 20) + timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16, 20) + timedelta(days=2)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -468,8 +468,8 @@ class OrderNormalTest(TestCase):
         # 错误时间（开始晚于结束）
         response = self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 2, 15, 20).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 16, 20).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 15, 20) + timedelta(days=2)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16, 20) + timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -486,7 +486,7 @@ class OrderNormalTest(TestCase):
         # 无开始时间
         response = self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'end_time': datetime(now.year, now.month, now.day + 1, 16, 20).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 16, 20) + timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -497,7 +497,7 @@ class OrderNormalTest(TestCase):
         # 无结束时间
         response = self.client.post('/u/order/normal/', {
             'room_num': 'F2-203',
-            'start_time': datetime(now.year, now.month, now.day + 1, 16, 20).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 16, 20) + timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -677,8 +677,8 @@ class OrderChangeTest(TestCase):
         response = self.client.post('/u/order/change/', {
             'order_id': self.order_id,
             'date': (datetime(now.year, now.month, now.day, 17) + timedelta(days=1)).timestamp(),
-            'start_time': datetime(now.year, now.month, now.day + 1, 18, 20).timestamp(),
-            'end_time': datetime(now.year, now.month, now.day + 1, 20, 20).timestamp(),
+            'start_time': (datetime(now.year, now.month, now.day, 18, 20) + timedelta(days=1)).timestamp(),
+            'end_time': (datetime(now.year, now.month, now.day, 20, 20) + timedelta(days=1)).timestamp(),
             'price': 15,
         }, content_type='application/json', HTTP_AUTHORIZATION=self.user.session)
 
@@ -1215,6 +1215,7 @@ class OrderListTest(TestCase):
         # 无session
         response = self.client.get('/u/order/list/', None)
         self.assertEqual(response.json()['code'], 0)
+        self.assertEqual(response.json()['data'], None)
 
 
 class NewsList(TestCase):
@@ -1257,8 +1258,8 @@ class NewsList(TestCase):
         self.assertEqual(response.json()['code'], 1)
         self.assertEqual(len(response.json()['data']['news_list']), 3)
         for i in range(3):
-            self.assertEqual(response.json()['data']['news_list'][i]['news_title'], 'test_title_'+str(i+1))
-            self.assertEqual(response.json()['data']['news_list'] [i]['news_content'], 'test_content_' + str(i + 1))
+            self.assertEqual(response.json()['data']['news_list'][i]['news_title'], 'test_title_' + str(i + 1))
+            self.assertEqual(response.json()['data']['news_list'][i]['news_content'], 'test_content_' + str(i + 1))
 
         # 正确提交(有news_id)
         response = self.client.post('/u/news/list/', {
