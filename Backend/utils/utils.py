@@ -79,7 +79,7 @@ class APIView(View):
     def checkMsg(self, *keys):
         for k in keys:
             if k not in self.msg:
-                raise MsgError(msg='API requires field "%s"' % (k,))
+                raise MsgError(msg='需要提交"%s"' % (k,))
 
     # 检查多个可选输入
     def checkMsgMultiOption(self, *keys):
@@ -131,11 +131,11 @@ class APIView(View):
         """
         id = redis_manage.session_user.get(self.msg['authorization'])
         if id is None:
-            raise MsgError(msg='No such person')
+            raise MsgError(msg='用户不存在')
         else:
             user = get_or_none(User, id=int(id.decode()))
             if user is None:
-                raise MsgError(msg='User does not exist')
+                raise MsgError(msg='用户不存在')
             else:
                 return user
 
@@ -146,7 +146,7 @@ class APIView(View):
 class MsgError(Exception):
     # 自定义的错误信息
 
-    def __init__(self, code=0, msg='Unknown error'):
+    def __init__(self, code=0, msg='未知错误'):
         super().__init__(msg)
         self.code = code
         self.msg = msg
