@@ -1,12 +1,13 @@
-from django.db import models
-from Backend.settings import *
-from datetime import datetime, timedelta
-from django.db import transaction
-import redis
 import threading
-import json
-import requests
 import time
+from datetime import datetime, timedelta
+
+import redis
+import requests
+from django.db import models
+from django.db import transaction
+
+from Backend.settings import *
 
 
 # Create your models here.
@@ -219,7 +220,7 @@ def sendAlert(order):
         "form_id": order.form_id,
         "data": {
             "keyword1": {
-                "value": "您预约的琴房还有"+str(CONFIGS['ALERT_TIME'])+"分钟开始"
+                "value": "您预约的琴房还有" + str(int((order.start_time - datetime.now()).seconds / 60)) + "分钟开始"
             },
             "keyword2": {
                 "value": order.start_time.strftime('%Y-%m-%d %X')
