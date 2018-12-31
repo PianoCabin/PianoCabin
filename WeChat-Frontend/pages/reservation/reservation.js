@@ -88,7 +88,7 @@ let page = Page({
         today.setHours(0, 0, 0, 0);
         if (new_date >= today) {
             this.setData({cur_date: new_date.toLocaleDateString(), cur_date_show: util.datetimeShowString(new_date)});
-            this.getRoomList();
+            this.getRoomList(false);
         }
     },
 
@@ -101,7 +101,7 @@ let page = Page({
         let seven_day = latest.getTime() + 7 * 24 * 60 * 60 * 1000;
         if (seven_day > new_date) {
             this.setData({cur_date: new_date.toLocaleDateString(), cur_date_show: util.datetimeShowString(new_date)});
-            this.getRoomList();
+            this.getRoomList(false);
         }
     },
 
