@@ -40,7 +40,8 @@
                 <text class='grey'>{{order_info.room_num}}</text>
             </view>
             <view class='order_date'>日期：
-                <text class='purple'>{{order_info.date}}</text>
+                <!-- <text class='purple'>{{order_info.date}}</text> -->
+                <text class='purple'> {{cur_date_show}} </text>
             </view>
             <view class='order_time'>时间：
                 <picker class="time_picker" mode="selector" range='{{starttime_list}}' bindchange='setOrderStart'>

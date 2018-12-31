@@ -167,7 +167,7 @@ let page = Page({
     search: function (event) {
 
         this.hideSearchPage();
-        this.getRoomList();
+        this.getRoomList(false);
     },
 
 
@@ -268,17 +268,27 @@ let page = Page({
     },
 
     //向服务器请求筛选过的琴房列表
-    getRoomList() {
+    getRoomList(update_search_list = true) {
         let data = this.getListFilter();
         if (data["type"] != null)
+        {
+          if(update_search_list)
             app.getRoomList(data, this.showRoomList);
+          else
+            app.getRoomList(data, this.showRoomList_2);
+
+        }
     },
     showRoomList(res) {
         let list = res.data["data"]["room_list"];
         this.updateList(list);
         wx.stopPullDownRefresh()
     },
-
+    showRoomList_2(res){
+      let list = res.data["data"]["room_list"];
+      this.updateList(list,false);
+      wx.stopPullDownRefresh()
+    },
     //获取琴房筛选条件
     getListFilter() {
         let data = {};
@@ -296,7 +306,7 @@ let page = Page({
     },
 
     //根据传入的房间列表（服务器端）数据，更新琴房列表数据
-    updateList(data_list) {
+    updateList(data_list,update_search_list = true) {
         let new_brand = []
         let new_list = []
         let start_time = util.timeStringToTimestamp(this.data.cur_date, this.data.open_time[0].toString() + ':' + '00');
@@ -304,7 +314,7 @@ let page = Page({
 
         //每个房间更新数据
         for (let i = 0; i < data_list.length; i++) {
-          if (new_brand.indexOf(data_list[i]["brand"]) == -1)
+          if ((new_brand.indexOf(data_list[i]["brand"]) == -1))
             new_brand.push(data_list[i]["brand"]);
             let element = {}
             element["name"] = data_list[i]["brand"];
@@ -376,7 +386,9 @@ let page = Page({
             element["time"] = hour_list;
             new_list.push(element);
         }
-        this.setData({room_list: new_list,brand_list:new_brand});
+      this.setData({ room_list: new_list});
+      if(update_search_list)
+        this.setData({brand_list:new_brand});
         return new_list;
     },
 
