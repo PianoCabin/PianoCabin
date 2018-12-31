@@ -1,21 +1,18 @@
-from utils.utils import *
-from admin_end.models import *
-from datetime import datetime
-from django.db import transaction
-from django.template.loader import get_template
-from django.shortcuts import render
-from urllib import parse
-from io import BytesIO
-import json
-import jwt
-import requests
-import uuid
-import django
-import qrcode
 import base64
 import random
-import string
 import socket
+import string
+import uuid
+from io import BytesIO
+from urllib import parse
+
+import jwt
+import qrcode
+from django.db import transaction
+from django.shortcuts import render
+from django.template.loader import get_template
+
+from utils.utils import *
 
 
 # Create your views here.
@@ -387,6 +384,7 @@ class OrderNormal(APIView):
                 if day >= CONFIGS['MAX_ORDER_DAYS'] or day < 0:
                     raise django.db.IntegrityError
 
+                # 向redis中插入预约信息，保证在预约时间上有序
                 if redis_manage.redis_lock.acquire():
                     orders = json.loads(redis_manage.order_list.lindex(piano_room.room_num, day).decode())
                     length = len(orders)
