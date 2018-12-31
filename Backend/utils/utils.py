@@ -1,19 +1,26 @@
+import hashlib
+import xml.etree.ElementTree as ET
+
 from django.http import HttpResponse
 from django.views.generic import View
-from urllib import parse, request
-from Backend.settings import *
+
 from admin_end.models import *
-import json
-import xml.etree.ElementTree as ET
-import hashlib
-import jwt
-import traceback
 
 
 class APIView(View):
-    # API基类
+    """
+    API 基类
+    处理基本的API转发和提供提交信息提取
+    """
 
     def dispatch(self, request, *args, **kwargs):
+        """
+        :param request: Request object
+        :param args: Additional arguments :class: `list <list>` object
+        :param kwargs: Additional arguments :class: `dict <dict>` object
+        :return: :class: `HttpResponse <HttpResponse>` object
+        :rtype: HttpResponse
+        """
         self.request = request
         self.msg = self.queryMsg()
         handler = getattr(self, self.request.method.lower(), None)
@@ -21,8 +28,12 @@ class APIView(View):
             return self.http_method_not_allowed()
         return self.handleMsg(handler, *args, **kwargs)
 
-    # 提取请求体
     def queryMsg(self):
+        """
+        提取请求体
+        :return: Dictionary of submitted data
+        :rtype: dict
+        """
         msg = getattr(self.request, self.request.method, None)
         if msg:
             msg = msg.dict()
@@ -42,8 +53,16 @@ class APIView(View):
 
         return msg
 
-    # 处理不同请求类型并包装返回值
-    def handleMsg(self, handler, *args, **kwargs):
+    @staticmethod
+    def handleMsg(handler, *args, **kwargs):
+        """
+        处理不同请求类型并包装返回值
+        :param handler: Function of handling API interaction
+        :param args: Additional arguments :class: `list <list>` object
+        :param kwargs: Additional arguments :class: `dict <dict>` object
+        :return: :class: `HttpResponse <HttpResponse>` object
+        :rtype: HttpResponse
+        """
         code = 1
         msg = ''
         data = None
@@ -72,26 +91,40 @@ class APIView(View):
 
         res = HttpResponse(response, content_type='application/json')
         # 测试用
-        res.setdefault('Access-Control-Allow-Origin', '*')
+        # res.setdefault('Access-Control-Allow-Origin', '*')
         return res
 
-    # 检查输入
     def checkMsg(self, *keys):
+        """
+        检查输入
+        :param keys: Additional arguments :class: `list <list>` object
+        :return: None
+        :rtype: None
+        """
         for k in keys:
             if k not in self.msg:
                 raise MsgError(msg='需要提交"%s"' % (k,))
 
-    # 检查多个可选输入
     def checkMsgMultiOption(self, *keys):
-
+        """
+        检查多个可选输入
+        :param keys: Additional arguments :class: `list <list>` object
+        :return: integer
+        :rtype: int
+        """
         count = 0
         for k in keys:
             if k in self.msg:
                 count += 1
         return count
 
-    # 获取不定输入
     def getMultiOption(self, *keys):
+        """
+        获取不定输入
+        :param keys: Additional arguments :class: `list <list>` object
+        :return: :class `dict <dict>` object of existing key-value from self.msg
+        :rtype: dict
+        """
         msg = {}
         for k in keys:
             if k in self.msg:
@@ -100,6 +133,12 @@ class APIView(View):
 
     @classmethod
     def parseXML(cls, text):
+        """
+        解析xml
+        :param text: xml string for parsing
+        :return: Dictionary of the original xml string
+        :rtype: dict
+        """
         root = ET.fromstring(text)
         msg = dict()
         if root.tag == 'xml':
@@ -109,6 +148,12 @@ class APIView(View):
 
     @classmethod
     def getSign(cls, msg):
+        """
+        获取加密sign
+        :param msg: Dictionary for getting message sign
+        :return: string
+        :rtype: str
+        """
         msg_keys = list(msg.keys())
         msg_keys.sort()
         msg_str = ''
@@ -124,10 +169,11 @@ class APIView(View):
         msg_str = md5.hexdigest().upper()
         return msg_str
 
-    # 解析session获取用户
     def getUserBySession(self):
         """
+        解析session获取用户
         :return: :class:`User <User>` object
+        :rtype: User
         """
         id = redis_manage.session_user.get(self.msg['authorization'])
         if id is None:
