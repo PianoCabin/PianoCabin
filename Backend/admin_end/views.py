@@ -1,16 +1,14 @@
-from django.shortcuts import render
-from django.contrib import auth
-from django.contrib.auth.decorators import login_required
-from django.utils import timezone
-from django.utils.decorators import method_decorator
-from utils.utils import *
-from django.db.models import Q
-from .models import *
-import json
 import datetime
-from collections import defaultdict
-from django.db import transaction
+import json
 import traceback
+from collections import defaultdict
+
+from django.contrib import auth
+from django.db import transaction
+from django.utils import timezone
+
+from utils.utils import *
+from .models import *
 
 # Create your views here.
 
@@ -18,7 +16,8 @@ try:
     redis_manage.initDatabase()
     TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
     if not TESTING:
-        scheduledUpdate()
+        time_scheduler = TimeScheduler()
+        time_scheduler.scheduledUpdate()
 except:
     pass
 

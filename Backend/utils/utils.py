@@ -169,6 +169,21 @@ class APIView(View):
         msg_str = md5.hexdigest().upper()
         return msg_str
 
+    @classmethod
+    def sendAlert(cls, send_data):
+        data = {
+            'grant_type': 'client_credential',
+            'appid': CONFIGS['APP_ID'],
+            'secret': CONFIGS['APP_SECRET'],
+        }
+        res = requests.get(url='https://api.weixin.qq.com/cgi-bin/token', params=data).json()
+        access_token = res["access_token"]
+
+        res = requests.post(
+            url="https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + access_token,
+            data=json.dumps(send_data)).json()
+        print(res)
+
     def getUserBySession(self):
         """
         解析session获取用户
@@ -196,5 +211,123 @@ class MsgError(Exception):
         super().__init__(msg)
         self.code = code
         self.msg = msg
+
+
+class TimeScheduler:
+    """
+    定时器任务类
+    """
+
+    @staticmethod
+    def updateOrderList():
+        """
+        新的一天更新订单表
+        :return: None
+        """
+        rooms = PianoRoom.objects.all()
+        for room in rooms:
+            date = datetime.now().date() + timedelta(days=CONFIGS['MAX_ORDER_DAYS'] - 1)
+            orders = Order.objects.filter(date=date, piano_room=room, order_status__range=[1, 2]).order_by(
+                'start_time')
+            orders_data = []
+            for order in orders:
+                orders_data.append([order.start_time.timestamp(), order.end_time.timestamp(), order.id])
+            orders_data = json.dumps(orders_data)
+            redis_manage.order_list.lpop(room.room_num)
+            redis_manage.order_list.lpush(room.room_num, orders_data)
+
+    @staticmethod
+    def updateUnpaidOrders():
+        """
+        十五分钟更新未支付订单
+        :return: None
+        """
+        ids = redis_manage.unpaid_orders.keys()
+        for id in ids:
+            create_time = float(redis_manage.unpaid_orders.lindex(id, 0).decode())
+            start_time = float(redis_manage.unpaid_orders.lindex(id, 1).decode())
+            if (datetime.now().timestamp() - create_time) > CONFIGS['MAX_UNPAID_TIME'] * 60 or (
+                    start_time <= datetime.now().timestamp()):
+                print('execute')
+                try:
+                    with transaction.atomic():
+                        order = Order.objects.select_for_update().get(id=int(id.decode()))
+                        order.order_status = 0
+                        order.cancel_reason = 1
+                        order.save()
+                        if redis_manage.redis_lock.acquire():
+                            redis_manage.unpaid_orders.delete(id)
+                            day = (datetime.now().date() - order.create_time.date()).days
+                            if day == 0:
+                                room_orders = redis_manage.order_list.lindex(order.piano_room.room_num, day).decode()
+                                room_orders = json.loads(room_orders)
+                                length = len(room_orders)
+                                for i in range(length):
+                                    room_order = room_orders[i]
+                                    if room_order[2] == order.id:
+                                        room_orders.pop(i)
+                                        break
+                                room_orders = json.dumps(room_orders)
+                                redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
+                            redis_manage.redis_lock.release()
+                except:
+                    try:
+                        redis_manage.redis_lock.release()
+                    except:
+                        pass
+                    print('Unable to update order list')
+
+    @staticmethod
+    def imminentOrderAlert():
+        """
+        即将开始订单提醒
+        :return: None
+        """
+        ids = redis_manage.order_list.keys()
+        for id in ids:
+            room_orders = redis_manage.order_list.lindex(id, 0).decode()
+            room_orders = json.loads(room_orders)
+            for room_order in room_orders:
+                if datetime.now().timestamp() - room_order[0] < CONFIGS['ALERT_TIME'] * 60:
+                    order = Order.objects.get(id=room_order[2])
+                    if order.order_status == 2 and order.form_id != '':
+                        APIView.sendAlert(send_data={
+                            "touser": order.user.open_id,
+                            "template_id": "ki8_cVjacJyR5FsfcJCOjW-kcYMtcYkAi1vIuIktVrk",
+                            "form_id": order.form_id,
+                            "data": {
+                                "keyword1": {
+                                    "value": "您预约的琴房还有" + str(
+                                        int((order.start_time - datetime.now()).seconds / 60)) + "分钟开始"
+                                },
+                                "keyword2": {
+                                    "value": order.start_time.strftime('%Y-%m-%d %X')
+                                },
+                                "keyword3": {
+                                    "value": order.piano_room.room_num
+                                },
+                                "keyword4": {
+                                    "value": "琴屋"
+                                }
+                            }
+                        })
+
+                        order.form_id = ''
+                        order.save()
+
+    def scheduledUpdate(self):
+        threading.Thread(target=self.runSchedule).start()
+
+    def runSchedule(self):
+        """
+        启动定时器
+        :return: None
+        """
+        while True:
+            self.updateUnpaidOrders()
+            self.imminentOrderAlert()
+            if datetime.now().hour == 0 and datetime.now().minute == 1:
+                self.updateOrderList()
+            time.sleep(1)
 
 
