@@ -6,7 +6,6 @@ urlpatterns = [
     path('logout/', Logout.as_view()),
     path('piano-room/create/', PianoRoomCreate.as_view()),
     path('piano-room/edit/', PianoRoomEdit.as_view()),
-    path('piano-room/delete/', PianoRoomDelete.as_view()),
     path('piano-room/list/', PianoRoomList.as_view()),
     path('order/list/', OrderList.as_view()),
     path('news/list/', NewsList.as_view()),
