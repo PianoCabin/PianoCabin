@@ -1,7 +1,6 @@
-from django.views.generic import View
-from django.shortcuts import render
 from django.http import Http404
-import re
+from django.shortcuts import render, redirect
+from django.views.generic import View
 
 
 class Page(View):
@@ -19,10 +18,17 @@ class RoomDetail(View):
     def dispatch(self, request, *args, **kwargs):
         return render(request, 'room-detail.html')
 
+
 class FeedbackDetail(View):
     def dispatch(self, request, *args, **kwargs):
         return render(request, 'feedback-detail.html')
 
+
 class NewsCreate(View):
     def dispatch(self, request, *args, **kwargs):
         return render(request, 'news-create.html')
+
+
+class Index(View):
+    def dispatch(self, request, *args, **kwargs):
+        return redirect('/login/')
