@@ -283,7 +283,7 @@ class TimeScheduler:
     @staticmethod
     def imminentOrderAlert():
         """
-        即将开始订单提醒
+        即将开始订单提醒以及当前时间超过结束时间的订单设为已完成
         :return: None
         """
         ids = redis_manage.order_list.keys()
@@ -291,6 +291,11 @@ class TimeScheduler:
             room_orders = redis_manage.order_list.lindex(id, 0).decode()
             room_orders = json.loads(room_orders)
             for room_order in room_orders:
+                if datetime.now().timestamp() >= room_order[1]:
+                    order = Order.objects.get(id=room_order[2])
+                    if order.order_status == 2:
+                        order.order_status = 3
+                        order.save()
                 if datetime.now().timestamp() - room_order[0] < CONFIGS['ALERT_TIME'] * 60:
                     order = Order.objects.get(id=room_order[2])
                     if order.order_status == 2 and order.form_id != '':

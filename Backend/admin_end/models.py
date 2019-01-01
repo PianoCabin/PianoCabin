@@ -123,6 +123,7 @@ class RedisManage:
         self.order_list.flushdb()
         self.unpaid_orders.flushdb()
         self.session_user.flushdb()
+        self.initCompleteOrders()
         self.initOrderList()
         self.initUnpaidOrders()
         self.initSessionUser()
@@ -136,7 +137,7 @@ class RedisManage:
         for room in rooms:
             for i in range(CONFIGS['MAX_ORDER_DAYS']):
                 date = datetime.now().date() + timedelta(days=i)
-                orders = Order.objects.filter(date=date, piano_room=room, order_status__range=[1, 2]).order_by(
+                orders = Order.objects.filter(date=date, piano_room=room, order_status__range=[1, 3]).order_by(
                     'start_time')
                 orders_data = []
                 for order in orders:
@@ -162,6 +163,17 @@ class RedisManage:
         users = User.objects.all()
         for user in users:
             self.session_user.set(user.session, user.id)
+
+    @staticmethod
+    def initCompleteOrders():
+        """
+        检查已支付且结束时间已过的订单，设置为已完成
+        :return: None
+        """
+        orders = Order.objects.filter(end_time__lte=datetime.now(), order_status=2)
+        for order in orders:
+            order.order_status = 3
+            order.save()
 
 
 redis_manage = RedisManage()

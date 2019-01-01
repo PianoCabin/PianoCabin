@@ -7,6 +7,7 @@ urlpatterns = [
     path('piano-room/create/', PianoRoomCreate.as_view()),
     path('piano-room/edit/', PianoRoomEdit.as_view()),
     path('piano-room/list/', PianoRoomList.as_view()),
+    path('order/complete/', OrderComplete.as_view()),
     path('order/list/', OrderList.as_view()),
     path('news/list/', NewsList.as_view()),
     path('news/create/', NewsCreate.as_view()),

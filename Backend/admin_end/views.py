@@ -183,6 +183,23 @@ class PianoRoomList(APIView):
             raise MsgError(0, 'fail to list piano room as no such piano type exist')
 
 
+class OrderComplete(APIView):
+
+    def post(self):
+        if not self.request.user.is_authenticated:
+            raise MsgError(0, 'not login')
+        self.checkMsg('order_id')
+        order = get_or_none(Order, order_id=self.msg.get('order_id'), order_status=2)
+        if order is not None:
+            if order.start_time <= datetime.now() <= order.end_time:
+                order.order_status = 3
+                order.save()
+            else:
+                raise MsgError('未到开始时间')
+        else:
+            raise MsgError(msg='订单不存在或未支付')
+
+
 class OrderList(APIView):
 
     def post(self):
