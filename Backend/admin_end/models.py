@@ -9,6 +9,14 @@ from Backend.settings import *
 
 # Create your models here.
 def get_or_none(model, *args, **kwargs):
+    """
+    获取数据库信息，不存在则为None
+    :param model: Model
+    :param args: Additional arguments :class: `list <list>` object
+    :param kwargs: Additional arguments :class: `dict <dict>` object
+    :return: Model
+    :rtype: model
+    """
     try:
         return model.objects.get(*args, **kwargs)
     except model.DoesNotExist:

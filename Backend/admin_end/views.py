@@ -102,12 +102,42 @@ class PianoRoomEdit(APIView):
                             redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
                             redis_manage.unpaid_orders.delete(order.id)
                             redis_manage.redis_lock.release()
+
+                # 推送信息给已支付订单
+                paid_orders = Order.objects.filter(piano_room=room[0], order_status=2)
+                for paid_order in paid_orders:
+                    self.sendAlert(send_data={
+                        "touser": paid_order.user.open_id,
+                        "template_id": "uuVrW3jb2WN4MRo4DajIxX-DPyP5rNggDp3FFyBoGqk",
+                        "form_id": paid_order.prepay_id,
+                        "data": {
+                            "keyword1": {
+                                "value": "您预约的琴房被管理员下线，请联系管理员退款"
+                            },
+                            "keyword2": {
+                                "value": paid_order.order_id
+                            },
+                            "keyword3": {
+                                "value": paid_order.piano_room.room_num
+                            },
+                            "keyword4": {
+                                "value": str(paid_order.price) + '元'
+                            },
+                            "keyword5": {
+                                "value": paid_order.start_time.strftime('%Y-%m-%d %X')
+                            },
+                            "keyword6": {
+                                "value": paid_order.end_time.strftime('%Y-%m-%d %X')
+                            }
+                        }
+                    })
             except:
                 try:
                     redis_manage.redis_lock.release()
                 except:
                     pass
                 raise MsgError(msg='Unable to cancel order')
+
         if not room.update(
                 brand=self.msg["brand"],
                 piano_type=self.msg["piano_type"],

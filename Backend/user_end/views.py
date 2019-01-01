@@ -225,6 +225,8 @@ class OrderPay(APIView):
                 'package': 'prepay_id=' + res.get('prepay_id'),
                 'signType': 'MD5'
             }
+            order.prepay_id = res.get('prepay_id')
+            order.save()
             sign = self.getSign(msg_nd)
             msg_nd['paySign'] = sign
             return msg_nd
