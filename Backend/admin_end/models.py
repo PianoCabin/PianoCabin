@@ -1,6 +1,7 @@
 import threading
 import time
 from datetime import datetime, timedelta
+from utils.utils import *
 
 import redis
 import requests
@@ -57,6 +58,7 @@ class Order(models.Model):
     order_status = models.IntegerField(default=1)
     cancel_reason = models.IntegerField(default=0)
     form_id = models.TextField(default='')
+    prepay_id = models.TextField(default='')
 
     def __str__(self):
         return self.id
@@ -98,7 +100,10 @@ class Feedback(models.Model):
 
 
 class RedisManage:
-    # redis 数据库管理类
+    """
+    redis 数据库管理类
+    """
+
     def __init__(self):
         self.order_list = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=0)
         self.unpaid_orders = redis.Redis(host=CONFIGS['REDIS_HOST'], port=CONFIGS['REDIS_PORT'], db=1)
@@ -107,6 +112,10 @@ class RedisManage:
         # self.initDatabase()
 
     def initDatabase(self):
+        """
+        初始化redis数据库
+        :return: None
+        """
         self.order_list.flushdb()
         self.unpaid_orders.flushdb()
         self.session_user.flushdb()
@@ -115,6 +124,10 @@ class RedisManage:
         self.initSessionUser()
 
     def initOrderList(self):
+        """
+        初始化订单表
+        :return: None
+        """
         rooms = PianoRoom.objects.all()
         for room in rooms:
             for i in range(CONFIGS['MAX_ORDER_DAYS']):
@@ -128,128 +141,23 @@ class RedisManage:
                 self.order_list.rpush(room.room_num, orders_data)
 
     def initUnpaidOrders(self):
+        """
+        初始化未支付订单表
+        :return: None
+        """
         orders = Order.objects.filter(order_status=1)
         for order in orders:
             self.unpaid_orders.rpush(order.id, order.create_time.timestamp())
             self.unpaid_orders.rpush(order.id, order.start_time.timestamp())
 
     def initSessionUser(self):
+        """
+        初始化用户-session表
+        :return: None
+        """
         users = User.objects.all()
         for user in users:
             self.session_user.set(user.session, user.id)
 
 
 redis_manage = RedisManage()
-
-
-def updateOrderList():
-    rooms = PianoRoom.objects.all()
-    for room in rooms:
-        date = datetime.now().date() + timedelta(days=CONFIGS['MAX_ORDER_DAYS'] - 1)
-        orders = Order.objects.filter(date=date, piano_room=room, order_status__range=[1, 2]).order_by(
-            'start_time')
-        orders_data = []
-        for order in orders:
-            orders_data.append([order.start_time.timestamp(), order.end_time.timestamp(), order.id])
-        orders_data = json.dumps(orders_data)
-        redis_manage.order_list.lpop(room.room_num)
-        redis_manage.order_list.lpush(room.room_num, orders_data)
-
-
-def updateUnpaidOrders():
-    ids = redis_manage.unpaid_orders.keys()
-    for id in ids:
-        create_time = float(redis_manage.unpaid_orders.lindex(id, 0).decode())
-        start_time = float(redis_manage.unpaid_orders.lindex(id, 1).decode())
-        if (datetime.now().timestamp() - create_time) > CONFIGS['MAX_UNPAID_TIME'] * 60 or (
-                start_time <= datetime.now().timestamp()):
-            print('execute')
-            try:
-                with transaction.atomic():
-                    order = Order.objects.select_for_update().get(id=int(id.decode()))
-                    order.order_status = 0
-                    order.cancel_reason = 1
-                    order.save()
-                    if redis_manage.redis_lock.acquire():
-                        redis_manage.unpaid_orders.delete(id)
-                        day = (datetime.now().date() - order.create_time.date()).days
-                        if day == 0:
-                            room_orders = redis_manage.order_list.lindex(order.piano_room.room_num, day).decode()
-                            room_orders = json.loads(room_orders)
-                            length = len(room_orders)
-                            for i in range(length):
-                                room_order = room_orders[i]
-                                if room_order[2] == order.id:
-                                    room_orders.pop(i)
-                                    break
-                            room_orders = json.dumps(room_orders)
-                            redis_manage.order_list.lset(order.piano_room.room_num, day, room_orders)
-                        redis_manage.redis_lock.release()
-            except:
-                try:
-                    redis_manage.redis_lock.release()
-                except:
-                    pass
-                print('Unable to update order list')
-
-
-def imminentOrderAlert():
-    ids = redis_manage.order_list.keys()
-    for id in ids:
-        room_orders = redis_manage.order_list.lindex(id, 0).decode()
-        room_orders = json.loads(room_orders)
-        for room_order in room_orders:
-            if datetime.now().timestamp() - room_order[0] < CONFIGS['ALERT_TIME'] * 60:
-                order = Order.objects.get(id=room_order[2])
-                if order.order_status == 2 and order.form_id != '':
-                    sendAlert(order)
-
-
-def sendAlert(order):
-    data = {
-        'grant_type': 'client_credential',
-        'appid': CONFIGS['APP_ID'],
-        'secret': CONFIGS['APP_SECRET'],
-    }
-    res = requests.get(url='https://api.weixin.qq.com/cgi-bin/token', params=data).json()
-    access_token = res["access_token"]
-
-    data = {
-        "touser": order.user.open_id,
-        "template_id": "ki8_cVjacJyR5FsfcJCOjW-kcYMtcYkAi1vIuIktVrk",
-        "form_id": order.form_id,
-        "data": {
-            "keyword1": {
-                "value": "您预约的琴房还有" + str(int((order.start_time - datetime.now()).seconds / 60)) + "分钟开始"
-            },
-            "keyword2": {
-                "value": order.start_time.strftime('%Y-%m-%d %X')
-            },
-            "keyword3": {
-                "value": order.piano_room.room_num
-            },
-            "keyword4": {
-                "value": "琴屋"
-            }
-        }
-    }
-    res = requests.post(
-        url="https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + access_token,
-        data=json.dumps(data)).json()
-    print(order.form_id)
-    order.form_id = ''
-    order.save()
-    print(res)
-
-
-def scheduledUpdate():
-    threading.Thread(target=runSchedule).start()
-
-
-def runSchedule():
-    while True:
-        updateUnpaidOrders()
-        imminentOrderAlert()
-        if datetime.now().hour == 0 and datetime.now().minute == 1:
-            updateOrderList()
-        time.sleep(1)
