@@ -1,12 +1,8 @@
 import threading
-import time
 from datetime import datetime, timedelta
-from utils.utils import *
 
 import redis
-import requests
 from django.db import models
-from django.db import transaction
 
 from Backend.settings import *
 

@@ -1,8 +1,11 @@
 import hashlib
 import xml.etree.ElementTree as ET
+import requests
+import time
 
 from django.http import HttpResponse
 from django.views.generic import View
+from django.db import transaction
 
 from admin_end.models import *
 
