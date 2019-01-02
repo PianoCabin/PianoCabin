@@ -151,16 +151,6 @@ class PianoRoomEdit(APIView):
             raise MsgError(0, 'fail to edit a piano room')
 
 
-class PianoRoomDelete(APIView):
-
-    def post(self):
-        if not self.request.user.is_authenticated:
-            raise MsgError(0, 'not login')
-        self.checkMsg("room_num")
-        if not PianoRoom.objects.filter(room_num=self.msg['room_num']).update(usable=False):
-            raise MsgError(0, 'fail to delete a not-exist piano room')
-
-
 class PianoRoomList(APIView):
 
     def post(self):
@@ -181,6 +171,23 @@ class PianoRoomList(APIView):
             return {'room_list': dd}
         except:
             raise MsgError(0, 'fail to list piano room as no such piano type exist')
+
+
+class OrderComplete(APIView):
+
+    def post(self):
+        if not self.request.user.is_authenticated:
+            raise MsgError(0, 'not login')
+        self.checkMsg('order_id')
+        order = get_or_none(Order, order_id=self.msg.get('order_id'), order_status=2)
+        if order is not None:
+            if order.start_time <= datetime.now() <= order.end_time:
+                order.order_status = 3
+                order.save()
+            else:
+                raise MsgError('未到开始时间')
+        else:
+            raise MsgError(msg='订单不存在或未支付')
 
 
 class OrderList(APIView):

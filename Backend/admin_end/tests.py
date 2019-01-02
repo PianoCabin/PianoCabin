@@ -138,33 +138,6 @@ class PianoRoomEditTest(MyTest):
         self.assertEqual(response.json()['code'], 1)
 
 
-class PianoRoomDeleteTest(MyTest):
-    @classmethod
-    def setUpTestData(cls):
-        cls.temp_room = PianoRoom.objects.create(
-            room_num='F2-202',
-            piano_type='电钢琴',
-            brand='杂牌',
-            price_0=10,
-            price_1=8,
-            price_2=6,
-            usable=1,
-            art_ensemble=0
-        )
-        cls.piano_room_msg_dict_delete_correct = {
-            'room_num': 'F2-202',
-        }
-        cls.piano_room_msg_dict_delete_fault = {
-            'room_num': 'F2-201',
-        }
-
-    def test_post(self):
-        response = self.login_client.post('/a/piano-room/delete/', self.piano_room_msg_dict_delete_correct)
-        self.assertEqual(response.json()['code'], 1)
-        response = self.login_client.post('/a/piano-room/delete/', self.piano_room_msg_dict_delete_fault)
-        self.assertEqual(response.json()['code'], 0)
-
-
 class PianoRoomListTest(MyTest):
     @classmethod
     def setUpTestData(cls):
