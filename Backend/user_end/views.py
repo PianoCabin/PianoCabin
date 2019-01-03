@@ -307,7 +307,9 @@ class PianoRoomList(APIView):
                         continue
                     if orders[i][1] > end_time:
                         break
-                    sum_time += min(orders[i + 1][0], end_time) - max(orders[i][1], start_time)
+                    period = min(orders[i + 1][0], end_time) - max(orders[i][1], start_time)
+                    if period >= 3600:
+                        sum_time += period
                 sum_times.append(sum_time)
                 orders.pop()
                 orders.pop(0)
